@@ -1,4 +1,4 @@
-package com.simply.birthdayapp.ui.theme
+package com.simply.birthdayapp.commonpresentation.theme
 
 import androidx.compose.ui.graphics.Color
 
