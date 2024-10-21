@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.apollo.graphql)
 }
 
 android {
@@ -22,6 +23,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_URL", "\"https://birthdayapp.store/graphql\"")
+        }
+        release {
+            buildConfigField("String", "API_URL", "\"https://birthdayapp.store/graphql\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -38,6 +45,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -73,4 +81,15 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
+
+    // apollo
+    implementation(libs.apollo.runtime)
+
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.simply")
+        schemaFile.set(file("src/main/graphql/com/simply/schema.graphqls"))
+    }
 }
