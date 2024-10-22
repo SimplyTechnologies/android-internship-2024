@@ -6,10 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.simply.birthdayapp.auth.landing.presentation.LandingScreen
+import androidx.navigation.compose.rememberNavController
+import com.simply.birthdayapp.commonpresentation.navigation.AppNavigation
 import com.simply.birthdayapp.commonpresentation.theme.LogoBackground
 
 class MainActivity : ComponentActivity() {
@@ -18,11 +20,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Scaffold { innerPadding ->
-                LandingScreen(
-                    Modifier
+            val navController = rememberNavController()
+            Scaffold(modifier = Modifier.fillMaxSize(),
+                topBar = {},
+                bottomBar = {}) { innerPadding ->
+                AppNavigation(
+                    modifier = Modifier
                         .padding(innerPadding)
-                        .background(color = LogoBackground)
+                        .background(LogoBackground),
+                    navController
                 )
             }
         }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -73,4 +74,14 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
+
+//  Compose navigation
+    implementation(libs.androidx.navigation.compose)
+
+//  Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+//  DataStore
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.datastore)
 }

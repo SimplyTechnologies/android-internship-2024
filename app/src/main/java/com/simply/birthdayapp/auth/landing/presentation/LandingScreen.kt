@@ -26,7 +26,7 @@ import com.simply.birthdayapp.commonpresentation.theme.ButtonPink
 import com.simply.birthdayapp.commonpresentation.theme.ButtonPurple
 
 @Composable
-fun LandingScreen(modifier: Modifier) {
+fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick: () -> Unit) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -44,7 +44,7 @@ fun LandingScreen(modifier: Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* TODO */ },
+            onClick = onSignInClick,
             colors = ButtonDefaults.buttonColors(ButtonPink),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 0.dp, topEnd = 40.dp, bottomEnd = 40.dp
@@ -67,7 +67,7 @@ fun LandingScreen(modifier: Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = { /* TODO */ },
+            onClick = onRegisterClick,
             colors = ButtonDefaults.buttonColors(ButtonPurple),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 40.dp, topEnd = 0.dp, bottomEnd = 40.dp
@@ -93,5 +93,5 @@ fun LandingScreen(modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun LandingScreenPreview() {
-    LandingScreen(modifier = Modifier)
+    LandingScreen(modifier = Modifier, onSignInClick = {}, onRegisterClick = {})
 }
