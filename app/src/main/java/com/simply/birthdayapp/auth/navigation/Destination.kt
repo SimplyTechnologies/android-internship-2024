@@ -4,10 +4,12 @@ import kotlinx.serialization.Serializable
 
 sealed interface Destination {
     @Serializable
-    data object SigninDestination : Destination
+    data object SignInDestination : Destination
+
+    @Serializable
+    data object RegistrationDestination : Destination
 
     @Serializable
     data object LandingDestination : Destination
-
 
 }

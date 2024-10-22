@@ -12,18 +12,16 @@ import com.simply.birthdayapp.auth.signIn.presentation.SignInScreen
 @Composable
 fun AuthNavigation(
     modifier: Modifier = Modifier, navController: NavHostController,
-    navigateToMain: () -> Unit, startDestination: Destination
+    navigateToMain: () -> Unit, startDestination: Destination,
 ) {
 
     NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination
+        modifier = modifier, navController = navController, startDestination = startDestination
     ) {
 
         composable<Destination.LandingDestination> {
             LandingScreen(modifier = modifier, onSignInClick = {
-                navController.navigate(Destination.SigninDestination) {
+                navController.navigate(Destination.SignInDestination) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -35,8 +33,15 @@ fun AuthNavigation(
             })
         }
 
-        composable<Destination.SigninDestination> {
-            SignInScreen(modifier = modifier, navigateToMain = navigateToMain)
+        composable<Destination.SignInDestination> {
+            SignInScreen(modifier = modifier, navigateToMain = navigateToMain, navigateToLanding = {
+                navController.navigate(Destination.LandingDestination) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            })
         }
 
     }

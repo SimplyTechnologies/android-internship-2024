@@ -12,7 +12,7 @@ interface IsSignedInUseCase {
 class IsSignedInUseCaseImpl(private val repository: AuthRepository) : IsSignedInUseCase {
     override fun invoke() = flow {
         repository.isSignedIn().collect { isSignedIn ->
-            emit(if (isSignedIn) Destination.SigninDestination else Destination.LandingDestination)
+            emit(if (isSignedIn) Destination.SignInDestination else Destination.LandingDestination)
         }
     }
 }

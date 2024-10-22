@@ -37,9 +37,8 @@ fun AppNavigation(
 
         composable<Destination.MainDestination> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "Main")
+                Text(text = "Main")  // placeholder
             }
         }
-
     }
 }

@@ -18,15 +18,18 @@ import com.simply.birthdayapp.commonpresentation.theme.ButtonTextStyle
 fun AuthedButton(
     modifier: Modifier = Modifier,
     text: String,
-    isEnabled: Boolean = false,
+    isEnabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
+        enabled = isEnabled,
         shape = RoundedCornerShape(25.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isEnabled) ButtonPurple else ButtonPink,
-            contentColor = if (isEnabled) ButtonDisableColor  else ButtonEnableColor
+            disabledContainerColor = ButtonPink,
+            disabledContentColor = ButtonEnableColor,
+            containerColor = ButtonPurple,
+            contentColor = ButtonDisableColor
         ),
         onClick = onClick
     ) {

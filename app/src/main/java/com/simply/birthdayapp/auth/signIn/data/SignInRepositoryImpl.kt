@@ -1,17 +1,11 @@
 package com.simply.birthdayapp.auth.signIn.data
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import com.simply.birthdayapp.auth.signIn.domain.repository.SignInRepository
-import com.simply.birthdayapp.commondata.Util.IS_SIGNED_IN
+import com.simply.birthdayapp.commondomain.local.DataStoreProvider
 
 class SignInRepositoryImpl(
-    private val dataStore: DataStore<Preferences>
+    private val dataStoreProvider: DataStoreProvider,
 ) : SignInRepository {
-    override suspend fun setSignedIn(isSignedIn: Boolean) {
-        dataStore.edit { settings ->
-            settings[IS_SIGNED_IN] = isSignedIn
-        }
-    }
+    override suspend fun setSignedIn(isSignedIn: Boolean) =
+        dataStoreProvider.setSignedIn(isSignedIn)
 }

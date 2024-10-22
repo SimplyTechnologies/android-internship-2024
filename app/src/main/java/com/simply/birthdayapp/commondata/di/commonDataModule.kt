@@ -1,16 +1,13 @@
 package com.simply.birthdayapp.commondata.di
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import org.koin.android.ext.koin.androidApplication
+import com.simply.birthdayapp.commondata.local.DataStoreProviderImpl
+import com.simply.birthdayapp.commondomain.local.DataStoreProvider
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "isSignedIn")
 
 val commonDataModule = module {
-    single { provideDataStore(context = androidApplication()) }
+    singleOf(::DataStoreProviderImpl) { bind<DataStoreProvider>() }
 }
 
-private fun provideDataStore(context: Context) = context.dataStore
