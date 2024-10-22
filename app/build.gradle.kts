@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.apollo.qraphql)
 }
 
 android {
@@ -23,12 +24,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_URL", "\"https://birthdayapp.store/graphql\"")
+        }
+        release {
+            buildConfigField("String", "API_URL", "\"https://birthdayapp.store/graphql\"")
+        }
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -39,6 +43,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -84,4 +89,13 @@ dependencies {
 //  DataStore
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.datastore)
+
+    // apollo
+    implementation(libs.apollo.runtime)
+}
+apollo {
+    service("service") {
+        packageName.set("com.simply")
+        schemaFile.set(file("src/main/graphql/com/simply/scheme.graphqls"))
+    }
 }
