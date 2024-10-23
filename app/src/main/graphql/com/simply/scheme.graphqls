@@ -1,0 +1,125 @@
+# Indicates exactly one field must be supplied and this field must not be `null`.
+directive @oneOf on INPUT_OBJECT
+
+# todo: remove unnecessary scheme in the end
+
+type AccessToken {
+    accessToken: String!
+}
+
+input AvgPriceFilter {
+    gte: Int
+    lte: Int
+}
+
+type Birthday {
+    createdAt: DateTime!
+    date: DateTime!
+    id: Int!
+    image: String
+    message: String
+    name: String!
+    relation: String!
+    upcomingAge: Int
+    upcomingBirthday: DateTime!
+    updatedAt: DateTime!
+    userId: Int!
+}
+
+input CreateBirthdayInput {
+    date: DateTime!
+    image: String
+    message: String
+    name: String!
+    relation: String!
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+type Mutation {
+    addShopToFavorite(shopId: Int!): UserFavoriteShop!
+    changePassword: Boolean!
+    createBirthday(createBirthdayInput: CreateBirthdayInput!): Birthday!
+    deleteBirthday(id: Int!): Birthday!
+    forgotPassword: Boolean!
+    login(loginInput: LoginInput!): AccessToken!
+    refreshToken: Boolean!
+    removeShopFromFavorite(shopId: Int!): UserFavoriteShop!
+    resetPassword: Boolean!
+    signUp(signUpInput: SignUpInput!): User!
+    updateBirthday(id: Int!, updateBirthdayInput: UpdateBirthdayInput!): Birthday!
+    updateProfile(updateProfileInput: UpdateProfileInput!): User!
+}
+
+type Query {
+    birthday(id: Int!): Birthday!
+    birthdays: [Birthday!]!
+    shops(filter: ShopFilter!): [Shop!]!
+}
+
+input RateFilter {
+    gte: Int
+    lte: Int
+}
+
+type Shop {
+    address: String!
+    avgPrice: Int
+    id: Int!
+    image: String!
+    isFavorite: Boolean!
+    name: String!
+    phone: String
+    rate: Float
+    url: String
+}
+
+input ShopFilter {
+    avgPrice: AvgPriceFilter
+    rate: RateFilter
+}
+
+input SignUpInput {
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+}
+
+input Token {
+    accessToken: String!
+}
+
+input UpdateBirthdayInput {
+    date: DateTime
+    image: String
+    message: String
+    name: String
+    relation: String
+}
+
+input UpdateProfileInput {
+    firstName: String
+    image: String
+    lastName: String
+}
+
+type User {
+    email: String!
+    firstName: String!
+    id: Int!
+    image: String
+    lastName: String!
+}
+
+type UserFavoriteShop {
+    createdAt: DateTime!
+    shopId: Int!
+    userId: Int!
+}
