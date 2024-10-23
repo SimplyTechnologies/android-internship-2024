@@ -1,10 +1,10 @@
 package com.simply.birthdayapp.commonpresentation.theme
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
 
@@ -14,7 +14,7 @@ val AuthTitleTextStyle = TextStyle(
     fontFamily = FontFamily(Font(R.font.karma_medium)),
     lineHeight = 48.84.sp,
     letterSpacing = 0.sp,
-    color = ButtonPurple
+    color = ButtonEnableColor
 )
 
 val TextFieldTextStyle = TextStyle(
@@ -30,7 +30,7 @@ val TextFieldPlaceholderStyle = TextStyle(
     fontWeight = FontWeight.W400,
     fontFamily = FontFamily(Font(R.font.karma_medium)),
     lineHeight = 20.34.sp,
-    color = TextFieldTextColor
+    color = TextFieldTextColor.copy(alpha = 0.74f)
 )
 
 val ButtonTextStyle = TextStyle(
@@ -40,6 +40,10 @@ val ButtonTextStyle = TextStyle(
     lineHeight = 24.42.sp
 )
 
-
-
-
+val AuthErrorTextStyle = TextStyle(
+    fontSize = 12.sp,
+    fontWeight = FontWeight.W700,
+    fontFamily = FontFamily(Font(R.font.karma)),
+    lineHeight = 20.34.sp,
+    color = Color.Red
+)

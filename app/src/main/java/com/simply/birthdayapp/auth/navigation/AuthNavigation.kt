@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.auth.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -7,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.simply.birthdayapp.auth.landing.presentation.LandingScreen
+import com.simply.birthdayapp.auth.registration.presentation.RegistrationScreen
 import com.simply.birthdayapp.auth.signIn.presentation.SignInScreen
 
 @Composable
@@ -29,7 +31,14 @@ fun AuthNavigation(
                     launchSingleTop = true
                 }
             }, onRegisterClick = {
-                // TODO: navigate to register screen
+                navController.navigate(Destination.RegistrationDestination) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                    launchSingleTop = true
+                }
+
             })
         }
 
@@ -42,6 +51,12 @@ fun AuthNavigation(
                     restoreState = true
                 }
             })
+        }
+
+        composable<Destination.RegistrationDestination> {
+            RegistrationScreen(
+                Modifier.fillMaxSize()
+            )
         }
 
     }
