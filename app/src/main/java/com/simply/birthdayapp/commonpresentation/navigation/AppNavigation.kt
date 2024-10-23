@@ -10,7 +10,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.simply.birthdayapp.auth.authnavigation.presentation.AuthScreen
+import com.simply.birthdayapp.auth.authnavigation.presentation.auth.AuthScreen
+import com.simply.birthdayapp.auth.authnavigation.presentation.main.MainScreen
 
 @Composable
 fun AppNavigation(
@@ -36,9 +37,7 @@ fun AppNavigation(
         }
 
         composable<Destination.MainDestination> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "Main")  // placeholder
-            }
+            MainScreen(modifier)
         }
     }
 }

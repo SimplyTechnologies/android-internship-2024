@@ -1,4 +1,4 @@
-package com.simply.birthdayapp.auth.authnavigation.presentation
+package com.simply.birthdayapp.auth.authnavigation.presentation.main
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -14,16 +14,18 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.simply.birthdayapp.auth.authnavigation.presentation.auth.AuthViewModel
 import com.simply.birthdayapp.auth.navigation.AuthNavigation
 import com.simply.birthdayapp.auth.navigation.Destination
+import com.simply.birthdayapp.auth.navigation.MainNavigation
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.AuthActionBar
+import com.simply.birthdayapp.commonpresentation.navigation.BottomNavigationBar
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AuthScreen(
+fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = koinViewModel(),
-    navigateToMain: () -> Unit,
+    viewModel: MainScreenViewModel = koinViewModel(),
 ) {
     val navController = rememberNavController()
     val startDest by viewModel.startDestination.collectAsState(initial = null)
@@ -33,22 +35,7 @@ fun AuthScreen(
         destination.route == Destination.LandingDestination::class.qualifiedName
     } == false
 
-    startDest?.let {
-        Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-            AuthActionBar(
-                modifier = Modifier.padding(WindowInsets.statusBars.asPaddingValues()),
-                showTopBar = isNotLandingScreen,
-            ) {
-                navController.navigate(Destination.LandingDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                    launchSingleTop = true
-                }
-            }
-        }, bottomBar = {}) { innerPadding ->
-            AuthNavigation(modifier.padding(innerPadding), navController, navigateToMain, it)
-        }
+        Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = { BottomNavigationBar(navController) }) { innerPadding ->
+            MainNavigation(modifier.padding(innerPadding), navController, Destination.HomeDestination)
     }
 }
