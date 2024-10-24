@@ -18,14 +18,14 @@ import com.simply.birthdayapp.R
 
 @Composable
 fun NetworkImage(
+    modifier: Modifier = Modifier.size(72.dp),
     url: String?,
     shape: RoundedCornerShape = CircleShape,
     errorImageRes: Int = R.drawable.ic_error
 ) {
     Image(
-        modifier = Modifier
-            .clip(shape)
-            .size(72.dp),
+        modifier = modifier
+            .clip(shape),
         painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current).data(data = url)
                 .apply(block = fun ImageRequest.Builder.() {
