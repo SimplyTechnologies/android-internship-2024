@@ -1,4 +1,4 @@
-package com.simply.birthdayapp.auth.authnavigation.presentation.main
+package com.simply.birthdayapp.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
