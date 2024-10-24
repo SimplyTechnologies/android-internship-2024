@@ -4,12 +4,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.simply.birthdayapp.auth.registration.domain.model.SignUpInput
+import com.simply.birthdayapp.auth.registration.domain.usecase.SignUpUseCase
+import com.simply.birthdayapp.core.result.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel(private val signUpUseCase: SignUpUseCase) : ViewModel() {
     private val _name = MutableStateFlow("")
     val name: StateFlow<String> = _name.asStateFlow()
 
@@ -43,6 +46,9 @@ class RegistrationViewModel : ViewModel() {
     private val _isRegisterEnabled = mutableStateOf(false)
     val isRegisterEnabled: State<Boolean> = _isRegisterEnabled
 
+    private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Idle)
+    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
+
     fun setName(newValue: String) {
         _name.value = newValue
         checkValidateButtonState()
@@ -67,6 +73,8 @@ class RegistrationViewModel : ViewModel() {
         _repeatedPassword.value = newValue
         checkValidateButtonState()
     }
+
+
 
     fun validateName() {
         viewModelScope.launch {
@@ -139,5 +147,30 @@ class RegistrationViewModel : ViewModel() {
     private fun checkValidateButtonState() {
         _isRegisterEnabled.value =
             (nameError.value == null) && (surnameError.value == null) && (emailError.value == null) && (passwordError.value == null) && (repeatedPasswordError.value == null) && _name.value.isNotEmpty() && _surname.value.isNotEmpty() && _email.value.isNotEmpty() && _password.value.isNotEmpty() && _repeatedPassword.value.isNotEmpty()
+    }
+
+
+    fun signUp(signUpInput: SignUpInput) {
+        viewModelScope.launch {
+            _uiState.value = SignUpUiState.Loading
+
+            val result = signUpUseCase.invoke(signUpInput)
+            _uiState.value = when (result) {
+                is Result.Success -> SignUpUiState.Success("Account created successfully!")
+                is Result.Error -> {
+                    when (result.message) {
+                        "User already exists" -> SignUpUiState.UserExists("User already exists.")
+                        else -> SignUpUiState.GeneralError("Sorry, an error occurred registering your account, please try again.")
+                    }
+                }
+                is Result.Loading -> {
+                    SignUpUiState.Loading
+                }
+            }
+        }
+    }
+
+    fun resetState() {
+        _uiState.value = SignUpUiState.Idle
     }
 }

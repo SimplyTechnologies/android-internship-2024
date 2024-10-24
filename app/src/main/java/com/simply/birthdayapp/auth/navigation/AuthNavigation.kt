@@ -52,7 +52,14 @@ fun AuthNavigation(
         }
 
         composable<Destination.RegistrationDestination> {
-            RegistrationScreen()
+            RegistrationScreen(navigateToLanding = {
+                navController.navigate(Destination.LandingDestination) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            })
         }
 
     }
