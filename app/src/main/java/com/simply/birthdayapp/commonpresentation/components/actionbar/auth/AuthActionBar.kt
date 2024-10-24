@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.ButtonPurple
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 
 @Composable
 fun AuthActionBar(
@@ -28,17 +28,17 @@ fun AuthActionBar(
             Box(Modifier.padding(top = 27.dp)) {
                 IconButton(onClick = onBackPress) {
                     Icon(
+                        modifier = Modifier.size(width = 16.dp, height = 24.dp),
                         painter = painterResource(id = R.drawable.ic_navigate_back),
                         contentDescription = null,
-                        tint = ButtonPurple,
-                        modifier = Modifier.size(width = 16.dp, height = 24.dp)
+                        tint = DarkPink
                     )
                 }
             }
             Image(
+                modifier = Modifier.size(width = 88.dp, height = 40.dp),
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = null,
-                modifier = Modifier.size(width = 88.dp, height = 40.dp)
+                contentDescription = null
             )
         }
     }
