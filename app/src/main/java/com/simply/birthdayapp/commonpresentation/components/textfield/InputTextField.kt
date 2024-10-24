@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.TextFieldContainerColor
-import com.simply.birthdayapp.commonpresentation.theme.TextFieldErrorContainerColor
+import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
+import com.simply.birthdayapp.commonpresentation.theme.ErrorPink
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldPlaceholderStyle
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldShape
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldTextStyle
@@ -68,7 +68,7 @@ fun InputTextField(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .background(
-                            color = if (isHasError) TextFieldErrorContainerColor else TextFieldContainerColor,
+                            color = if (isHasError) ErrorPink else LightPinkBackground,
                             shape = TextFieldShape
                         )
                         .padding(horizontal = 12.dp, vertical = 0.dp)

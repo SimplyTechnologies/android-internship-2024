@@ -32,7 +32,10 @@ android {
         }
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -92,6 +95,9 @@ dependencies {
 
     // apollo
     implementation(libs.apollo.runtime)
+
+    // coil
+    implementation(libs.coil.compose)
 }
 apollo {
     service("service") {

@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.ButtonPink
-import com.simply.birthdayapp.commonpresentation.theme.ButtonPurple
+import com.simply.birthdayapp.commonpresentation.theme.LightPink
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 
 @Composable
 fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick: () -> Unit) {
@@ -45,7 +45,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
 
         Button(
             onClick = onSignInClick,
-            colors = ButtonDefaults.buttonColors(ButtonPink),
+            colors = ButtonDefaults.buttonColors(LightPink),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 0.dp, topEnd = 40.dp, bottomEnd = 40.dp
             ),
@@ -59,7 +59,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 text = "Sign In",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = ButtonPurple
+                color = DarkPink
 
             )
         }
@@ -68,7 +68,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
 
         Button(
             onClick = onRegisterClick,
-            colors = ButtonDefaults.buttonColors(ButtonPurple),
+            colors = ButtonDefaults.buttonColors(DarkPink),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 40.dp, topEnd = 0.dp, bottomEnd = 40.dp
             ),
@@ -82,7 +82,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 text = "Register",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = ButtonPink
+                color = LightPink
             )
         }
     }
