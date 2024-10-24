@@ -9,6 +9,9 @@ import com.simply.birthdayapp.auth.signIn.data.di.sigInDataModule
 import com.simply.birthdayapp.auth.signIn.domain.di.signInDomainModule
 import com.simply.birthdayapp.auth.signIn.presentation.di.signInPresentationModule
 import com.simply.birthdayapp.commondata.di.commonDataModule
+import com.simply.birthdayapp.main.home.data.di.homeDataModule
+import com.simply.birthdayapp.main.home.domain.di.homeDomainModule
+import com.simply.birthdayapp.main.home.presentation.di.homePresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -29,6 +32,9 @@ class BirthdayApplication : Application() {
                 sigInDataModule,
                 signInPresentationModule,
                 commonDataModule,
+                homeDataModule,
+                homeDomainModule,
+                homePresentationModule,
                 registrationPresentationModule
             )
         }
