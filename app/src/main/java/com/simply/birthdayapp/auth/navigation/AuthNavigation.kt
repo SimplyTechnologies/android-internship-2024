@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.simply.birthdayapp.auth.landing.presentation.LandingScreen
+import com.simply.birthdayapp.auth.registration.presentation.RegistrationScreen
 import com.simply.birthdayapp.auth.signIn.presentation.SignInScreen
 
 @Composable
@@ -15,10 +16,9 @@ fun AuthNavigation(
     navigateToMain: () -> Unit, startDestination: Destination,
 ) {
     NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = Destination.LandingDestination
+        modifier = modifier, navController = navController, startDestination = startDestination
     ) {
+
         composable<Destination.LandingDestination> {
             LandingScreen(modifier = modifier, onSignInClick = {
                 navController.navigate(Destination.SignInDestination) {
@@ -29,9 +29,17 @@ fun AuthNavigation(
                     launchSingleTop = true
                 }
             }, onRegisterClick = {
-                // TODO: navigate to register screen
+                navController.navigate(Destination.RegistrationDestination) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                    launchSingleTop = true
+                }
+
             })
         }
+
         composable<Destination.SignInDestination> {
             SignInScreen(modifier = modifier, navigateToMain = navigateToMain, navigateToLanding = {
                 navController.navigate(Destination.LandingDestination) {
@@ -42,5 +50,10 @@ fun AuthNavigation(
                 }
             })
         }
+
+        composable<Destination.RegistrationDestination> {
+            RegistrationScreen()
+        }
+
     }
 }

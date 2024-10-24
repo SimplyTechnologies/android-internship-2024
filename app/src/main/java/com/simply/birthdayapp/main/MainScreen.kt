@@ -13,12 +13,10 @@ import com.simply.birthdayapp.main.shop.presentation.ShopScreen
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.presentation.ProfileScreen
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainScreenViewModel = koinViewModel(),
 ) {
     val navController = rememberNavController()
 
@@ -31,7 +29,7 @@ fun MainScreen(
         NavHost(
             modifier = modifier,
             navController = navController,
-            startDestination = BottomNavBarDestination.HomeDestination // Use the route string
+            startDestination = BottomNavBarDestination.HomeDestination
         ) {
             composable<BottomNavBarDestination.HomeDestination> {
                 HomeScreen()

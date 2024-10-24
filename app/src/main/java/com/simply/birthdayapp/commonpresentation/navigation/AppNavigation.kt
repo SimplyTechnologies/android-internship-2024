@@ -35,7 +35,7 @@ fun AppNavigation(
         }
 
         composable<Destination.MainDestination> {
-            MainScreen(modifier)
+            MainScreen()
         }
     }
 }

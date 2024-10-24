@@ -6,8 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.simply.birthdayapp.R
 import com.simply.birthdayapp.auth.signIn.presentation.SignInViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -18,12 +20,12 @@ fun HomeScreen(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize() // Fills the entire screen
+            .fillMaxSize()
     ) {
         Text(
-            text = "Home Screen",
-            modifier = Modifier.align(Alignment.Center), // Centers the text in the Box
-            style = TextStyle(fontSize = 24.sp) // Optional: Set text size or style
+            text = stringResource(R.string.home_screen_text),
+            modifier = Modifier.align(Alignment.Center),
+            style = TextStyle(fontSize = 24.sp)
         )
     }
 }

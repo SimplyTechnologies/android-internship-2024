@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Birthday App</string>
+    <string name="sign_in">Sign In</string>">
+    <string name="register">Register</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+
+    <string name="home_screen_text">Home Screen</string>
+    <string name="shop_screen_text">Shop Screen</string>
+    <string name="add_event_screen_text">Add Event Screen</string>
+    <string name="profile_screen_text">Profile Screen</string>
+
 </resources>
