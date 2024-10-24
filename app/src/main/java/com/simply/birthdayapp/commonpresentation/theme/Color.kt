@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val LightPink = Color(0xB2F68299)
 val DarkPink = Color(0xFF963E5A)
-val AppBackground = Color(255, 245, 244)
+val AppBackgroundColor = Color(255, 245, 244)
 
 val LightPinkBackground = Color(0xFFFFF5F6)
 val ErrorPink = Color(0xFFFFD3D8)

@@ -28,17 +28,18 @@ fun AuthActionBar(
             Box(Modifier.padding(top = 27.dp)) {
                 IconButton(onClick = onBackPress) {
                     Icon(
+                        modifier = Modifier.size(width = 16.dp, height = 24.dp),
                         painter = painterResource(id = R.drawable.ic_navigate_back),
                         contentDescription = null,
-                        tint = DarkPink,
+                        tint = ButtonPurple,
                         modifier = Modifier.size(width = 16.dp, height = 24.dp)
                     )
                 }
             }
             Image(
+                modifier = Modifier.size(width = 88.dp, height = 40.dp),
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = null,
-                modifier = Modifier.size(width = 88.dp, height = 40.dp)
             )
         }
     }

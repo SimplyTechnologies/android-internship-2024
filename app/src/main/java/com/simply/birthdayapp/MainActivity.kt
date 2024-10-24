@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.commonpresentation.navigation.AppNavigation
-import com.simply.birthdayapp.commonpresentation.theme.AppBackground
+import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             AppNavigation(
-                modifier = Modifier.background(AppBackground), navController
+                modifier = Modifier.background(AppBackgroundColor), navController
             )
         }
     }

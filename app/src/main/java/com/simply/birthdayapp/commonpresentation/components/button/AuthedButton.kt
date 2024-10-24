@@ -8,9 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.simply.birthdayapp.commonpresentation.theme.ButtonTextStyle
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.LightPink
+import com.simply.birthdayapp.commonpresentation.theme.ButtonTextStyle
 
 @Composable
 fun AuthedButton(
