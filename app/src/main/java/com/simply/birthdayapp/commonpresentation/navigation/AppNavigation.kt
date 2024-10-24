@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.simply.birthdayapp.auth.authnavigation.presentation.auth.AuthScreen
 import com.simply.birthdayapp.main.MainScreen
-import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 
 @Composable
 fun AppNavigation(
@@ -22,15 +21,17 @@ fun AppNavigation(
     ) {
 
         composable<Destination.AuthDestination> {
-            AuthScreen(modifier = modifier) {
-                navController.navigate(Destination.MainDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+            AuthScreen(
+                modifier = modifier,
+                navigateToMain = {
+                    navController.navigate(Destination.MainDestination) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
                     }
-                    restoreState = true
-                    launchSingleTop = true
-                }
-            }
+                })
         }
 
         composable<Destination.MainDestination> {

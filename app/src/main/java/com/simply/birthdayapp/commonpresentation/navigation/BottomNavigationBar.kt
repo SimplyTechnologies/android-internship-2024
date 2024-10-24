@@ -2,47 +2,17 @@ package com.simply.birthdayapp.commonpresentation.navigation
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.simply.birthdayapp.R
-
-//@Composable
-//fun BottomNavigationBar(navController: NavController) {
-//    val items = listOf(
-//        BottomNavItem.HomeScreen,
-//        BottomNavItem.ShopScreen,
-//        BottomNavItem.AddPersonScreen,
-//        BottomNavItem.ProfileScreen
-//    )
-//    BottomNavigation {
-//        val currentRoute = navController.currentDestination?.route
-//        items.forEach { item ->
-//            BottomNavigationItem(
-//                icon = {
-//                    Icon(painterResource(item.iconId), contentDescription = null)
-//                },
-//                selected = currentRoute == item.route,
-//                onClick = {
-//                    navController.navigate(item.route) {
-//                        popUpTo(navController.graph.startDestinationId)
-//                        launchSingleTop = true
-//                    }
-//                }
-//            )
-//        }
-//    }
-//}
-//
-//sealed class BottomNavItem(val iconId: Int, val route: String) {
-//    data object HomeScreen : BottomNavItem(R.drawable.home_icon, "home_screen")
-//    data object ShopScreen : BottomNavItem(R.drawable.shop_icon, "shop_screen")
-//    data object AddPersonScreen : BottomNavItem(R.drawable.add_icon, "add_event_screen")
-//    data object ProfileScreen : BottomNavItem(R.drawable.profile_icon, "profile_screen")
-//}
+import com.simply.birthdayapp.commonpresentation.theme.BottomNavActiveItemColor
+import com.simply.birthdayapp.commonpresentation.theme.BottomNavBarColor
+import com.simply.birthdayapp.commonpresentation.theme.BottomNavDisableItemColor
+import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -52,18 +22,21 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem.AddPersonScreen,
         BottomNavItem.ProfileScreen
     )
-    BottomNavigation {
-        val currentRoute = navController.currentDestination?.route
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    BottomNavigation(backgroundColor = BottomNavBarColor) {
         items.forEach { item ->
+            val isSelected = item.route::class.qualifiedName == currentDestination?.route
             BottomNavigationItem(
                 icon = {
                     Icon(
                         painter = painterResource(item.iconId),
                         contentDescription = null,
-                        tint = Color.White
+                        tint = if (isSelected) BottomNavActiveItemColor else BottomNavDisableItemColor
                     )
                 },
-                selected = currentRoute == item.route,
+                selected = isSelected,
                 onClick = {
                     navController.navigate(item.route) {
                         popUpTo(navController.graph.startDestinationId)
@@ -75,9 +48,16 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
-sealed class BottomNavItem(val iconId: Int, val route: String) {
-    object HomeScreen : BottomNavItem(R.drawable.home_icon, "home_screen")
-    object ShopScreen : BottomNavItem(R.drawable.shop_icon, "shop_screen")
-    object AddPersonScreen : BottomNavItem(R.drawable.add_icon, "add_event_screen")
-    object ProfileScreen : BottomNavItem(R.drawable.profile_icon, "profile_screen")
+sealed class BottomNavItem(val iconId: Int, val route: BottomNavBarDestination) {
+    data object HomeScreen :
+        BottomNavItem(R.drawable.home_icon, BottomNavBarDestination.HomeDestination)
+
+    data object ShopScreen :
+        BottomNavItem(R.drawable.shop_icon, BottomNavBarDestination.ShopDestination)
+
+    data object AddPersonScreen :
+        BottomNavItem(R.drawable.add_icon, BottomNavBarDestination.AddEventDestination)
+
+    data object ProfileScreen :
+        BottomNavItem(R.drawable.profile_icon, BottomNavBarDestination.ProfileDestination)
 }
