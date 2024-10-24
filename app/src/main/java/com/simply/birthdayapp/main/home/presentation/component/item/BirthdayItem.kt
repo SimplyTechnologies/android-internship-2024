@@ -15,11 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
-import com.simply.birthdayapp.commonpresentation.theme.BirthdayItemTextStyle
-import com.simply.birthdayapp.commonpresentation.theme.AppBackground
-import com.simply.birthdayapp.main.home.data.getMockBirthdays
 import com.simply.birthdayapp.commondomain.model.Birthday
+import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
+import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
+import com.simply.birthdayapp.commonpresentation.theme.PrimaryTextStyle
+import com.simply.birthdayapp.main.home.data.getMockBirthdays
 
 @Composable
 fun BirthdayItem(modifier: Modifier = Modifier, item: Birthday) {
@@ -45,9 +45,9 @@ fun BirthdayItem(modifier: Modifier = Modifier, item: Birthday) {
                 Text(
                     text = item.name,
                     modifier = Modifier.padding(top = 4.dp),
-                    style = BirthdayItemTextStyle
+                    style = PrimaryTextStyle
                 )
-                Text(text = item.date.toString(), style = BirthdayItemTextStyle, fontSize = 18.sp)
+                Text(text = item.date, style = PrimaryTextStyle, fontSize = 18.sp)
             }
         }
     }
@@ -59,7 +59,7 @@ private fun BirthdayItemPreview() {
     BirthdayItem(
         Modifier
             .fillMaxWidth()
-            .background(AppBackground)
+            .background(AppBackgroundColor)
             .padding(16.dp), item = getMockBirthdays().first()
     )
 }

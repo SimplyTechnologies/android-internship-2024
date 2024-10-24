@@ -1,6 +1,7 @@
 package com.simply.birthdayapp.main.home.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.simply.birthdayapp.commonpresentation.theme.AppBackground
+import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.components.actionbar.LogoActionBar
 import com.simply.birthdayapp.main.home.presentation.component.item.BirthdayItem
 import org.koin.androidx.compose.koinViewModel
@@ -20,19 +21,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
     val birthdayList by viewModel.birthdays.collectAsState(emptyList())
-    LazyColumn(modifier = modifier) {
-
-        item {
-            LogoActionBar(modifier = Modifier.fillParentMaxWidth())
-        }
-
-        items(birthdayList, key = { it.id }) {
-            BirthdayItem(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 8.dp), item = it
-            )
-
+    Column(modifier = modifier) {
+        LogoActionBar(modifier = Modifier.fillMaxWidth())
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(birthdayList, key = { item -> item.id }) {
+                BirthdayItem(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 8.dp),
+                    item = it
+                )
+            }
         }
     }
 }
@@ -44,6 +43,6 @@ private fun HomeScreenPreview() {
     HomeScreen(
         Modifier
             .fillMaxSize()
-            .background(AppBackground)
+            .background(AppBackgroundColor)
     )
 }

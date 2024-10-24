@@ -31,8 +31,7 @@ fun AuthActionBar(
                         modifier = Modifier.size(width = 16.dp, height = 24.dp),
                         painter = painterResource(id = R.drawable.ic_navigate_back),
                         contentDescription = null,
-                        tint = ButtonPurple,
-                        modifier = Modifier.size(width = 16.dp, height = 24.dp)
+                        tint = DarkPink,
                     )
                 }
             }

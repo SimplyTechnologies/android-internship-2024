@@ -4,10 +4,10 @@ import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.main.home.domain.repository.BirthdayRepository
 import kotlinx.coroutines.flow.Flow
 
-interface GetBirthdayUseCase {
+interface GetBirthdaysUseCase {
     fun invoke(): Flow<List<Birthday>>
 }
 
-class GetBirthdayUseCaseImpl(val repository: BirthdayRepository) : GetBirthdayUseCase {
+class GetBirthdaysUseCaseImpl(val repository: BirthdayRepository) : GetBirthdaysUseCase {
     override fun invoke() = repository.getBirthdays()
 }
