@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.ButtonEnableColor
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 
 @Composable
 fun AuthActionBar(
@@ -31,7 +31,7 @@ fun AuthActionBar(
                         modifier = Modifier.size(width = 16.dp, height = 24.dp),
                         painter = painterResource(id = R.drawable.ic_navigate_back),
                         contentDescription = null,
-                        tint = ButtonEnableColor
+                        tint = DarkPink
                     )
                 }
             }

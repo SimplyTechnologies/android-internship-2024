@@ -1,6 +1,5 @@
 package com.simply.birthdayapp.auth.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -16,7 +15,6 @@ fun AuthNavigation(
     modifier: Modifier = Modifier, navController: NavHostController,
     navigateToMain: () -> Unit, startDestination: Destination,
 ) {
-
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
@@ -54,9 +52,7 @@ fun AuthNavigation(
         }
 
         composable<Destination.RegistrationDestination> {
-            RegistrationScreen(
-                Modifier.fillMaxSize()
-            )
+            RegistrationScreen()
         }
 
     }

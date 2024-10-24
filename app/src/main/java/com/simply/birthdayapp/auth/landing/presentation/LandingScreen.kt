@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.ButtonEnableColor
-import com.simply.birthdayapp.commonpresentation.theme.DisableButtonColorWithAlpha
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
+import com.simply.birthdayapp.commonpresentation.theme.LightPink
 
 @Composable
 fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick: () -> Unit) {
@@ -37,12 +37,12 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
 
     ) {
         Image(
-            modifier = Modifier.height(93.dp),
+            modifier = Modifier.height(96.dp),
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
             contentScale = ContentScale.Fit
         )
-        Spacer(modifier = Modifier.height(52.dp))
+        Spacer(modifier = Modifier.height(56.dp))
 
         Button(
             modifier = Modifier
@@ -50,7 +50,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 .height(48.dp)
                 .padding(horizontal = 48.dp),
             onClick = onSignInClick,
-            colors = ButtonDefaults.buttonColors(containerColor = DisableButtonColorWithAlpha),
+            colors = ButtonDefaults.buttonColors(containerColor = LightPink),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 0.dp, topEnd = 40.dp, bottomEnd = 40.dp
             )
@@ -60,7 +60,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 fontFamily = FontFamily(Font(R.font.karma_medium)),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = ButtonEnableColor
+                color = DarkPink
             )
         }
 
@@ -72,7 +72,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 .height(48.dp)
                 .padding(horizontal = 48.dp),
             onClick = onRegisterClick,
-            colors = ButtonDefaults.buttonColors(containerColor = ButtonEnableColor),
+            colors = ButtonDefaults.buttonColors(containerColor = DarkPink),
             shape = RoundedCornerShape(
                 topStart = 40.dp, bottomStart = 40.dp, topEnd = 0.dp, bottomEnd = 40.dp
             )
@@ -82,7 +82,7 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
                 fontFamily = FontFamily(Font(R.font.karma_medium)),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = DisableButtonColorWithAlpha
+                color = LightPink
             )
         }
     }

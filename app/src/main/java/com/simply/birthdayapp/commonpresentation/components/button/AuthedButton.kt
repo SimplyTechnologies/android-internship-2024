@@ -8,10 +8,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.simply.birthdayapp.commonpresentation.theme.ButtonTextColor
-import com.simply.birthdayapp.commonpresentation.theme.ButtonEnableColor
-import com.simply.birthdayapp.commonpresentation.theme.DisableButtonColorWithAlpha
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
+import com.simply.birthdayapp.commonpresentation.theme.LightPink
 import com.simply.birthdayapp.commonpresentation.theme.ButtonTextStyle
+import com.simply.birthdayapp.commonpresentation.theme.LightPink
 
 @Composable
 fun AuthedButton(
@@ -25,13 +25,13 @@ fun AuthedButton(
         enabled = isEnabled,
         shape = RoundedCornerShape(25.dp),
         colors = ButtonDefaults.buttonColors(
-            disabledContainerColor = DisableButtonColorWithAlpha,
-            disabledContentColor = ButtonEnableColor,
-            containerColor = ButtonEnableColor,
-            contentColor = ButtonTextColor
+            disabledContainerColor = LightPink,
+            disabledContentColor = DarkPink,
+            containerColor = DarkPink,
+            contentColor = LightPink
         ),
         onClick = onClick
     ) {
-        Text(text = text, modifier = Modifier.padding(6.dp) , style = ButtonTextStyle)
+        Text(text = text, modifier = Modifier.padding(6.dp), style = ButtonTextStyle)
     }
 }

@@ -47,7 +47,7 @@ fun AuthScreen(
                     launchSingleTop = true
                 }
             }
-        }, bottomBar = {}) { innerPadding ->
+        }) { innerPadding ->
             AuthNavigation(modifier.padding(innerPadding), navController, navigateToMain, it)
         }
     }

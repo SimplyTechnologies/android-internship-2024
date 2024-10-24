@@ -12,11 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,25 +47,19 @@ fun SignInScreen(
 fun SignInComposable(
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel,
-    navigateToMain: () -> Unit,
-    navigateToLanding: () -> Unit,
+    navigateToMain: () -> Unit = {},
+    navigateToLanding: () -> Unit = {},
     saveLoggedInState: (Boolean) -> Unit = {},
 ) {
-
-    val emailText = viewModel.emailText
-    val passwordText = viewModel.passwordText
-    val emailError = viewModel.emailError
-    val passwordError = viewModel.passwordError
-
-    var isSigneInButtonEnabled by remember { mutableStateOf(false) }
-    LaunchedEffect(emailText.value, passwordText.value) {
-        isSigneInButtonEnabled = emailText.value.isNotEmpty() && passwordText.value.isNotEmpty()
-        println("state:: $isSigneInButtonEnabled")
-    }
-
     BackHandler {
         navigateToLanding()
     }
+
+    val email = viewModel.emailText.collectAsState()
+    val passwordText = viewModel.passwordText.collectAsState()
+
+    val emailError = viewModel.emailError.collectAsState()
+    val passwordError = viewModel.emailError.collectAsState()
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -78,7 +68,7 @@ fun SignInComposable(
                 .padding(38.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(Color.White)
-                .padding(23.dp),
+                .padding(24.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -90,26 +80,26 @@ fun SignInComposable(
 
             InputTextField(modifier = Modifier.padding(top = 15.dp, bottom = 12.dp),
                 placeholder = stringResource(R.string.email),
-                textValue = emailText,
-                error = emailError,
+                textValue = email.value,
+                error = emailError.value,
                 onValueChange = {
-                    emailText.value = it
+                    viewModel.setEmailText(it)
                 })
 
             InputTextField(placeholder = stringResource(R.string.password),
-                textValue = passwordText,
-                error = passwordError,
+                textValue = passwordText.value,
+                error = passwordError.value,
                 isPassword = true,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 onValueChange = {
-                    passwordText.value = it
+                    viewModel.setPasswordText(it)
                 })
 
             AuthedButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp, top = 51.dp),
-                isEnabled = isSigneInButtonEnabled,
+                    .padding(start = 26.dp, end = 26.dp, top = 48.dp),
+                isEnabled = viewModel.isSignInButtonEnable.value,
                 text = stringResource(R.string.sign_in)
             ) {
                 navigateToMain()
@@ -122,8 +112,7 @@ fun SignInComposable(
 @Preview
 @Composable
 private fun Preview() {
-    SignInComposable(modifier = Modifier,
+    SignInComposable(
         viewModel = koinViewModel(),
-        navigateToMain = {},
-        navigateToLanding = {})
+    )
 }
