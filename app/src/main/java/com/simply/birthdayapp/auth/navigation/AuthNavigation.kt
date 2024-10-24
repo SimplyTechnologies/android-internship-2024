@@ -14,11 +14,11 @@ fun AuthNavigation(
     modifier: Modifier = Modifier, navController: NavHostController,
     navigateToMain: () -> Unit, startDestination: Destination,
 ) {
-
     NavHost(
-        modifier = modifier, navController = navController, startDestination = startDestination
+        modifier = modifier,
+        navController = navController,
+        startDestination = Destination.LandingDestination
     ) {
-
         composable<Destination.LandingDestination> {
             LandingScreen(modifier = modifier, onSignInClick = {
                 navController.navigate(Destination.SignInDestination) {
@@ -32,7 +32,6 @@ fun AuthNavigation(
                 // TODO: navigate to register screen
             })
         }
-
         composable<Destination.SignInDestination> {
             SignInScreen(modifier = modifier, navigateToMain = navigateToMain, navigateToLanding = {
                 navController.navigate(Destination.LandingDestination) {
@@ -43,6 +42,5 @@ fun AuthNavigation(
                 }
             })
         }
-
     }
 }

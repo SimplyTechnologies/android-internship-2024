@@ -8,5 +8,4 @@ sealed interface Destination {
 
     @Serializable
     data object MainDestination : Destination
-
 }

@@ -1,4 +1,4 @@
-package com.simply.birthdayapp.auth.authnavigation.presentation
+package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues

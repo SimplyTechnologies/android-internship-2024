@@ -12,4 +12,6 @@ sealed interface Destination {
     @Serializable
     data object LandingDestination : Destination
 
+    @Serializable
+    data object MainFlow : Destination
 }

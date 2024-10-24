@@ -21,4 +21,6 @@ val TextFieldTextColor = Color(0xFF963E5A)
 val TextFieldContainerColor = Color(0xFFFFF5F6)
 val TextFieldErrorContainerColor = Color(0xFFFFD3D8)
 
-
+val BottomNavBarColor = Color(0xffDC7594)
+val BottomNavActiveItemColor = Color(0xff963E5A)
+val BottomNavDisableItemColor = Color(0xffFFF5F4)
