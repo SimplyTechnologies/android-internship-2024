@@ -1,6 +1,6 @@
 package com.simply.birthdayapp.auth.authnavigation.presentation.di
 
-import com.simply.birthdayapp.auth.authnavigation.presentation.AuthViewModel
+import com.simply.birthdayapp.auth.authnavigation.presentation.auth.AuthViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 

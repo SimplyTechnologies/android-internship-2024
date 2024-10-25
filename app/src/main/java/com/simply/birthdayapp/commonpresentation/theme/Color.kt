@@ -16,3 +16,7 @@ val AppBackgroundColor = Color(255, 245, 244)
 
 val LightPinkBackground = Color(0xFFFFF5F6)
 val ErrorPink = Color(0xFFFFD3D8)
+
+val BottomNavBarColor = Color(0xffDC7594)
+val BottomNavActiveItemColor = Color(0xff963E5A)
+val BottomNavDisableItemColor = Color(0xffFFF5F4)

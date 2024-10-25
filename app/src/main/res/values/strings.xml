@@ -9,4 +9,9 @@
     <string name="name">Name</string>
     <string name="surname">Surname</string>
 
+    <string name="home_screen_text">Home Screen</string>
+    <string name="shop_screen_text">Shop Screen</string>
+    <string name="add_event_screen_text">Add Event Screen</string>
+    <string name="profile_screen_text">Profile Screen</string>
+
 </resources>

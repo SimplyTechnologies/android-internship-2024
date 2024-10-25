@@ -1,4 +1,4 @@
-package com.simply.birthdayapp.auth.authnavigation.presentation
+package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -48,7 +48,12 @@ fun AuthScreen(
                 }
             }
         }) { innerPadding ->
-            AuthNavigation(modifier.padding(innerPadding), navController, navigateToMain, it)
+            AuthNavigation(
+                modifier = modifier.padding(innerPadding),
+                navController = navController,
+                navigateToMain = navigateToMain,
+                startDestination = it,
+            )
         }
     }
 }
