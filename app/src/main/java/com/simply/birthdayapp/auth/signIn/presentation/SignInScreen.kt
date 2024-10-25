@@ -30,22 +30,6 @@ fun SignInScreen(
     navigateToMain: () -> Unit,
     navigateToLanding: () -> Unit,
 ) {
-    SignInComposable(
-        modifier = modifier,
-        navigateToMain = navigateToMain,
-        navigateToLanding = navigateToLanding,
-        saveLoggedInState = viewModel::setSignedIn
-    )
-}
-
-@Composable
-fun SignInComposable(
-    modifier: Modifier = Modifier,
-    navigateToMain: () -> Unit,
-    navigateToLanding: () -> Unit,
-    saveLoggedInState: (Boolean) -> Unit = {},
-) {
-
     val emailText = remember { mutableStateOf("") }
     val emailError = remember { mutableStateOf("") }
 
@@ -91,14 +75,8 @@ fun SignInComposable(
 
             AuthedButton(modifier = Modifier.padding(top = 51.dp), text = "Sign In") {
                 navigateToMain()
-                saveLoggedInState(true)
+                viewModel.setSignedIn(true)
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    SignInComposable(navigateToMain = {}, navigateToLanding = {})
 }
