@@ -37,9 +37,9 @@ class DataStoreProviderImpl(
         }
     }
 
-    override suspend fun getToken(): Flow<String> = dataStore.data.map { preferences ->
+    override fun getToken(): Flow<String> = dataStore.data.map { preferences ->
         preferences[ACCESS_TOKEN_KEY] ?: ""
-    }
+    }.flowOn(Dispatchers.IO)
 
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")

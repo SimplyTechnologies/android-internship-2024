@@ -2,10 +2,13 @@ package com.simply.birthdayapp.auth.signIn.data.repository
 
 import com.apollographql.apollo.ApolloClient
 import com.simply.LoginMutation
-import com.simply.birthdayapp.auth.signIn.domain.model.LoginInput
+import com.simply.birthdayapp.auth.signIn.data.mapper.toLoginDataModel
+import com.simply.birthdayapp.auth.signIn.domain.model.LoginInputDomain
 import com.simply.birthdayapp.auth.signIn.domain.repository.SignInRepository
 import com.simply.birthdayapp.commondomain.local.DataStoreProvider
 import com.simply.birthdayapp.core.result.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SignInRepositoryImpl(
     private val dataStoreProvider: DataStoreProvider,
@@ -19,13 +22,13 @@ class SignInRepositoryImpl(
         dataStoreProvider.saveAccessToken(token)
     }
 
-    override suspend fun login(loginInput: LoginInput): Result<String> {
-        return try {
-
+    override suspend fun login(loginInput: LoginInputDomain): Result<String> {
+        return withContext(Dispatchers.IO) {
+            Result.Loading(data = "")
             val response = apolloClient.mutation(
                 LoginMutation(
-                    email = loginInput.email,
-                    password = loginInput.password
+                    email = loginInput.toLoginDataModel().email,
+                    password = loginInput.toLoginDataModel().password
                 )
             ).execute()
 
@@ -33,11 +36,9 @@ class SignInRepositoryImpl(
             if (accessToken != null) {
                 Result.Success(accessToken)
             } else {
-                Result.Error("We could not find an account with a set email or password. Please check the entered credentials.")
+                Result.Error(data = "", message = response.errors?.first()?.message ?: "")
             }
 
-        } catch (e: Exception) {
-            Result.Error("${e.message}")
         }
     }
 }

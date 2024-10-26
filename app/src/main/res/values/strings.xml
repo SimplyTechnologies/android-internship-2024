@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Birthday App</string>
+    <string name="sign_in">Sign In</string>">
+    <string name="register">Register</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="user_exists">User Exists</string>
+    <string name="registration_error">Registration Error</string>
+    <string name="registration_error_message">Sorry, an error occurred registering your account, please try again.</string>
+    <string name="try_another_email">Try another email</string>
+    <string name="user_registered_successfully">User registered successfully</string>
+
+    <string name="home_screen_text">Home Screen</string>
+    <string name="shop_screen_text">Shop Screen</string>
+    <string name="add_event_screen_text">Add Event Screen</string>
+    <string name="profile_screen_text">Profile Screen</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="error_unauthorized_user">We could not find an account with a set email or password. Please check the entered credentials.</string>
+
 </resources>
