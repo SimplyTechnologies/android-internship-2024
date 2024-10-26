@@ -43,5 +43,5 @@ fun NetworkImage(
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewNetworkImage() {
-    NetworkImage(url = "https://s3-alpha-sig.figma.com/img/54a6/abbe/eadb372e3e013ab667401f489eaf9aa1?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aSJVU84B4XWFErfqgde1x5dZzWHgiI3yEXUXfUK27YGcocPOcmF115XEogJj7cWWD~Acxg3PZfrJ9xKiBw7cJPAI6PX95iJcLbEdTfwIr~TBPkHtjoiDNLHMvxEOp5Ons6MWAj-MmhptPe-4S04XlCDNhKMy4j-9eZh-O0QIYCB475sLdsZrVFyqN6k8hATvKT1~puoaQtHdJocWgMrU-ZbRArCtVBe64MJ2te6eZDEFlrI1adnyNGTUwwQlU-fl9FN42HakQVPvtinEk3mcJjKhkIjsPeKWMR-ADNdoTkWCzOIXh6w4oWAOG5ulSBOVS~UfaLubBUe~3LjQv~Q2pw__")
+    NetworkImage(url = null )
 }
