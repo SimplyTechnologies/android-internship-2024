@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.simply.birthdayapp.commondata.Util.IS_SIGNED_IN
 import com.simply.birthdayapp.commondomain.local.DataStoreProvider
@@ -28,5 +29,19 @@ class DataStoreProviderImpl(
         dataStore.edit { settings ->
             settings[IS_SIGNED_IN] = isSignedIn
         }
+    }
+
+    override suspend fun saveAccessToken(token: String) {
+        dataStore.edit { preferences ->
+            preferences[ACCESS_TOKEN_KEY] = token
+        }
+    }
+
+    override fun getToken(): Flow<String> = dataStore.data.map { preferences ->
+        preferences[ACCESS_TOKEN_KEY] ?: ""
+    }.flowOn(Dispatchers.IO)
+
+    companion object {
+        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
     }
 }

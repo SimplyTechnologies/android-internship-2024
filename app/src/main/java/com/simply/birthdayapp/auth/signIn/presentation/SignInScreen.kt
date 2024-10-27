@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.auth.signIn.presentation
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,15 +9,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +30,7 @@ import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commonpresentation.components.button.AuthedButton
 import com.simply.birthdayapp.commonpresentation.components.textfield.InputTextField
 import com.simply.birthdayapp.commonpresentation.theme.AuthTitleTextStyle
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -60,6 +66,42 @@ fun SignInComposable(
 
     val emailError = viewModel.emailError.collectAsState()
     val passwordError = viewModel.emailError.collectAsState()
+
+    val uiState by viewModel.uiState.collectAsState()
+
+    when (uiState) {
+        is SignInUiState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier.size(48.dp),
+                color = DarkPink
+            )
+        }
+
+        is SignInUiState.Success -> {
+            viewModel.saveAccessTokenUseCase((uiState as SignInUiState.Success).message)
+            navigateToMain()
+            saveLoggedInState(true)
+        }
+
+        is SignInUiState.Error -> {
+            if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
+                Toast.makeText(
+                    LocalContext.current,
+                    stringResource(R.string.error_unauthorized_user),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    LocalContext.current,
+                    "Error: ${(uiState as SignInUiState.Error).message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            viewModel.resetState()
+        }
+
+        else -> {}
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -102,8 +144,7 @@ fun SignInComposable(
                 isEnabled = viewModel.isSignInButtonEnable.value,
                 text = stringResource(R.string.sign_in)
             ) {
-                navigateToMain()
-                saveLoggedInState(true)
+                viewModel.signIn()
             }
         }
     }

@@ -7,7 +7,7 @@ import com.simply.birthdayapp.auth.authnavigation.presentation.di.authPresentati
 import com.simply.birthdayapp.auth.registration.data.di.registrationDataModule
 import com.simply.birthdayapp.auth.registration.domain.di.registrationDomainModule
 import com.simply.birthdayapp.auth.registration.presentation.di.registrationPresentationModule
-import com.simply.birthdayapp.auth.signIn.data.di.sigInDataModule
+import com.simply.birthdayapp.auth.signIn.data.di.signInDataModule
 import com.simply.birthdayapp.auth.signIn.domain.di.signInDomainModule
 import com.simply.birthdayapp.auth.signIn.presentation.di.signInPresentationModule
 import com.simply.birthdayapp.commondata.di.commonDataModule
@@ -28,7 +28,7 @@ class BirthdayApplication : Application() {
                 authDataModule,
                 authPresentationModule,
                 signInDomainModule,
-                sigInDataModule,
+                signInDataModule,
                 signInPresentationModule,
                 commonDataModule,
                 registrationPresentationModule,

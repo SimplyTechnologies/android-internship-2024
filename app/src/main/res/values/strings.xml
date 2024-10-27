@@ -18,5 +18,7 @@
     <string name="shop_screen_text">Shop Screen</string>
     <string name="add_event_screen_text">Add Event Screen</string>
     <string name="profile_screen_text">Profile Screen</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="error_unauthorized_user">We could not find an account with a set email or password. Please check the entered credentials.</string>
 
 </resources>
