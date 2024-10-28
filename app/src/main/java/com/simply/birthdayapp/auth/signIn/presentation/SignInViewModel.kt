@@ -3,7 +3,11 @@ package com.simply.birthdayapp.auth.signIn.presentation
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.simply.birthdayapp.auth.signIn.domain.model.LoginInputDomain
+import com.simply.birthdayapp.auth.signIn.domain.usecase.SaveAccessTokenUseCase
 import com.simply.birthdayapp.auth.signIn.domain.usecase.SetSignedInUseCase
+import com.simply.birthdayapp.auth.signIn.domain.usecase.SignInUseCase
+import com.simply.birthdayapp.core.result.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,6 +15,8 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val setSignedInUseCase: SetSignedInUseCase,
+    private val loginUseCase: SignInUseCase,
+    private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
 
     private val _emailText = MutableStateFlow("")
@@ -28,6 +34,9 @@ class SignInViewModel(
 
     private val _isSignInButtonEnable = mutableStateOf(false)
     val isSignInButtonEnable = _isSignInButtonEnable
+
+    private val _uiState = MutableStateFlow<SignInUiState?>(null)
+    val uiState: StateFlow<SignInUiState?> = _uiState
 
 
     fun setEmailText(newValue: String) {
@@ -49,5 +58,28 @@ class SignInViewModel(
         viewModelScope.launch {
             setSignedInUseCase.invoke(isSignedIn)
         }
+    }
+
+    fun saveAccessTokenUseCase(token: String) {
+        viewModelScope.launch {
+            saveAccessTokenUseCase.invoke(token)
+        }
+    }
+
+    fun signIn() {
+        viewModelScope.launch {
+            _uiState.value = SignInUiState.Loading
+            val loginInput = LoginInputDomain(_emailText.value, _passwordText.value)
+            val result = loginUseCase.invoke(loginInput)
+            _uiState.value = when (result) {
+                is Result.Success -> SignInUiState.Success(message = result.data)
+                is Result.Error -> SignInUiState.Error(result.message)
+                is Result.Loading -> SignInUiState.Loading
+            }
+        }
+    }
+
+    fun resetState() {
+        _uiState.value = null
     }
 }
