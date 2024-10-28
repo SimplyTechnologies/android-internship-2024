@@ -46,3 +46,11 @@ val AuthErrorTextStyle = TextStyle(
     lineHeight = 20.sp,
     color = Color.Red
 )
+
+val PrimaryTextStyle = TextStyle(
+    fontSize = 14.sp,
+    fontWeight = FontWeight.W700,
+    fontFamily = FontFamily(Font(R.font.karma)),
+    lineHeight = 20.sp,
+)
+

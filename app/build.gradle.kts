@@ -97,6 +97,9 @@ dependencies {
     implementation(libs.apollo.runtime)
 
     implementation(libs.androidx.material)
+
+    // coil
+    implementation(libs.coil.compose)
 }
 apollo {
     service("service") {

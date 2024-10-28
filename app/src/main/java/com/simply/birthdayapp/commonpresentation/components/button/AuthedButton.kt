@@ -11,14 +11,10 @@ import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.LightPink
 import com.simply.birthdayapp.commonpresentation.theme.ButtonTextStyle
-import com.simply.birthdayapp.commonpresentation.theme.LightPink
 
 @Composable
 fun AuthedButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    isEnabled: Boolean = true,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier, text: String, isEnabled: Boolean = true, onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
