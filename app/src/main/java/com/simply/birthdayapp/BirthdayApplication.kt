@@ -14,6 +14,9 @@ import com.simply.birthdayapp.commondata.di.commonDataModule
 import com.simply.birthdayapp.main.home.data.di.homeDataModule
 import com.simply.birthdayapp.main.home.domain.di.homeDomainModule
 import com.simply.birthdayapp.main.home.presentation.di.homePresentationModule
+import com.simply.birthdayapp.main.shop.data.di.shopDataModule
+import com.simply.birthdayapp.main.shop.domain.di.shopDomainModule
+import com.simply.birthdayapp.main.shop.presentation.di.shopPresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -40,8 +43,11 @@ class BirthdayApplication : Application() {
                 homeDataModule,
                 homeDomainModule,
                 homePresentationModule,
-                registrationPresentationModule
+                shopDomainModule,
+                shopPresentationModule,
+                shopDataModule,
             )
         }
+
     }
 }

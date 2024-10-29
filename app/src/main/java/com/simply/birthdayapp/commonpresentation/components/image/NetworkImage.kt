@@ -1,12 +1,15 @@
 package com.simply.birthdayapp.commonpresentation.components.image
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,12 +23,14 @@ import com.simply.birthdayapp.R
 fun NetworkImage(
     url: String?,
     shape: RoundedCornerShape = CircleShape,
-    errorImageRes: Int = R.drawable.ic_error
+    errorImageRes: Int = R.drawable.ic_error,
+    border: BorderStroke? = null,
 ) {
     Image(
         modifier = Modifier
             .clip(shape)
-            .size(72.dp),
+            .size(72.dp)
+            .border(border ?: BorderStroke((-1).dp, Color.Black),shape = shape),
         painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current).data(data = url)
                 .apply(block = fun ImageRequest.Builder.() {
