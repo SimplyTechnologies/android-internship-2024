@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -69,17 +70,21 @@ fun SignInComposable(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(uiState) {
+        if (uiState is SignInUiState.Success) {
+            navigateToMain()
+        }
+    }
+
     when (uiState) {
         is SignInUiState.Loading -> {
             CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                color = DarkPink
+                modifier = Modifier.size(48.dp), color = DarkPink
             )
         }
 
         is SignInUiState.Success -> {
             viewModel.saveAccessTokenUseCase((uiState as SignInUiState.Success).message)
-            navigateToMain()
             saveLoggedInState(true)
         }
 

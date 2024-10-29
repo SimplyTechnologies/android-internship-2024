@@ -1,29 +1,18 @@
 package com.simply.birthdayapp.commondata.network.interceptor
 
-import com.apollographql.apollo.api.ApolloRequest
-import com.apollographql.apollo.api.ApolloResponse
-import com.apollographql.apollo.api.Operation
-import com.apollographql.apollo.interceptor.ApolloInterceptor
-import com.apollographql.apollo.interceptor.ApolloInterceptorChain
-import com.simply.birthdayapp.commondomain.local.DataStoreProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
+import com.simply.birthdayapp.commondata.local.TokenProvider
+import okhttp3.Interceptor
+import okhttp3.Response
 
-class AuthInterceptor(private val dataStoreProvider: DataStoreProvider) : ApolloInterceptor {
+class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val token = tokenProvider.tokenFlow.value
 
-    override fun <D : Operation.Data> intercept(
-        request: ApolloRequest<D>,
-        chain: ApolloInterceptorChain
-    ): Flow<ApolloResponse<D>> {
-        return flow {
-            val token = dataStoreProvider.getToken()
-
-            val requestWithAuth = request.newBuilder()
-                .addHttpHeader("Authorization", "Bearer $token")
-                .build()
-
-            emitAll(chain.proceed(requestWithAuth))
+        val requestBuilder = chain.request().newBuilder()
+        if (!token.isNullOrEmpty()) {
+            requestBuilder.addHeader("Authorization", "Bearer $token")
         }
+
+        return chain.proceed(requestBuilder.build())
     }
 }

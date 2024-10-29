@@ -14,12 +14,13 @@ import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
 import com.simply.birthdayapp.main.home.presentation.HomeScreen
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
-import com.simply.birthdayapp.main.profile.presentation.ProfileScreen
+import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
 import com.simply.birthdayapp.main.shop.presentation.ShopScreen
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
+    navigateToLogin: () -> Unit = {},
 ) {
     val navController = rememberNavController()
 
@@ -48,9 +49,10 @@ fun MainScreen(
                 AddEventScreen()
             }
             composable<BottomNavBarDestination.ProfileDestination> {
-                ProfileScreen()
+                ProfileMainScreen {
+                    // handle logout
+                }
             }
-            innerPadding
         }
     }
 }

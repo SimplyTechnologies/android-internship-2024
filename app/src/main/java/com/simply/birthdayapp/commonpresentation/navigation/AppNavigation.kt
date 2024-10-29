@@ -2,7 +2,6 @@ package com.simply.birthdayapp.commonpresentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,21 +20,15 @@ fun AppNavigation(
     ) {
 
         composable<Destination.AuthDestination> {
-            AuthScreen(
-                modifier = modifier,
-                navigateToMain = {
-                    navController.navigate(Destination.MainDestination) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
-                })
+            AuthScreen(modifier = modifier, navigateToMain = {
+                navController.navigate(Destination.MainDestination)
+            })
         }
 
         composable<Destination.MainDestination> {
-            MainScreen()
+            MainScreen(navigateToLogin = {
+                navController.navigate(Destination.AuthDestination)
+            })
         }
     }
 }

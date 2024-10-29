@@ -35,7 +35,7 @@ fun BirthdayItem(modifier: Modifier = Modifier, item: Birthday) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 20.dp)
         ) {
-            NetworkImage(item.image)
+            NetworkImage(url = item.image)
 
             Column(
                 Modifier
