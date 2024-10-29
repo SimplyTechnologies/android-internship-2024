@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class ShopHelper {
-    val token: String =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMwMTg1MjgzLCJleHAiOjE3MzI3NzcyODN9.6stbQK-zhIkP2QtcDs2pXZ6MzvG_qkbVcQskQ61dx3k"
+    val token: String =""
     private val apolloClient: ApolloClient = ApolloClient.Builder()
         .serverUrl(BuildConfig.API_URL)
         .addHttpHeader("Authorization", "Bearer $token")
