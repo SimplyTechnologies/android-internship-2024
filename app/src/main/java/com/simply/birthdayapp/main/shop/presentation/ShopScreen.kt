@@ -17,14 +17,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
 import com.simply.birthdayapp.main.shop.presentation.components.ShopListItem
 import com.simply.birthdayapp.main.shop.presentation.components.SearchBar
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ShopScreen(modifier: Modifier = Modifier, viewModel: ShopViewModel = koinViewModel()) {
-    val shops by viewModel.shops.collectAsState(initial = emptyList())
+fun ShopScreen(viewModel: ShopViewModel = koinViewModel()) {
+    val shops by viewModel.shopsUiState.collectAsState()
+    when (val uiState = shops) {
+        is ShopListUiState.Success -> {
+            ShopContent(
+                shops = uiState.data,
+            )
+        }
 
+        else -> {}
+    }
+}
+
+@Composable
+fun ShopContent(shops: List<ShopDomainModel>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,7 +46,6 @@ fun ShopScreen(modifier: Modifier = Modifier, viewModel: ShopViewModel = koinVie
     ) {
         Image(
             modifier = Modifier
-                .padding(start = 152.dp, end = 152.dp, top = 20.dp)
                 .width(88.dp)
                 .height(40.dp),
             painter = painterResource(id = R.drawable.logo),
@@ -43,11 +55,14 @@ fun ShopScreen(modifier: Modifier = Modifier, viewModel: ShopViewModel = koinVie
         LazyColumn(
             Modifier
                 .fillMaxSize()
-                .padding(start = 24.dp, end = 24.dp, top = 20.dp, bottom = 96.dp),
+                .padding(start = 24.dp, end = 24.dp, top = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(shops) { shop ->
-                ShopListItem(shopName = shop.name, avatarUrl = shop.avatarUrl)
+                ShopListItem(
+                    shopName = shop.name,
+                    avatarUrl = shop.avatarUrl,
+                )
             }
         }
     }

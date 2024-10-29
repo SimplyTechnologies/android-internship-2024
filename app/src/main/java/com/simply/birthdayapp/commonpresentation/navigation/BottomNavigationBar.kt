@@ -23,10 +23,12 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem.AddEventScreen,
         BottomNavItem.ProfileScreen
     )
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    BottomNavigation(backgroundColor = BottomNavBarColor,modifier = Modifier.navigationBarsPadding()) {
+    BottomNavigation(
+        modifier = Modifier.navigationBarsPadding(),
+        backgroundColor = BottomNavBarColor,
+    ) {
         items.forEach { item ->
             val isSelected = item.route::class.qualifiedName == currentDestination?.route
             BottomNavigationItem(icon = {

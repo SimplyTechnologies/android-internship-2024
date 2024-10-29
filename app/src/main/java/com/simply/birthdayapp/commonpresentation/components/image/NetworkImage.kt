@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -21,7 +22,9 @@ import com.simply.birthdayapp.R
 
 @Composable
 fun NetworkImage(
-    modifier: Modifier = Modifier.size(72.dp),
+    modifier: Modifier = Modifier
+        .size(72.dp)
+        .width(width = (-1).dp),
     url: String?,
     shape: RoundedCornerShape = CircleShape,
     errorImageRes: Int = R.drawable.ic_error,

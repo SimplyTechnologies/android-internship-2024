@@ -22,8 +22,6 @@ fun ShopListItem(shopName: String, avatarUrl: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)
-            .width(344.dp)
-            .height(108.dp)
             .clip(RoundedCornerShape(24.dp)),
         backgroundColor = Color.White,
         shape = MaterialTheme.shapes.medium

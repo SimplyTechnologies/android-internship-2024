@@ -1,6 +1,5 @@
 package com.simply.birthdayapp.main.shop.presentation.components
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,16 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.simply.birthdayapp.commonpresentation.theme.SearchBarHintText
+import com.simply.birthdayapp.commonpresentation.theme.SearchBarHintTextColor
 
 @Composable
 fun SearchBar() {
     var text by remember { mutableStateOf("") }
+    val searchBarHintText = "Search"
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 24.dp, end = 24.dp, top = 20.dp)
-            .width(345.dp)
             .height(40.dp)
             .clip(RoundedCornerShape(41.dp))
             .background(Color.White)
@@ -34,8 +33,8 @@ fun SearchBar() {
     ) {
         if (text.isEmpty()) {
             Text(
-                text = "Search",
-                color = Color.Gray,
+                text = searchBarHintText,
+                color = SearchBarHintTextColor,
                 style = TextStyle(fontSize = 14.sp),
                 modifier = Modifier.align(Alignment.CenterStart)
             )
@@ -60,7 +59,6 @@ fun SearchBar() {
                     Icon(
                         Icons.Default.Search,
                         contentDescription = null,
-                        tint = SearchBarHintText,
                         modifier = Modifier.size(24.dp)
                     )
                 }
