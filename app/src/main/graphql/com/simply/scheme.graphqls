@@ -1,8 +1,6 @@
 # Indicates exactly one field must be supplied and this field must not be `null`.
 directive @oneOf on INPUT_OBJECT
 
-# todo: remove unnecessary scheme in the end
-
 type AccessToken {
     accessToken: String!
 }
@@ -26,6 +24,11 @@ type Birthday {
     userId: Int!
 }
 
+input ChangePasswordInput {
+    newPassword: String!
+    oldPassword: String!
+}
+
 input CreateBirthdayInput {
     date: DateTime!
     image: String
@@ -37,6 +40,10 @@ input CreateBirthdayInput {
 # A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 scalar DateTime
 
+input ForgotPasswordInput {
+    email: String!
+}
+
 input LoginInput {
     email: String!
     password: String!
@@ -44,14 +51,14 @@ input LoginInput {
 
 type Mutation {
     addShopToFavorite(shopId: Int!): UserFavoriteShop!
-    changePassword: Boolean!
+    changePassword(changePasswordInput: ChangePasswordInput!): Boolean!
     createBirthday(createBirthdayInput: CreateBirthdayInput!): Birthday!
     deleteBirthday(id: Int!): Birthday!
-    forgotPassword: Boolean!
+    forgotPassword(forgotPasswordInput: ForgotPasswordInput!): Boolean!
     login(loginInput: LoginInput!): AccessToken!
     refreshToken: Boolean!
     removeShopFromFavorite(shopId: Int!): UserFavoriteShop!
-    resetPassword: Boolean!
+    resetPassword(resetPasswordInput: ResetPasswordInput!): Boolean!
     signUp(signUpInput: SignUpInput!): User!
     updateBirthday(id: Int!, updateBirthdayInput: UpdateBirthdayInput!): Birthday!
     updateProfile(updateProfileInput: UpdateProfileInput!): User!
@@ -60,12 +67,20 @@ type Mutation {
 type Query {
     birthday(id: Int!): Birthday!
     birthdays: [Birthday!]!
-    shops(filter: ShopFilter!): [Shop!]!
+    profile: User!
+    shops(filter: ShopFilter): [Shop!]!
+    users: [User!]!
 }
 
 input RateFilter {
     gte: Int
     lte: Int
+}
+
+input ResetPasswordInput {
+    hash: String!
+    password: String!
+    passwordConfirm: String!
 }
 
 type Shop {

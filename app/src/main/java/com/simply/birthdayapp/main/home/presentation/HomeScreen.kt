@@ -19,7 +19,10 @@ import com.simply.birthdayapp.main.home.presentation.component.item.BirthdayItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = koinViewModel(),
+) {
     val birthdayList by viewModel.birthdays.collectAsState(emptyList())
     Column(modifier = modifier) {
         LogoActionBar(modifier = Modifier.fillMaxWidth())
