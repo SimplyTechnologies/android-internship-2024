@@ -34,4 +34,7 @@
     <string name="error_passwords_not_match">Passwords do not match</string>
     <string name="general_error">Something went wrong</string>
 
+    <string name="search_bar_hint_text">Search</string>
+    <string name="search_result">No search results found.</string>
+
 </resources>
