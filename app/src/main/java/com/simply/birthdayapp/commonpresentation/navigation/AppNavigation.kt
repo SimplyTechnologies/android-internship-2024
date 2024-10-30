@@ -12,7 +12,6 @@ import com.simply.birthdayapp.main.MainScreen
 fun AppNavigation(
     modifier: Modifier = Modifier, navController: NavHostController,
 ) {
-
     NavHost(
         modifier = modifier,
         navController = navController,

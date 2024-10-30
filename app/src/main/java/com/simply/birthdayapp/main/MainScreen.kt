@@ -49,9 +49,7 @@ fun MainScreen(
                 AddEventScreen()
             }
             composable<BottomNavBarDestination.ProfileDestination> {
-                ProfileMainScreen {
-                    // handle logout
-                }
+                ProfileMainScreen(navigateToLogin)
             }
         }
     }

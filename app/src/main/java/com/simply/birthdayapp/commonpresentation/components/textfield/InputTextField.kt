@@ -22,10 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
@@ -33,8 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commonpresentation.theme.AuthErrorTextStyle
-import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
 import com.simply.birthdayapp.commonpresentation.theme.ErrorPink
+import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldPlaceholderStyle
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldShape
 import com.simply.birthdayapp.commonpresentation.theme.TextFieldTextStyle
@@ -53,7 +55,9 @@ fun InputTextField(
     error: String?,
     placeholder: String = "",
     isPassword: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Next),
+    containerColor: Color = LightPinkBackground,
+    shape: Shape = TextFieldShape,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
@@ -93,13 +97,11 @@ fun InputTextField(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .background(
-                                color = if (hasError == true) ErrorPink else LightPinkBackground,
-                                shape = TextFieldShape
+                                color = if (hasError == true) ErrorPink else containerColor,
+                                shape = shape
                             )
                             .border(
-                                1.dp,
-                                if (hasError == true) Color.Red else Color.Transparent,
-                                TextFieldShape
+                                1.dp, if (hasError == true) Color.Red else Color.Transparent, shape
                             )
                             .padding(start = 12.dp)
                             .fillMaxWidth()
@@ -123,7 +125,7 @@ fun InputTextField(
                         if (isPassword && textValue.isNotEmpty()) {
                             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                                 Icon(
-                                    painter = painterResource(if (passwordVisible) R.drawable.ic_visibility else R.drawable.ic_visibility_off),
+                                    painter = painterResource(if (!passwordVisible) R.drawable.ic_visibility else R.drawable.ic_visibility_off),
                                     contentDescription = null,
                                     tint = Color.Unspecified
                                 )
