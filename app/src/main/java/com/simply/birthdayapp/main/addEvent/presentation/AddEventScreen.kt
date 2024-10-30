@@ -1,31 +1,216 @@
 package com.simply.birthdayapp.main.addEvent.presentation
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.auth.signIn.presentation.SignInViewModel
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
+import com.simply.birthdayapp.commonpresentation.theme.SecondaryTextStyle
+import com.simply.birthdayapp.main.addEvent.presentation.components.CustomCalendar
+import com.simply.birthdayapp.main.addEvent.presentation.components.ProfileImage
+import com.simply.birthdayapp.main.addEvent.presentation.components.RelativesSelection
 import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
 fun AddEventScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = koinViewModel(),
+    viewModel: AddEventViewModel = koinViewModel(),
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            text = stringResource(R.string.add_event_screen_text),
-            modifier = Modifier.align(Alignment.Center),
-            style = TextStyle(fontSize = 24.sp)
-        )
+    val name = viewModel.name.collectAsState()
+    val relationship = viewModel.relationship.collectAsState()
+    val familyRelations = viewModel.familyRelation.collectAsState()
+    val imageUrl = viewModel.imageUrl.collectAsState()
+    val selectedDay = viewModel.selectedDay.collectAsState()
+    val selectedMonth = viewModel.selectedMonth.collectAsState()
+    val selectedYear = viewModel.selectedYear.collectAsState()
+    val isAddRelation = viewModel.isAddRelation.collectAsState()
+    val addNewRelation = viewModel.newRelation.collectAsState()
+    val scrollState = rememberScrollState()
+    Box(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(horizontal = 24.dp)
+                .verticalScroll(state = scrollState),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                Image(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(88.dp),
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = null
+                )
+            }
+            ProfileImage(imageUrl.value) {
+                viewModel.setImageUrl(it)
+            }
+            Box(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.TopStart
+            ) {
+                Text(
+                    text = stringResource(R.string.name_text),
+                    modifier = Modifier
+                        .width(54.dp)
+                        .height(28.dp),
+                    style = SecondaryTextStyle
+                )
+            }
+            TextField(
+                value = name.value,
+                onValueChange = {
+                    viewModel.setName(it)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(66.dp),
+                textStyle = SecondaryTextStyle.copy(color = Color.Black),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = DarkPink,
+                    backgroundColor = Color.White,
+                    cursorColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.TopStart
+            ) {
+                Text(
+                    text = stringResource(R.string.relationship_text),
+                    modifier = Modifier
+                        .width(108.dp)
+                        .height(28.dp),
+                    style = SecondaryTextStyle,
+                )
+            }
+            RelativesSelection(familyRelations.value, relationship.value) {
+                viewModel.setRelationship(it)
+            }
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(top = 10.dp, bottom = 20.dp)
+                    .size(30.dp),
+                onClick = {
+                    viewModel.setIsAddRelation(!isAddRelation.value)
+                },
+                backgroundColor = DarkPink,
+                elevation = FloatingActionButtonDefaults.elevation(0.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_add),
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            }
+            if (isAddRelation.value) {
+                TextField(
+                    value = addNewRelation.value,
+                    onValueChange = {
+                        viewModel.setNewRelation(it)
+                    },
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(7.dp),
+                    trailingIcon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_check),
+                            modifier = Modifier
+                                .background(color = DarkPink, shape = CircleShape)
+                                .clickable {
+                                    if (addNewRelation.value.isNotEmpty()) {
+                                        viewModel.setFamilyRelation(addNewRelation.value)
+                                    }
+                                    viewModel.setIsAddRelation(!isAddRelation.value)
+                                },
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    },
+                    textStyle = SecondaryTextStyle.copy(color = Color.Black),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = DarkPink,
+                        backgroundColor = Color.White,
+                        cursorColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
+                )
+            }
+            CustomCalendar(
+                selectedDay = selectedDay.value,
+                selectedMonth = selectedMonth.value,
+                selectedYear = selectedYear.value,
+                onSelectedDay = { viewModel.setSelectedDay(it) },
+                onSelectedMonth = { viewModel.setSelectedMonth(it) },
+                onSelectedYear = { viewModel.setSelectedYear(it) })
+            Button(
+                modifier = Modifier
+                    .padding(30.dp)
+                    .background(color = Color.Transparent),
+                shape = RoundedCornerShape(16.dp),
+                onClick = {},
+                colors = androidx.compose.material.ButtonDefaults.buttonColors(
+                    backgroundColor = DarkPink
+                )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(vertical = 4.dp, horizontal = 16.dp),
+                    text = stringResource(R.string.done_button_text),
+                    style = SecondaryTextStyle.copy(color = Color.White)
+                )
+            }
+        }
     }
 }
+
+
+
+
+
+
+

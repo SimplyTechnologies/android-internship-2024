@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
 
@@ -52,5 +53,13 @@ val PrimaryTextStyle = TextStyle(
     fontWeight = FontWeight.W700,
     fontFamily = FontFamily(Font(R.font.karma)),
     lineHeight = 20.sp,
+)
+
+val SecondaryTextStyle = TextStyle(
+    fontSize = 18.sp,
+    fontWeight = FontWeight.W700,
+    fontFamily = FontFamily(Font(R.font.karma)),
+    lineHeight = 30.sp,
+    color = DarkPink
 )
 
