@@ -14,6 +14,9 @@ import com.simply.birthdayapp.commondata.di.commonDataModule
 import com.simply.birthdayapp.main.home.data.di.homeDataModule
 import com.simply.birthdayapp.main.home.domain.di.homeDomainModule
 import com.simply.birthdayapp.main.home.presentation.di.homePresentationModule
+import com.simply.birthdayapp.main.profile.chnagepassword.data.di.changePasswordDataModule
+import com.simply.birthdayapp.main.profile.chnagepassword.domain.di.changePasswordDomainModule
+import com.simply.birthdayapp.main.profile.chnagepassword.presentation.di.changePasswordPresentationModule
 import com.simply.birthdayapp.main.profile.profile.data.di.profileDataModule
 import com.simply.birthdayapp.main.profile.profile.domain.di.profileDomainModule
 import com.simply.birthdayapp.main.profile.profile.presentation.di.profilePresentationModule
@@ -46,6 +49,9 @@ class BirthdayApplication : Application() {
                 homePresentationModule,
                 homeDataModule,
                 homeDomainModule,
+                changePasswordPresentationModule,
+                changePasswordDomainModule,
+                changePasswordDataModule,
             )
         }
 

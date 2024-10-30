@@ -11,8 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SignInRepositoryImpl(
-    private val dataStoreProvider: DataStoreProvider,
-    private val apolloClient: ApolloClient
+    private val dataStoreProvider: DataStoreProvider, private val apolloClient: ApolloClient
 ) : SignInRepository {
 
     override suspend fun setSignedIn(isSignedIn: Boolean) =
@@ -38,7 +37,6 @@ class SignInRepositoryImpl(
             } else {
                 Result.Error(data = "", message = response.errors?.first()?.message ?: "")
             }
-
         }
     }
 }

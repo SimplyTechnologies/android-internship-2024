@@ -9,13 +9,13 @@ import com.simply.birthdayapp.main.profile.editprofile.presentation.EditMyProfil
 import com.simply.birthdayapp.main.profile.profile.presentation.ProfileScreen
 
 @Composable
-fun ProfileMainScreen(navigateToMainScreen: () -> Unit) {
+fun ProfileMainScreen(navigateToLoginScreen: () -> Unit) {
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = ProfileDestination.ProfileScreen) {
 
         composable<ProfileDestination.ProfileScreen> {
-            ProfileScreen(navigateToLogin = navigateToMainScreen, navigateToEditAccount = {
+            ProfileScreen(navigateToLogin = navigateToLoginScreen, navigateToEditAccount = {
                 navController.navigate(ProfileDestination.EditAccountScreen)
             }, navigateToChangePassword = {
                 navController.navigate(ProfileDestination.ChangePasswordScreen)
@@ -27,8 +27,7 @@ fun ProfileMainScreen(navigateToMainScreen: () -> Unit) {
         }
 
         composable<ProfileDestination.ChangePasswordScreen> {
-            ChangePasswordScreen()
-
+            ChangePasswordScreen(navigateToLoginScreen = navigateToLoginScreen)
         }
     }
 }
