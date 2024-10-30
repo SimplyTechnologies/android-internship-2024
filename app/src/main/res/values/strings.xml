@@ -24,4 +24,14 @@
     <string name="edit_account">Edit Account</string>
     <string name="sign_out">Sign Out</string>
 
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="repeat_new_password">Repeat New Password</string>
+    <string name="done">Done</string>
+    <string name="error_empty_password">Password cannot be empty</string>
+    <string name="error_password_length">Password must be at least 8 characters</string>
+    <string name="error_password_characters">Password must contain at least one special character</string>
+    <string name="error_passwords_not_match">Passwords do not match</string>
+    <string name="general_error">Something went wrong</string>
+
 </resources>
