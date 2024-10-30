@@ -23,8 +23,7 @@ import com.simply.birthdayapp.R
 @Composable
 fun NetworkImage(
     modifier: Modifier = Modifier
-        .size(72.dp)
-        .width(width = (-1).dp),
+        .size(72.dp),
     url: String?,
     shape: RoundedCornerShape = CircleShape,
     errorImageRes: Int = R.drawable.ic_error,
