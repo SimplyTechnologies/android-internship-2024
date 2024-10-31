@@ -15,7 +15,7 @@ import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
 import com.simply.birthdayapp.main.home.presentation.HomeScreen
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
-import com.simply.birthdayapp.main.shop.presentation.ShopScreen
+import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
 
 @Composable
 fun MainScreen(
@@ -43,7 +43,7 @@ fun MainScreen(
                 HomeScreen()
             }
             composable<BottomNavBarDestination.ShopDestination> {
-                ShopScreen()
+                ShopMainScreen()
             }
             composable<BottomNavBarDestination.AddEventDestination> {
                 AddEventScreen()

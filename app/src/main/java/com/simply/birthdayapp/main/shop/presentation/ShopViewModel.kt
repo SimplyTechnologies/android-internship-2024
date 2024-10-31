@@ -11,25 +11,45 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ShopViewModel(private val getShopsUseCase: GetShopsUseCase) : ViewModel() {
+class ShopViewModel(
+    private val getShopsUseCase: GetShopsUseCase
+) : ViewModel() {
+    private val _shopsUiState = MutableStateFlow<ShopListUiState>(ShopListUiState.Loading)
+    val shopsUiState: StateFlow<ShopListUiState> = _shopsUiState.asStateFlow()
+    private val _searchText = MutableStateFlow("")
+    val searchText: StateFlow<String> = _searchText.asStateFlow()
 
     init {
         fetchShops()
     }
 
-    private val _shopsUiState = MutableStateFlow<ShopListUiState>(ShopListUiState.Loading)
-    val shopsUiState: StateFlow<ShopListUiState> = _shopsUiState.asStateFlow()
+    fun onClearSearch() {
+        _searchText.value = ""
+        fetchShops()
+    }
 
-    private fun fetchShops() {
+    fun onSearchText(newText: String) {
+        _searchText.value = newText
+        fetchShops(newText)
+    }
+
+    private fun fetchShops(query: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
-            getShopsUseCase.invoke().collectLatest {
-                val state = when (it) {
-                    is Result.Error -> ShopListUiState.Error(it.message)
-                    is Result.Success -> ShopListUiState.Success(it.data)
-                    is Result.Loading -> ShopListUiState.Loading
+            getShopsUseCase.invoke()
+                .collectLatest { result ->
+                    val state = when (result) {
+                        is Result.Error -> ShopListUiState.Error(result.message)
+                        is Result.Success -> {
+                            val filteredShops = result.data.filter {
+                                it.name.contains(query, ignoreCase = true)
+                            }
+                            ShopListUiState.Success(filteredShops)
+                        }
+
+                        is Result.Loading -> ShopListUiState.Loading
+                    }
+                    _shopsUiState.emit(state)
                 }
-                _shopsUiState.emit(state)
-            }
         }
     }
 }

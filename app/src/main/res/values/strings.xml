@@ -34,4 +34,9 @@
     <string name="error_passwords_not_match">Passwords do not match</string>
     <string name="general_error">Something went wrong</string>
 
+    <string name="search_bar_hint_text">Search</string>
+    <string name="search_result">No search results found.</string>
+    <string name="shop_web_site">Web Site</string>
+    <string name="shop_address">Address:\u00A0</string>
+    <string name="shop_phone_number">Phone:\u00A0</string>
 </resources>
