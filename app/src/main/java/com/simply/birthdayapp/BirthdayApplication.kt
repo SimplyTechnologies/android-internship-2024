@@ -11,10 +11,14 @@ import com.simply.birthdayapp.auth.signIn.data.di.signInDataModule
 import com.simply.birthdayapp.auth.signIn.domain.di.signInDomainModule
 import com.simply.birthdayapp.auth.signIn.presentation.di.signInPresentationModule
 import com.simply.birthdayapp.commondata.di.commonDataModule
+import com.simply.birthdayapp.main.addEvent.presentation.di.addEventPresentationModel
 import com.simply.birthdayapp.commondomain.di.commonDomainModule
 import com.simply.birthdayapp.main.home.data.di.homeDataModule
 import com.simply.birthdayapp.main.home.domain.di.homeDomainModule
 import com.simply.birthdayapp.main.home.presentation.di.homePresentationModule
+import com.simply.birthdayapp.main.shop.data.di.shopDataModule
+import com.simply.birthdayapp.main.shop.domain.di.shopDomainModule
+import com.simply.birthdayapp.main.shop.presentation.di.shopPresentationModule
 import com.simply.birthdayapp.main.profile.chnagepassword.data.di.changePasswordDataModule
 import com.simply.birthdayapp.main.profile.chnagepassword.domain.di.changePasswordDomainModule
 import com.simply.birthdayapp.main.profile.chnagepassword.presentation.di.changePasswordPresentationModule
@@ -43,6 +47,7 @@ class BirthdayApplication : Application() {
                 signInDomainModule,
                 signInDataModule,
                 signInPresentationModule,
+                commonDataModule,
                 registrationPresentationModule,
                 registrationDomainModule,
                 registrationDataModule,
@@ -52,9 +57,13 @@ class BirthdayApplication : Application() {
                 homePresentationModule,
                 homeDataModule,
                 homeDomainModule,
+                shopDomainModule,
+                shopPresentationModule,
+                shopDataModule,
                 changePasswordPresentationModule,
                 changePasswordDomainModule,
-                changePasswordDataModule
+                changePasswordDataModule,
+                addEventPresentationModel
             )
         }
 

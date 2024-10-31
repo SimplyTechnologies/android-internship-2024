@@ -1,31 +1,102 @@
 package com.simply.birthdayapp.main.shop.presentation
 
+import android.app.ProgressDialog.show
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.auth.signIn.presentation.SignInViewModel
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
+import com.simply.birthdayapp.main.shop.presentation.components.ShopListItem
+import com.simply.birthdayapp.main.shop.presentation.components.SearchBar
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ShopScreen(
-    modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = koinViewModel(),
-) {
-    Box(
+fun ShopScreen(viewModel: ShopViewModel = koinViewModel()) {
+    val shopsState by viewModel.shopsUiState.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(R.string.shop_screen_text),
-            modifier = Modifier.align(Alignment.Center),
-            style = TextStyle(fontSize = 24.sp)
+        Image(
+            modifier = Modifier
+                .width(88.dp)
+                .height(40.dp),
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = null
         )
+        SearchBar(
+            text = searchText,
+            onClearClick = { viewModel.onClearSearch() },
+            onSearchClick = { viewModel.onSearchText(it) }
+        )
+        when (val uiState = shopsState) {
+            is ShopListUiState.Success -> {
+                if (uiState.data.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.search_result),
+                        color = Color.Gray,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                } else {
+                    LazyColumn(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(start = 24.dp, end = 24.dp, top = 18.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(uiState.data) { shop ->
+                            ShopListItem(
+                                shopName = shop.name,
+                                avatarUrl = shop.avatarUrl,
+                            )
+                        }
+                    }
+                }
+            }
+
+            ShopListUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        strokeWidth = 4.dp,
+                        color = DarkPink
+                    )
+                }
+            }
+
+            is ShopListUiState.Error -> {
+                Toast.makeText(
+                    LocalContext.current,
+                    stringResource(R.string.general_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

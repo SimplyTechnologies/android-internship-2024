@@ -23,6 +23,21 @@
     <string name="change_password">Change Password</string>
     <string name="edit_account">Edit Account</string>
     <string name="sign_out">Sign Out</string>
+    <string name="done_button_text">Done</string>
+    <string name="name_text">Name</string>
+    <string name="relationship_text">Relationship</string>
+    <string name="profile_image_description">Profile Image</string>
+    <string name="add_photo_description">Add Photo</string>
+
+    <string-array name="weekdays">
+        <item name="sun">SUN</item>
+        <item name="mon">MON</item>
+        <item name="tue">TUE</item>
+        <item name="wed">WED</item>
+        <item name="thu">THU</item>
+        <item name="fri">FRI</item>
+        <item name="sat">SAT</item>
+    </string-array>
 
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
@@ -33,5 +48,8 @@
     <string name="error_password_characters">Password must contain at least one special character</string>
     <string name="error_passwords_not_match">Passwords do not match</string>
     <string name="general_error">Something went wrong</string>
+
+    <string name="search_bar_hint_text">Search</string>
+    <string name="search_result">No search results found.</string>
 
 </resources>

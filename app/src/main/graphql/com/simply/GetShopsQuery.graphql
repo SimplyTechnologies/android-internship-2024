@@ -1,0 +1,9 @@
+
+
+query GetShops($filter: ShopFilter! = {}) {
+    shops(filter: $filter) {
+        id
+        name
+        image
+    }
+}
