@@ -72,7 +72,11 @@ class SignInViewModel(
             val loginInput = LoginInputDomain(_emailText.value, _passwordText.value)
             val result = loginUseCase.invoke(loginInput)
             _uiState.value = when (result) {
-                is Result.Success -> SignInUiState.Success(message = result.data)
+                is Result.Success -> {
+                    saveAccessTokenUseCase(result.data)
+                    SignInUiState.Success(message = result.data)
+                }
+
                 is Result.Error -> SignInUiState.Error(result.message)
                 is Result.Loading -> SignInUiState.Loading
             }

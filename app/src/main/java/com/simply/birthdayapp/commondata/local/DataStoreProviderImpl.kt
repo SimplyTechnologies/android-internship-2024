@@ -14,10 +14,8 @@ import kotlinx.coroutines.flow.map
 
 
 class DataStoreProviderImpl(
-   val  dataStore: DataStore<Preferences>,
+    val dataStore: DataStore<Preferences>,
 ) : DataStoreProvider, ClearTokenDataStoreProvider {
-
-
 
     override fun isSignedIn(): Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_SIGNED_IN] ?: false

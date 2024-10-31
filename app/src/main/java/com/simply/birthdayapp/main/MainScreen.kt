@@ -24,13 +24,9 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
-    ) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
+        BottomNavigationBar(navController)
+    }) { innerPadding ->
         NavHost(
             modifier = modifier
                 .fillMaxSize()

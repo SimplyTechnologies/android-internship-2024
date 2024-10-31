@@ -11,6 +11,7 @@ import com.simply.birthdayapp.auth.signIn.data.di.signInDataModule
 import com.simply.birthdayapp.auth.signIn.domain.di.signInDomainModule
 import com.simply.birthdayapp.auth.signIn.presentation.di.signInPresentationModule
 import com.simply.birthdayapp.commondata.di.commonDataModule
+import com.simply.birthdayapp.commondomain.di.commonDomainModule
 import com.simply.birthdayapp.main.home.data.di.homeDataModule
 import com.simply.birthdayapp.main.home.domain.di.homeDomainModule
 import com.simply.birthdayapp.main.home.presentation.di.homePresentationModule
@@ -33,13 +34,15 @@ class BirthdayApplication : Application() {
             androidContext(this@BirthdayApplication)
 
             modules(
+                mainPresentationModule,
+                commonDataModule,
+                commonDomainModule,
                 authDomainModule,
                 authDataModule,
                 authPresentationModule,
                 signInDomainModule,
                 signInDataModule,
                 signInPresentationModule,
-                commonDataModule,
                 registrationPresentationModule,
                 registrationDomainModule,
                 registrationDataModule,
@@ -51,7 +54,7 @@ class BirthdayApplication : Application() {
                 homeDomainModule,
                 changePasswordPresentationModule,
                 changePasswordDomainModule,
-                changePasswordDataModule,
+                changePasswordDataModule
             )
         }
 
