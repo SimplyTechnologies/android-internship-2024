@@ -46,7 +46,6 @@ fun SignInScreen(
         navigateToMain = navigateToMain,
         viewModel = viewModel,
         navigateToLanding = navigateToLanding,
-        saveLoggedInState = viewModel::setSignedIn
     )
 }
 
@@ -78,9 +77,13 @@ fun SignInComposable(
 
     when (uiState) {
         is SignInUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center,
+            ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp), color = DarkPink
+                    modifier = Modifier.size(48.dp),
+                    color = DarkPink,
                 )
             }
         }

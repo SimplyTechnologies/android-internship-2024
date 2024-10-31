@@ -24,7 +24,7 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
-    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
+    Scaffold(modifier = Modifier.fillMaxSize().background(AppBackgroundColor), bottomBar = {
         BottomNavigationBar(navController)
     }) { innerPadding ->
         NavHost(

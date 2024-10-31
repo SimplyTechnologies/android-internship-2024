@@ -4,11 +4,11 @@ import com.simply.birthdayapp.commondomain.local.DataStoreProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IsUserLoggedUseCase {
+interface IsUserLoggedInUseCase {
      operator fun invoke(): Flow<Boolean>
 }
 
-class IsUserLoggedUseCaseImpl(private val dataStoreProvider: DataStoreProvider) :
-    IsUserLoggedUseCase {
+class IsUserLoggedInUseCaseImpl(private val dataStoreProvider: DataStoreProvider) :
+    IsUserLoggedInUseCase {
     override operator fun invoke() = dataStoreProvider.getToken().map { it.isNotEmpty() }
 }

@@ -18,13 +18,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val mainViewModel: MainViewModel = koinViewModel()
+            val appViewModel: AppViewModel = koinViewModel()
             WindowInsetsControllerCompat(
                 this.window, this.window.decorView
             ).isAppearanceLightStatusBars = true
 
             val navController = rememberNavController()
-            val startDestination by mainViewModel.startDestination.collectAsState(null)
+            val startDestination by appViewModel.startDestination.collectAsState(null)
 
             startDestination?.let {
                 AppNavigation(
