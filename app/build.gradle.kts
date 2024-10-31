@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.exifinterface)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -88,6 +89,7 @@ dependencies {
 
 //  Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.core)
 
 //  DataStore
     implementation(libs.androidx.datastore.preferences)
@@ -100,6 +102,8 @@ dependencies {
 
     // coil
     implementation(libs.coil.compose)
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.0.1")
 }
 apollo {
     service("service") {

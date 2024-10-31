@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -30,10 +29,9 @@ fun NetworkImage(
     border: BorderStroke? = null,
 ) {
     Image(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape)
-            .size(72.dp)
-            .border(border ?: BorderStroke((-1).dp, Color.Black),shape = shape),
+            .border(border ?: BorderStroke((-1).dp, Color.Black), shape = shape),
         painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current).data(data = url)
                 .apply(block = fun ImageRequest.Builder.() {
@@ -51,5 +49,5 @@ fun NetworkImage(
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewNetworkImage() {
-    NetworkImage(url = null )
+    NetworkImage(url = null)
 }

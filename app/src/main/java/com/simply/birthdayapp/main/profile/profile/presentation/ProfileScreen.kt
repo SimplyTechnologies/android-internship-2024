@@ -34,7 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = koinViewModel(),
-    navigateToEditAccount: () -> Unit = {},
+    navigateToEditAccount: (UserDomain) -> Unit = {},
     navigateToLogin: () -> Unit = {},
     navigateToChangePassword: () -> Unit = {}
 ) {
@@ -77,7 +77,7 @@ fun ProfileScreen(
 private fun ProfileContent(
     modifier: Modifier = Modifier,
     data: UserDomain = UserDomain.default,
-    navigateToEditAccount: () -> Unit = {},
+    navigateToEditAccount: (UserDomain) -> Unit = {},
     navigateToLogin: () -> Unit = {},
     navigateToChangePassword: () -> Unit = {}
 ) {
@@ -124,7 +124,7 @@ private fun ProfileContent(
                 .padding(horizontal = 16.dp),
             text = stringResource(R.string.edit_account)
         ) {
-            navigateToEditAccount()
+            navigateToEditAccount(data)
         }
 
         AccountOptionButton(

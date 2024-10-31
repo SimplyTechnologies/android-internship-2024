@@ -20,8 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             // for system status bar color
             WindowInsetsControllerCompat(
-                this.window,
-                this.window.decorView
+                this.window, this.window.decorView
             ).isAppearanceLightStatusBars = true
 
             val navController = rememberNavController()

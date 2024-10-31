@@ -24,3 +24,5 @@ val BottomNavDisableItemColor = Color(0xffFFF5F4)
 val AddImageBackgroundColor = Color(0xffD9D9D9)
 
 val SearchBarHintTextColor = Color(0xff929292)
+
+val MistyRose = Color(0xFFFFEEEC)

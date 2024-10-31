@@ -9,3 +9,4 @@ sealed interface ProfileDestination {
     @Serializable
     data object EditMyProfileDestination : ProfileDestination
 }
+// TODO: check and remove

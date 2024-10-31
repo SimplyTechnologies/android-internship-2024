@@ -1,15 +1,16 @@
 package com.simply.birthdayapp.main.profile.navigation
 
+import com.simply.birthdayapp.main.profile.profile.domain.model.UserDomain
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed class ProfileDestination {
     @Serializable
-    data object ProfileScreen : ProfileDestination()
+    data class EditAccountScreen(val user: UserDomain) : ProfileDestination()
 
     @Serializable
     data object ChangePasswordScreen : ProfileDestination()
 
     @Serializable
-    data object EditAccountScreen : ProfileDestination()
-
+    data object ProfileScreen : ProfileDestination()
 }

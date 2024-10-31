@@ -15,7 +15,7 @@ fun AppNavigation(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.AuthDestination
+        startDestination = Destination.MainDestination
     ) {
 
         composable<Destination.AuthDestination> {
