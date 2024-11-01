@@ -46,7 +46,6 @@ fun SignInScreen(
         navigateToMain = navigateToMain,
         viewModel = viewModel,
         navigateToLanding = navigateToLanding,
-        saveLoggedInState = viewModel::setSignedIn
     )
 }
 
@@ -78,13 +77,18 @@ fun SignInComposable(
 
     when (uiState) {
         is SignInUiState.Loading -> {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp), color = DarkPink
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = DarkPink,
+                )
+            }
         }
 
         is SignInUiState.Success -> {
-            viewModel.saveAccessTokenUseCase((uiState as SignInUiState.Success).message)
             saveLoggedInState(true)
         }
 

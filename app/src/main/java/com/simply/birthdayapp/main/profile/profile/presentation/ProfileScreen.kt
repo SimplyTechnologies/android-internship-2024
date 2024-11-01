@@ -42,6 +42,7 @@ fun ProfileScreen(
         viewModel.fetchUserProfile()
     }
 
+
     val state by viewModel.profileUiState.collectAsState()
     val context = LocalContext.current
 
@@ -64,7 +65,10 @@ fun ProfileScreen(
                 modifier = modifier,
                 data = uiState.data,
                 navigateToEditAccount = navigateToEditAccount,
-                navigateToLogin = navigateToLogin,
+                logOutClick = {
+                    viewModel.logOut()
+                    navigateToLogin()
+                },
                 navigateToChangePassword = navigateToChangePassword
             )
         }
@@ -78,9 +82,10 @@ private fun ProfileContent(
     modifier: Modifier = Modifier,
     data: UserDomain = UserDomain.default,
     navigateToEditAccount: () -> Unit = {},
-    navigateToLogin: () -> Unit = {},
+    logOutClick: () -> Unit = {},
     navigateToChangePassword: () -> Unit = {}
 ) {
+
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             Modifier
@@ -133,7 +138,7 @@ private fun ProfileContent(
                 .padding(horizontal = 16.dp),
             text = stringResource(R.string.sign_out)
         ) {
-            navigateToLogin()
+            logOutClick()
         }
     }
 }

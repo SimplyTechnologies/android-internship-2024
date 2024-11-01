@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 class AuthRepositoryImpl(
     private val dataStoreProvider: DataStoreProvider,
 ) : AuthRepository {
-    override fun isSignedIn(): Flow<Boolean> = dataStoreProvider.isSignedIn()
+    override fun isLandingScreenRequired(): Flow<Boolean> = dataStoreProvider.isSignedIn()
 }

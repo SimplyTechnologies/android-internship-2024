@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.auth.navigation.AuthNavigation
 import com.simply.birthdayapp.auth.navigation.Destination
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.AuthActionBar
+import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,7 +36,9 @@ fun AuthScreen(
     } == false
 
     startDest?.let {
-        Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+        Scaffold(modifier = Modifier
+            .fillMaxSize()
+            .background(AppBackgroundColor), topBar = {
             AuthActionBar(
                 modifier = Modifier.padding(WindowInsets.statusBars.asPaddingValues()),
                 showTopBar = isNotLandingScreen,

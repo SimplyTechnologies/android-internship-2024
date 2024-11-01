@@ -2,10 +2,10 @@ package com.simply.birthdayapp.commonpresentation.navigation
 
 import kotlinx.serialization.Serializable
 
-sealed interface Destination {
+sealed interface AppDestination {
     @Serializable
-    data object AuthDestination : Destination
+    data object AuthDestination : AppDestination
 
     @Serializable
-    data object MainDestination : Destination
+    data object MainDestination : AppDestination
 }
