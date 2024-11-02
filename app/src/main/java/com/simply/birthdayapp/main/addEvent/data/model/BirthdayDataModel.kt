@@ -1,6 +1,6 @@
-package com.simply.birthdayapp.commondomain.model
+package com.simply.birthdayapp.main.addEvent.data.model
 
-data class Birthday(
+data class BirthdayDataModel(
     val createdAt: String,
     val date: String,
     val id: Int,

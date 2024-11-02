@@ -51,6 +51,9 @@
 
     <string name="search_bar_hint_text">Search</string>
     <string name="search_result">No search results found.</string>
+    <string name="date">%d-%02d-%02d</string>
+    <string name="permission_to_access_photos_denied">Permission to access photos denied</string>
+
     <string name="shop_web_site">Web Site</string>
     <string name="shop_address">Address:\u00A0</string>
     <string name="shop_phone_number">Phone:\u00A0</string>

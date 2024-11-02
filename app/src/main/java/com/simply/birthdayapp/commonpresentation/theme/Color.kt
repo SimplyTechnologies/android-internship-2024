@@ -24,3 +24,5 @@ val AddImageBackgroundColor = Color(0xffD9D9D9)
 val SearchBarHintTextColor = Color(0xff929292)
 val DarkGray = Color(0xff3F3F3F)
 val LightBlack = Color(0xFF383838)
+
+val MistyRose = Color(0xFFFFEEEC)

@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.main.addEvent.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,21 +23,25 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commonpresentation.components.image.ProfileImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.SecondaryTextStyle
 import com.simply.birthdayapp.main.addEvent.presentation.components.CustomCalendar
-import com.simply.birthdayapp.main.addEvent.presentation.components.ProfileImage
 import com.simply.birthdayapp.main.addEvent.presentation.components.RelativesSelection
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,17 +50,53 @@ import org.koin.androidx.compose.koinViewModel
 fun AddEventScreen(
     modifier: Modifier = Modifier,
     viewModel: AddEventViewModel = koinViewModel(),
+    navigateToMain: () -> Unit = {}
 ) {
     val name = viewModel.name.collectAsState()
     val relationship = viewModel.relationship.collectAsState()
     val familyRelations = viewModel.familyRelation.collectAsState()
-    val imageUrl = viewModel.imageUrl.collectAsState()
     val selectedDay = viewModel.selectedDay.collectAsState()
     val selectedMonth = viewModel.selectedMonth.collectAsState()
     val selectedYear = viewModel.selectedYear.collectAsState()
     val isAddRelation = viewModel.isAddRelation.collectAsState()
     val addNewRelation = viewModel.newRelation.collectAsState()
     val scrollState = rememberScrollState()
+    val uiState by viewModel.addEventUiState.collectAsState()
+    val imageSource by viewModel.imageSource.collectAsState()
+    val context = LocalContext.current
+    when (uiState) {
+        is AddEventUiState.Loading -> {
+            Dialog(
+                onDismissRequest = {}
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(56.dp),
+                    color = DarkPink
+                )
+            }
+        }
+
+        is AddEventUiState.Success -> {
+            Toast.makeText(
+                LocalContext.current,
+                "Success",
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModel.resetState()
+            navigateToMain.invoke()
+        }
+
+        is AddEventUiState.Error -> {
+            Toast.makeText(
+                LocalContext.current,
+                (uiState as AddEventUiState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModel.resetState()
+        }
+
+        else -> {}
+    }
     Box(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -79,8 +120,9 @@ fun AddEventScreen(
                     contentDescription = null
                 )
             }
-            ProfileImage(imageUrl.value) {
-                viewModel.setImageUrl(it)
+            ProfileImage(imageSource = imageSource) {
+                viewModel.setImageUri(it)
+                viewModel.imageEncode(context)
             }
             Box(
                 modifier = Modifier
@@ -192,7 +234,9 @@ fun AddEventScreen(
                     .padding(30.dp)
                     .background(color = Color.Transparent),
                 shape = RoundedCornerShape(16.dp),
-                onClick = {},
+                onClick = {
+                    viewModel.addEvent(context)
+                },
                 colors = androidx.compose.material.ButtonDefaults.buttonColors(
                     backgroundColor = DarkPink
                 )

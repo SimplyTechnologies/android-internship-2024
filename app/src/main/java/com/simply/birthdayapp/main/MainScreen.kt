@@ -21,6 +21,7 @@ import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
 fun MainScreen(
     modifier: Modifier = Modifier,
     navigateToLogin: () -> Unit = {},
+    navigateToMain: () -> Unit = {}
 ) {
     val navController = rememberNavController()
 
@@ -42,7 +43,7 @@ fun MainScreen(
                 ShopMainScreen()
             }
             composable<BottomNavBarDestination.AddEventDestination> {
-                AddEventScreen()
+                AddEventScreen(navigateToMain = navigateToMain)
             }
             composable<BottomNavBarDestination.ProfileDestination> {
                 ProfileMainScreen(navigateToLogin)
