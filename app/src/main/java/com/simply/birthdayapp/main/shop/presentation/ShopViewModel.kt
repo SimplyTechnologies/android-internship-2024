@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ShopViewModel(private val getShopsUseCase: GetShopsUseCase) : ViewModel() {
+class ShopViewModel(
+    private val getShopsUseCase: GetShopsUseCase
+) : ViewModel() {
     private val _shopsUiState = MutableStateFlow<ShopListUiState>(ShopListUiState.Loading)
     val shopsUiState: StateFlow<ShopListUiState> = _shopsUiState.asStateFlow()
     private val _searchText = MutableStateFlow("")

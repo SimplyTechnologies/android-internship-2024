@@ -14,13 +14,13 @@ val LightPink = Color(0xB2F68299)
 val DarkPink = Color(0xFF963E5A)
 val AppBackgroundColor = Color(255, 245, 244)
 
-val LightPinkBackground = Color(0xFFFFF5F6)
+val LightPinkBackground = Color(0xFFFFF5F4)
 val ErrorPink = Color(0xFFFFD3D8)
 
 val BottomNavBarColor = Color(0xffDC7594)
-val BottomNavActiveItemColor = Color(0xff963E5A)
-val BottomNavDisableItemColor = Color(0xffFFF5F4)
 
 val AddImageBackgroundColor = Color(0xffD9D9D9)
 
 val SearchBarHintTextColor = Color(0xff929292)
+val DarkGray = Color(0xff3F3F3F)
+val LightBlack = Color(0xFF383838)
