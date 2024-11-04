@@ -1,6 +1,7 @@
 package com.simply.birthdayapp.main.shop.presentation.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -15,14 +16,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
+import com.simply.birthdayapp.commonpresentation.theme.DarkGray
 
 @Composable
-fun ShopListItem(shopName: String, avatarUrl: String) {
+fun ShopListItem(
+    shopName: String,
+    avatarUrl: String,
+    onItemClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)
-            .clip(RoundedCornerShape(24.dp)),
+            .clip(RoundedCornerShape(24.dp))
+            .clickable { onItemClick() },
         backgroundColor = Color.White,
         shape = MaterialTheme.shapes.medium
     ) {
@@ -32,7 +39,7 @@ fun ShopListItem(shopName: String, avatarUrl: String) {
         ) {
             NetworkImage(
                 url = avatarUrl,
-                border = BorderStroke(1.dp, Color.Black)
+                border = BorderStroke(1.dp, DarkGray)
             )
             Spacer(
                 modifier = Modifier

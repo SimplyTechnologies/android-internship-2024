@@ -3,6 +3,7 @@ package com.simply.birthdayapp.main.addEvent.presentation
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.simply.birthdayapp.commonpresentation.components.image.ImageSource
 import com.simply.birthdayapp.main.addEvent.domain.FamilyRelation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,9 +22,6 @@ class AddEventViewModel : ViewModel() {
     private val _familyRelation = MutableStateFlow(FamilyRelation.getDisplayNames())
     val familyRelation: StateFlow<List<String>> = _familyRelation.asStateFlow()
 
-    private val _imageUrl = MutableStateFlow<Uri?>(null)
-    val imageUrl: StateFlow<Uri?> = _imageUrl.asStateFlow()
-
     private val _selectedDay = MutableStateFlow(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
@@ -39,13 +37,16 @@ class AddEventViewModel : ViewModel() {
     private val _newRelation = MutableStateFlow("")
     val newRelation: StateFlow<String> = _newRelation.asStateFlow()
 
-    fun setIsAddRelation(newValue: Boolean){
+    private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
+    val imageSource: StateFlow<ImageSource> = _imageSource.asStateFlow()
+
+    fun setIsAddRelation(newValue: Boolean) {
         viewModelScope.launch {
             _isAddRelation.emit(newValue)
         }
     }
 
-    fun setNewRelation(newValue: String){
+    fun setNewRelation(newValue: String) {
         viewModelScope.launch {
             _newRelation.emit(newValue)
         }
@@ -90,7 +91,11 @@ class AddEventViewModel : ViewModel() {
 
     fun setImageUrl(newValue: Uri?) {
         viewModelScope.launch {
-            _imageUrl.emit(newValue)
+            _imageSource.value = if (newValue != null) {
+                ImageSource.Uri(newValue.toString())
+            } else {
+                ImageSource.Unknown
+            }
         }
     }
 }

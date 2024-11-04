@@ -28,7 +28,7 @@ val commonDataModule = module {
     singleOf(::DataStoreProviderImpl) { bind<ClearTokenDataStoreProvider>() }
     singleOf(::DataStoreProviderImpl) { bind<DataStoreProvider>() }
     singleOf(::TokenProvider)
-    single<ImageEncoderDecoderRepository> { ImageEncodeDecodeHelper }
+    singleOf(::ImageEncodeDecodeHelper) { bind<ImageEncoderDecoderRepository>() }
 
     single<ApolloClient> {
         val authInterceptor = AuthInterceptor(get())

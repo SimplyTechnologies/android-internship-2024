@@ -64,9 +64,11 @@ fun ProfileScreen(
                 modifier = modifier,
                 data = uiState.data,
                 navigateToEditAccount = navigateToEditAccount,
-                navigateToLogin = navigateToLogin,
                 navigateToChangePassword = navigateToChangePassword
-            )
+            ) {
+                viewModel.logOut()
+                navigateToLogin()
+            }
         }
 
         else -> {}
@@ -78,8 +80,8 @@ private fun ProfileContent(
     modifier: Modifier = Modifier,
     data: UserDomain = UserDomain.default,
     navigateToEditAccount: (UserDomain) -> Unit = {},
-    navigateToLogin: () -> Unit = {},
-    navigateToChangePassword: () -> Unit = {}
+    navigateToChangePassword: () -> Unit = {},
+    signOutClick: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -136,7 +138,7 @@ private fun ProfileContent(
                 .padding(horizontal = 16.dp),
             text = stringResource(R.string.sign_out)
         ) {
-            navigateToLogin()
+            signOutClick()
         }
     }
 }

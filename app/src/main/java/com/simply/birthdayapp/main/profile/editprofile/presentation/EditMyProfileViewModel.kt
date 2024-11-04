@@ -5,12 +5,17 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simply.birthdayapp.commondomain.usecase.ImageEncodeUseCase
+import com.simply.birthdayapp.commonpresentation.components.image.ImageSource
+import com.simply.birthdayapp.core.ErrorMessages
+import com.simply.birthdayapp.core.result.Result
 import com.simply.birthdayapp.main.profile.editprofile.domain.model.UpdateProfileInput
 import com.simply.birthdayapp.main.profile.editprofile.domain.usecase.EditUserProfileUseCase
 import com.simply.birthdayapp.main.profile.profile.domain.model.UserDomain
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class EditMyProfileViewModel(
@@ -37,20 +42,16 @@ class EditMyProfileViewModel(
     private val _surnameError = MutableStateFlow<Int?>(null)
     val surnameError = _surnameError.asStateFlow()
 
-    private val _imageUrl = MutableStateFlow(currentUser.value.image)
-    val imageUrl = _imageUrl.asStateFlow()
-
-    private val _imageUri = MutableStateFlow<Uri?>(null)
-    val imageUri = _imageUri.asStateFlow()
-
     private val _doneButtonEnableState = MutableStateFlow(false)
     val doneButtonEnableState = _doneButtonEnableState.asStateFlow()
+
+    private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
+    val imageSource = _imageSource.asStateFlow()
 
     private val _updatedUser = MutableStateFlow(
         user.copy(
             firstName = _name.value,
             lastName = _surname.value,
-            image = _imageUrl.value,
         )
     )
 
@@ -70,39 +71,52 @@ class EditMyProfileViewModel(
         }
     }
 
-    fun uploadImage(newValue: Uri?) {
-        viewModelScope.launch { _imageUri.emit(newValue) }
-        _doneButtonEnableState.value = true
+
+    fun uploadImage(newUri: Uri?) {
+        viewModelScope.launch {
+            _imageSource.value = if (newUri != null) {
+                ImageSource.Uri(newUri.toString())
+            } else {
+                ImageSource.Unknown
+            }
+            _doneButtonEnableState.value = true
+        }
     }
 
     private fun doneButtonEnabled() {
-        _doneButtonEnableState.value = _updatedUser.value != _currentUser.value
+        _doneButtonEnableState.value =
+            (_updatedUser.value != _currentUser.value) || (imageSource.value != ImageSource.Unknown || imageSource.value !is ImageSource.Url)
     }
 
     fun editProfile(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val image = imageEncodeUseCase.invoke(_imageUri.value, context)
-            editUserProfileUseCase.invoke(
-                UpdateProfileInput(
-                    firstName = _updatedUser.value.firstName,
-                    lastName = _updatedUser.value.lastName,
-                    image = image,
+        val image = imageSource.value.source?.let { imageEncodeUseCase.invoke(it, context) }
+        editUserProfileUseCase.invoke(
+            UpdateProfileInput(
+                firstName = _updatedUser.value.firstName,
+                lastName = _updatedUser.value.lastName,
+                image = image,
+            )
+        ).onEach {
+            when (it) {
+                is Result.Error -> _screenUiState.emit(
+                    EditProfileUiState.Error(it.message)
                 )
-            ).collect {
-                when (it) {
-                    is com.simply.birthdayapp.core.result.Result.Error -> _screenUiState.emit(
-                        EditProfileUiState.Error(it.message)
-                    )
 
-                    is com.simply.birthdayapp.core.result.Result.Loading -> {
-                        _screenUiState.emit(EditProfileUiState.Loading)
-                    }
+                is Result.Loading -> {
+                    _screenUiState.emit(EditProfileUiState.Loading)
+                }
 
-                    is com.simply.birthdayapp.core.result.Result.Success -> {
-                        _screenUiState.emit(EditProfileUiState.Success)
-                    }
+                is Result.Success -> {
+                    _screenUiState.emit(EditProfileUiState.Success)
                 }
             }
-        }
+        }.catch {
+            _screenUiState.emit(
+                EditProfileUiState.Error(
+                    it.message ?: ErrorMessages.GENERAL_ERROR
+                )
+            )
+        }.launchIn(viewModelScope)
     }
+
 }

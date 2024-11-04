@@ -24,12 +24,11 @@ import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commonpresentation.components.button.DoneButton
 import com.simply.birthdayapp.commonpresentation.components.image.ProfileImage
 import com.simply.birthdayapp.main.profile.chnagepassword.presentation.component.TextFieldWithPlaceholder
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun EditMyProfileScreenContent(
     modifier: Modifier = Modifier,
-    viewModel: EditMyProfileViewModel = getViewModel(),
+    viewModel: EditMyProfileViewModel,
 ) {
     val context = LocalContext.current
 
@@ -39,10 +38,10 @@ fun EditMyProfileScreenContent(
     val nameError by viewModel.nameError.collectAsState()
     val surnameError by viewModel.surnameError.collectAsState()
 
-    val imageUrl by viewModel.imageUrl.collectAsState()
-    val imageUri by viewModel.imageUri.collectAsState()
-
     val doneButtonEnableState by viewModel.doneButtonEnableState.collectAsState()
+
+    val imageSource by viewModel.imageSource.collectAsState()
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,9 +66,9 @@ fun EditMyProfileScreenContent(
                 .padding(horizontal = 54.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             ProfileImage(
-                modifier = Modifier.size(160.dp), url = imageUrl, uri = imageUri
+                modifier = Modifier.size(160.dp),
+                imageSource = imageSource,
             ) {
                 viewModel.uploadImage(it)
             }

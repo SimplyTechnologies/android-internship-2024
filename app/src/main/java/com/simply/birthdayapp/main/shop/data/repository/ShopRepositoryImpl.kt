@@ -25,6 +25,10 @@ class ShopRepositoryImpl(private val apolloClient: ApolloClient) : ShopRepositor
                     id = shop.id,
                     name = shop.name,
                     avatarUrl = shop.image,
+                    phone = shop.phone,
+                    address = shop.address,
+                    siteUrl = shop.url,
+                    rate = shop.rate
                 ).toDomainModel()
             } ?: emptyList()
             emit(Result.Success(shops))

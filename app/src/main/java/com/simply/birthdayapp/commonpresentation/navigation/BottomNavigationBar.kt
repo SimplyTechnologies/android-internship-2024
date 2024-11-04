@@ -11,9 +11,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.simply.birthdayapp.commondomain.model.BottomNavItem
-import com.simply.birthdayapp.commonpresentation.theme.BottomNavActiveItemColor
 import com.simply.birthdayapp.commonpresentation.theme.BottomNavBarColor
-import com.simply.birthdayapp.commonpresentation.theme.BottomNavDisableItemColor
+import com.simply.birthdayapp.commonpresentation.theme.DarkPink
+import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -35,13 +35,10 @@ fun BottomNavigationBar(navController: NavController) {
                 Icon(
                     painter = painterResource(item.iconId),
                     contentDescription = null,
-                    tint = if (isSelected) BottomNavActiveItemColor else BottomNavDisableItemColor
+                    tint = if (isSelected) DarkPink else LightPinkBackground
                 )
             }, selected = isSelected, onClick = {
-                navController.navigate(item.route) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
+                navController.navigate(item.route)
             })
         }
     }

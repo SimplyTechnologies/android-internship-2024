@@ -1,6 +1,5 @@
-package com.simply.birthdayapp.main.shop.presentation
+package com.simply.birthdayapp.main.shop.presentation.screens
 
-import android.app.ProgressDialog.show
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -12,8 +11,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,17 +25,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
-import com.simply.birthdayapp.main.shop.presentation.components.ShopListItem
+import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
+import com.simply.birthdayapp.main.shop.presentation.ShopListUiState
+import com.simply.birthdayapp.main.shop.presentation.ShopViewModel
 import com.simply.birthdayapp.main.shop.presentation.components.SearchBar
+import com.simply.birthdayapp.main.shop.presentation.components.ShopListItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ShopScreen(viewModel: ShopViewModel = koinViewModel()) {
+fun ShopScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ShopViewModel = koinViewModel(),
+    navigateToShopDetailsScreen: (ShopDomainModel) -> Unit = {}
+) {
     val shopsState by viewModel.shopsUiState.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -57,9 +63,9 @@ fun ShopScreen(viewModel: ShopViewModel = koinViewModel()) {
             is ShopListUiState.Success -> {
                 if (uiState.data.isEmpty()) {
                     Text(
+                        modifier = Modifier.padding(16.dp),
                         text = stringResource(R.string.search_result),
-                        color = Color.Gray,
-                        modifier = Modifier.padding(16.dp)
+                        color = Color.Gray
                     )
                 } else {
                     LazyColumn(
@@ -72,7 +78,7 @@ fun ShopScreen(viewModel: ShopViewModel = koinViewModel()) {
                             ShopListItem(
                                 shopName = shop.name,
                                 avatarUrl = shop.avatarUrl,
-                            )
+                                onItemClick = { navigateToShopDetailsScreen(shop) })
                         }
                     }
                 }

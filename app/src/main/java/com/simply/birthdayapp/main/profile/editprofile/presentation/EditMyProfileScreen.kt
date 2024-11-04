@@ -18,18 +18,18 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EditMyProfileScreen(
-    data: UserDomain,
+    userDomain: UserDomain,
     modifier: Modifier = Modifier,
-    viewModel: EditMyProfileViewModel = getViewModel { parametersOf(data) },
+    viewModel: EditMyProfileViewModel = getViewModel { parametersOf(userDomain) },
     navigateBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
     val screenUiState by viewModel.screenUiState.collectAsState()
 
-    when (screenUiState) {
+    when (val state = screenUiState) {
         is EditProfileUiState.Error -> {
-            val errorMessage = (screenUiState as EditProfileUiState.Error).message
+            val errorMessage = state.message
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
 

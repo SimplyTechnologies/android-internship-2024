@@ -15,50 +15,48 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 
+
 @Composable
 fun ProfileImage(
     modifier: Modifier = Modifier.size(100.dp),
-    url: String? = null,
-    uri: Uri? = null,
+    imageSource: ImageSource = ImageSource.Unknown,
     onAddPhotoClick: (Uri?) -> Unit = {}
 ) {
-    val photoPickerLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia(),
-            onResult = {
-                onAddPhotoClick.invoke(it)
-            })
-
-    val imageModel = when {
-        uri != null -> uri
-        url != null -> url
-        else -> null
-    }
-
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current).data(imageModel).apply {
-            transformations(CircleCropTransformation())
-        }.build()
+    val context = LocalContext.current
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { onAddPhotoClick(it) },
     )
 
-    Box(modifier.clickable {
-        photoPickerLauncher.launch(
-            PickVisualMediaRequest(
-                ActivityResultContracts.PickVisualMedia.ImageOnly
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(context)
+            .data(imageSource.source)
+            .transformations(
+                CircleCropTransformation()
+            ).build(),
+        imageLoader = ImageLoader(context),
+    )
+
+    Box(
+        modifier = modifier.clickable {
+            photoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
-        )
-    }) {
-        if (painter.state is AsyncImagePainter.State.Error || imageModel == null) {
+        }
+    ) {
+        if (imageSource == ImageSource.Unknown || painter.state is AsyncImagePainter.State.Error) {
             ProfileImageFallback(Modifier.fillMaxSize())
         } else {
             Image(
                 painter = painter,
-                contentScale = ContentScale.FillBounds,
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -69,5 +67,8 @@ fun ProfileImage(
 @Preview
 @Composable
 private fun AddProfileImageDefaultPreview() {
-    ProfileImage(modifier = Modifier.size(160.dp), url = null)
+    ProfileImage(
+        modifier = Modifier.size(160.dp),
+        imageSource = ImageSource.Unknown,
+    )
 }

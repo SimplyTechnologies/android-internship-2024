@@ -24,6 +24,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,12 +50,12 @@ fun AddEventScreen(
     val name = viewModel.name.collectAsState()
     val relationship = viewModel.relationship.collectAsState()
     val familyRelations = viewModel.familyRelation.collectAsState()
-    val imageUrl = viewModel.imageUrl.collectAsState()
     val selectedDay = viewModel.selectedDay.collectAsState()
     val selectedMonth = viewModel.selectedMonth.collectAsState()
     val selectedYear = viewModel.selectedYear.collectAsState()
     val isAddRelation = viewModel.isAddRelation.collectAsState()
     val addNewRelation = viewModel.newRelation.collectAsState()
+    val imageSource by viewModel.imageSource.collectAsState()
     val scrollState = rememberScrollState()
     Box(modifier = modifier.fillMaxWidth()) {
         Column(
@@ -79,7 +80,10 @@ fun AddEventScreen(
                     contentDescription = null
                 )
             }
-            ProfileImage(modifier = Modifier.size(100.dp), uri = imageUrl.value) {
+            ProfileImage(
+                modifier = Modifier.size(100.dp),
+                imageSource = imageSource,
+            ) {
                 viewModel.setImageUrl(it)
             }
             Box(

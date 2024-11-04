@@ -8,7 +8,6 @@ import androidx.navigation.toRoute
 import com.simply.birthdayapp.main.profile.chnagepassword.presentation.ChangePasswordScreen
 import com.simply.birthdayapp.main.profile.editprofile.presentation.EditMyProfileScreen
 import com.simply.birthdayapp.main.profile.profile.domain.model.UserDomain
-import com.simply.birthdayapp.main.profile.profile.domain.model.UserNavType
 import com.simply.birthdayapp.main.profile.profile.presentation.ProfileScreen
 import kotlin.reflect.typeOf
 
