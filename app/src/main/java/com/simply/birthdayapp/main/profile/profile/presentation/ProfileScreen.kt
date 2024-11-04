@@ -81,7 +81,10 @@ private fun ProfileContent(
     navigateToLogin: () -> Unit = {},
     navigateToChangePassword: () -> Unit = {}
 ) {
-    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()

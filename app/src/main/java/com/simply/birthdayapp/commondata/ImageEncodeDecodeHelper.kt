@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.util.Base64
-import androidx.exifinterface.media.ExifInterface
 import com.simply.birthdayapp.commondomain.repository.ImageEncoderDecoderRepository
 import java.io.ByteArrayOutputStream
 
@@ -30,31 +30,16 @@ object ImageEncodeDecodeHelper : ImageEncoderDecoderRepository {
                 ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
                 else -> bitmap
             }
-
-            // Resize the bitmap to 160x160
-            val resizedBitmap = Bitmap.createScaledBitmap(
+            val scaledBitmap = Bitmap.createScaledBitmap(
                 rotatedBitmap,
-                160,
-                160,
+                rotatedBitmap.width / 4,
+                rotatedBitmap.height / 4,
                 true
             )
-
             val outputStream = ByteArrayOutputStream()
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
             Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
         } catch (e: Exception) {
-            null
-        }
-    }
-
-    override fun decodeBase64ToBitmap(base64String: String?): Bitmap? {
-        return try {
-            base64String?.let {
-                val decodedBytes = Base64.decode(it, Base64.DEFAULT)
-                BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
             null
         }
     }

@@ -16,11 +16,12 @@ import kotlin.reflect.typeOf
 fun ProfileMainScreen(navigateToLoginScreen: () -> Unit) {
     val navController = rememberNavController()
 
+
     NavHost(
         navController = navController, startDestination = ProfileDestination.ProfileScreen
     ) {
 
-        composable<ProfileDestination.ProfileScreen>() {
+        composable<ProfileDestination.ProfileScreen> {
             ProfileScreen(navigateToLogin = navigateToLoginScreen, navigateToEditAccount = {
                 navController.navigate(ProfileDestination.EditAccountScreen(it))
 
@@ -34,7 +35,7 @@ fun ProfileMainScreen(navigateToLoginScreen: () -> Unit) {
         ) {
             val userDomain = it.toRoute<ProfileDestination.EditAccountScreen>().user
             EditMyProfileScreen(userDomain) {
-                navController.popBackStack()
+                navController.navigateUp()
             }
         }
 

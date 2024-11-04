@@ -5,13 +5,13 @@ import com.simply.birthdayapp.auth.navigation.Destination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-interface IsSignedInUseCase {
+interface GetAuthInitialDestinationUseCase {
     fun invoke(): Flow<Destination>
 }
 
-class IsSignedInUseCaseImpl(private val repository: AuthRepository) : IsSignedInUseCase {
+class GetAuthInitialDestinationUseCaseImpl(private val repository: AuthRepository) : GetAuthInitialDestinationUseCase {
     override fun invoke() = flow {
-        repository.isSignedIn().collect { isSignedIn ->
+        repository.isLandingScreenRequired().collect { isSignedIn ->
             emit(if (isSignedIn) Destination.SignInDestination else Destination.LandingDestination)
         }
     }

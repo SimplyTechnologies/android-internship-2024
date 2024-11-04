@@ -8,9 +8,7 @@ import org.koin.dsl.module
 val editMyProfilePresentationModule = module {
     viewModel { (model: UserDomain) ->
         EditMyProfileViewModel(
-            user = model,
-            editUserProfileUseCase = get(),
-            imageEncoderDecoderRepository = get()
+            user = model, editUserProfileUseCase = get(), imageEncodeUseCase = get(),
         )
     }
 }

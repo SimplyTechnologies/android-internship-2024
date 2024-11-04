@@ -10,23 +10,24 @@ import com.simply.birthdayapp.main.MainScreen
 
 @Composable
 fun AppNavigation(
-    modifier: Modifier = Modifier, navController: NavHostController,
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    startDestination: AppDestination,
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.MainDestination
+        startDestination = startDestination,
     ) {
-
-        composable<Destination.AuthDestination> {
+        composable<AppDestination.AuthDestination> {
             AuthScreen(modifier = modifier, navigateToMain = {
-                navController.navigate(Destination.MainDestination)
+                navController.navigate(AppDestination.MainDestination)
             })
         }
 
-        composable<Destination.MainDestination> {
+        composable<AppDestination.MainDestination> {
             MainScreen(navigateToLogin = {
-                navController.navigate(Destination.AuthDestination)
+                navController.navigate(AppDestination.AuthDestination)
             })
         }
     }

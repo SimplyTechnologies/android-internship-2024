@@ -47,6 +47,5 @@ fun EditMyProfileScreen(
             EditMyProfileScreenContent(modifier = modifier.fillMaxSize(), viewModel = viewModel)
         }
     }
-
 }
 

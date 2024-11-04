@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simply.birthdayapp.auth.signIn.domain.model.LoginInputDomain
 import com.simply.birthdayapp.auth.signIn.domain.usecase.SaveAccessTokenUseCase
-import com.simply.birthdayapp.auth.signIn.domain.usecase.SetSignedInUseCase
+import com.simply.birthdayapp.auth.signIn.domain.usecase.SetAuthInitialScreenStateUseCase
 import com.simply.birthdayapp.auth.signIn.domain.usecase.SignInUseCase
 import com.simply.birthdayapp.core.result.Result
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +14,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
-    private val setSignedInUseCase: SetSignedInUseCase,
+    private val setAuthInitialScreenStateUseCase: SetAuthInitialScreenStateUseCase,
     private val loginUseCase: SignInUseCase,
     private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
+    init {
+        setLandingShowed()
+    }
 
     private val _emailText = MutableStateFlow("")
     val emailText: StateFlow<String> = _emailText.asStateFlow()
@@ -54,13 +57,13 @@ class SignInViewModel(
             _emailText.value.isNotEmpty() && _passwordText.value.isNotEmpty()
     }
 
-    fun setSignedIn(isSignedIn: Boolean) {
+    private fun setLandingShowed() {
         viewModelScope.launch {
-            setSignedInUseCase.invoke(isSignedIn)
+            setAuthInitialScreenStateUseCase.invoke(true)
         }
     }
 
-    fun saveAccessTokenUseCase(token: String) {
+    private fun saveAccessTokenUseCase(token: String) {
         viewModelScope.launch {
             saveAccessTokenUseCase.invoke(token)
         }
@@ -72,7 +75,11 @@ class SignInViewModel(
             val loginInput = LoginInputDomain(_emailText.value, _passwordText.value)
             val result = loginUseCase.invoke(loginInput)
             _uiState.value = when (result) {
-                is Result.Success -> SignInUiState.Success(message = result.data)
+                is Result.Success -> {
+                    saveAccessTokenUseCase(result.data)
+                    SignInUiState.Success(message = result.data)
+                }
+
                 is Result.Error -> SignInUiState.Error(result.message)
                 is Result.Loading -> SignInUiState.Loading
             }

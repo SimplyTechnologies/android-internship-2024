@@ -5,12 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.commonpresentation.navigation.AppNavigation
-import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,18 +18,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            // for system status bar color
+            val appViewModel: AppViewModel = koinViewModel()
             WindowInsetsControllerCompat(
                 this.window, this.window.decorView
             ).isAppearanceLightStatusBars = true
 
             val navController = rememberNavController()
+            val startDestination by appViewModel.startDestination.collectAsState(null)
 
-            AppNavigation(
-                modifier = Modifier.background(AppBackgroundColor), navController
-            )
+            startDestination?.let {
+                AppNavigation(
+                    navController = navController,
+                    startDestination = it,
+                )
+            }
         }
     }
 }
-
-

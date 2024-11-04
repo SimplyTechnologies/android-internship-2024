@@ -13,7 +13,6 @@ class EditUserProfileRepositoryImpl(
     private val apolloClient: ApolloClient,
 ) : EditUserProfileRepository {
     override fun updateProfile(updateProfileInput: UpdateProfileInput) = flow {
-        println("com.simply.birthdayapp.log started")
         emit(Result.Loading(UserDomain.default))
         val response = apolloClient.mutation(
             EditUserProfileMutation(
@@ -26,12 +25,10 @@ class EditUserProfileRepositoryImpl(
         ).execute()
 
         if (response.hasErrors()) {
-            println("com.simply.birthdayapp.log error :: " + response.errors)
             emit(
                 Result.Error(response.errors?.firstOrNull()?.message.toString(), UserDomain.default)
             )
         } else {
-            println("com.simply.birthdayapp.log success")
             emit(
                 Result.Success(UserDomain.default)
             )
