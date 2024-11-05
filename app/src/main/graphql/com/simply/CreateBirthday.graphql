@@ -1,0 +1,15 @@
+mutation CreateBirthday($createBirthdayInput: CreateBirthdayInput!) {
+    createBirthday(createBirthdayInput: $createBirthdayInput) {
+        id
+        createdAt
+        date
+        image
+        message
+        name
+        relation
+        upcomingAge
+        upcomingBirthday
+        updatedAt
+        userId
+    }
+}

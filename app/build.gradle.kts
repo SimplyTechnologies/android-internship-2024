@@ -106,5 +106,6 @@ apollo {
     service("service") {
         packageName.set("com.simply")
         schemaFile.set(file("src/main/graphql/com/simply/scheme.graphqls"))
+        mapScalar("DateTime","java.util.Date")
     }
 }

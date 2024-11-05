@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
@@ -60,6 +59,7 @@ fun CustomCalendar(
     var firstDayOfMonth by remember { mutableIntStateOf(calendar.get(Calendar.DAY_OF_WEEK) - 1) }
 
     fun updateCalendar() {
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
         currentMonth = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) ?: ""
         currentYear = calendar.get(Calendar.YEAR)
         daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -150,7 +150,7 @@ fun CustomCalendar(
                                 .background(
                                     color = if (
                                         dayToDisplay == selectedDay &&
-                                        selectedMonth == calendar.get(Calendar.MONTH) &&
+                                        selectedMonth == calendar.get(Calendar.MONTH) + 1 &&
                                         selectedYear == currentYear
                                     ) DarkPink else Color.White,
                                     shape = CircleShape
@@ -158,7 +158,7 @@ fun CustomCalendar(
                                 .clickable(onClick = {
                                     if (dayToDisplay != null) {
                                         onSelectedDay.invoke(dayToDisplay)
-                                        onSelectedMonth.invoke(calendar.get(Calendar.MONTH))
+                                        onSelectedMonth.invoke(calendar.get(Calendar.MONTH) + 1)
                                         onSelectedYear.invoke(calendar.get(Calendar.YEAR))
                                     }
                                 })
@@ -170,7 +170,7 @@ fun CustomCalendar(
                                 fontSize = 20.sp,
                                 color = if (
                                     dayToDisplay == selectedDay &&
-                                    selectedMonth == calendar.get(Calendar.MONTH) &&
+                                    selectedMonth == calendar.get(Calendar.MONTH) + 1 &&
                                     selectedYear == currentYear
                                 ) Color.White else DarkPink,
                             )

@@ -1,6 +1,10 @@
 package com.simply.birthdayapp.commonpresentation.components.image
 
+
+import android.Manifest
 import android.net.Uri
+import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -9,8 +13,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +26,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.simply.birthdayapp.R
 
 
 @Composable
@@ -33,6 +40,34 @@ fun ProfileImage(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { onAddPhotoClick(it) },
     )
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                photoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            } else {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.permission_to_access_photos_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    )
+
+    fun checkPermissionAndPickPhoto() {
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            }
+
+            else -> {
+                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+    }
 
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(context)
@@ -42,13 +77,12 @@ fun ProfileImage(
             ).build(),
         imageLoader = ImageLoader(context),
     )
-
     Box(
-        modifier = modifier.clickable {
-            photoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        }
+        modifier = modifier
+            .clickable {
+                checkPermissionAndPickPhoto()
+            }
+            .clip(CircleShape)
     ) {
         if (imageSource == ImageSource.Unknown || painter.state is AsyncImagePainter.State.Error) {
             ProfileImageFallback(Modifier.fillMaxSize())
@@ -62,7 +96,6 @@ fun ProfileImage(
         }
     }
 }
-
 
 @Preview
 @Composable

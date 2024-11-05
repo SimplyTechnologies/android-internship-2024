@@ -26,9 +26,13 @@ fun AppNavigation(
         }
 
         composable<AppDestination.MainDestination> {
-            MainScreen(navigateToLogin = {
+            MainScreen(
+                navigateToLogin = {
                 navController.navigate(AppDestination.AuthDestination)
-            })
+            },
+                navigateToMain = {
+                    navController.navigate(AppDestination.MainDestination)
+                })
         }
     }
 }
