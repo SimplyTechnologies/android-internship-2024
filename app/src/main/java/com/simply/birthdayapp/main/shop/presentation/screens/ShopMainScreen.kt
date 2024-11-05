@@ -9,14 +9,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
+import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
 import com.simply.birthdayapp.main.shop.navigation.ShopDestination
 import com.simply.birthdayapp.main.shop.navigation.ShopNavType
-import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
 import kotlin.reflect.typeOf
 
 @Composable
-fun ShopMainScreen(
-) {
+fun ShopMainScreen() {
     val shopNavController = rememberNavController()
     NavHost(
         modifier = Modifier

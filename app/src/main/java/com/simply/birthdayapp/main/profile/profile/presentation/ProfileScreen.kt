@@ -1,12 +1,10 @@
 package com.simply.birthdayapp.main.profile.profile.presentation
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,11 +16,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.components.button.AccountOptionButton
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
@@ -84,20 +82,18 @@ private fun ProfileContent(
     signOutClick: () -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            Modifier
+        TopAppBarWithBackButton(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 48.dp), contentAlignment = Alignment.TopEnd
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = null,
-                modifier = Modifier.height(44.dp)
-            )
-        }
+                .padding(bottom = 48.dp),
+            showTopBar = true,
+            showBackButton = false
+        )
 
         NetworkImage(modifier = Modifier.size(100.dp), url = data.image)
 
@@ -116,8 +112,7 @@ private fun ProfileContent(
 
         AccountOptionButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             text = stringResource(R.string.change_password)
         ) {
             navigateToChangePassword()
@@ -125,8 +120,7 @@ private fun ProfileContent(
 
         AccountOptionButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             text = stringResource(R.string.edit_account)
         ) {
             navigateToEditAccount(data)
@@ -134,8 +128,7 @@ private fun ProfileContent(
 
         AccountOptionButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             text = stringResource(R.string.sign_out)
         ) {
             signOutClick()

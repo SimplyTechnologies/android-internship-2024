@@ -1,23 +1,21 @@
 package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.auth.navigation.AuthNavigation
 import com.simply.birthdayapp.auth.navigation.Destination
-import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.AuthActionBar
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import org.koin.androidx.compose.koinViewModel
 
@@ -36,12 +34,14 @@ fun AuthScreen(
     } == false
 
     startDest?.let {
-        Scaffold(modifier = Modifier
+        Scaffold(modifier = modifier
             .fillMaxSize()
             .background(AppBackgroundColor), topBar = {
-            AuthActionBar(
-                modifier = Modifier.padding(WindowInsets.statusBars.asPaddingValues()),
+            TopAppBarWithBackButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
                 showTopBar = isNotLandingScreen,
+                showBackButton = true
             ) {
                 navController.navigate(Destination.LandingDestination) {
                     popUpTo(navController.graph.findStartDestination().id) {
@@ -53,7 +53,7 @@ fun AuthScreen(
             }
         }) { innerPadding ->
             AuthNavigation(
-                modifier = modifier.padding(innerPadding),
+                modifier = Modifier,
                 navController = navController,
                 navigateToMain = navigateToMain,
                 startDestination = it,

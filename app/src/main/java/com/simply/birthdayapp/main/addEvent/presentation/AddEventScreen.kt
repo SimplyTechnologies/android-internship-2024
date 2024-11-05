@@ -1,7 +1,6 @@
 package com.simply.birthdayapp.main.addEvent.presentation
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.components.image.ProfileImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.SecondaryTextStyle
@@ -106,20 +106,12 @@ fun AddEventScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.TopEnd,
-            ) {
-                Image(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(88.dp),
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = null
-                )
-            }
+            TopAppBarWithBackButton(
+                modifier = Modifier.fillMaxWidth(),
+                showTopBar = true,
+                showBackButton = false
+            )
+
             ProfileImage(imageSource = imageSource) {
                 viewModel.setImageUri(it)
                 viewModel.imageEncode(context)

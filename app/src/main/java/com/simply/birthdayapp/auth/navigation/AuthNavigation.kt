@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.auth.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -9,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.simply.birthdayapp.auth.landing.presentation.LandingScreen
 import com.simply.birthdayapp.auth.registration.presentation.RegistrationScreen
 import com.simply.birthdayapp.auth.signIn.presentation.SignInScreen
+import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 
 @Composable
 fun AuthNavigation(
@@ -16,7 +18,9 @@ fun AuthNavigation(
     navigateToMain: () -> Unit, startDestination: Destination,
 ) {
     NavHost(
-        modifier = modifier, navController = navController, startDestination = startDestination
+        modifier = modifier.background(AppBackgroundColor),
+        navController = navController,
+        startDestination = startDestination
     ) {
 
         composable<Destination.LandingDestination> {

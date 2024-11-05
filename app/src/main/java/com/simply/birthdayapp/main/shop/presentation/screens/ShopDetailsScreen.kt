@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.AuthActionBar
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkGray
 import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
@@ -41,7 +41,7 @@ fun ShopDetailsScreen(
         modifier = Modifier.fillMaxSize(),
     ) {
         Spacer(modifier = Modifier.height(8.dp))
-        AuthActionBar(
+        TopAppBarWithBackButton(
             onBackPress = { navigateToShopScreen() }
         )
 

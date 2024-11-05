@@ -2,7 +2,6 @@ package com.simply.birthdayapp.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,14 +24,15 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
-    Scaffold(modifier = Modifier.fillMaxSize().background(AppBackgroundColor), bottomBar = {
+    Scaffold(modifier = Modifier
+        .fillMaxSize()
+        .background(AppBackgroundColor), bottomBar = {
         BottomNavigationBar(navController)
     }) { innerPadding ->
         NavHost(
             modifier = modifier
                 .fillMaxSize()
-                .background(AppBackgroundColor)
-                .padding(innerPadding),
+                .background(AppBackgroundColor),
             navController = navController,
             startDestination = BottomNavBarDestination.HomeDestination
         ) {
