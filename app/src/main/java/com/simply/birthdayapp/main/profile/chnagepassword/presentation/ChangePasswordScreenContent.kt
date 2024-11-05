@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commonpresentation.components.button.DoneButton
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
-import com.simply.birthdayapp.main.profile.chnagepassword.presentation.component.PasswordTextField
+import com.simply.birthdayapp.main.profile.chnagepassword.presentation.component.TextFieldWithPlaceholder
 
 @Composable
 fun ChangePasswordScreenContent(
@@ -62,14 +62,14 @@ fun ChangePasswordScreenContent(
                     .padding(start = 38.dp, end = 38.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                PasswordTextField(modifier = Modifier
+                TextFieldWithPlaceholder(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                     textValue = oldPassword,
                     placeholder = stringResource(R.string.old_password),
                     onValueChange = { viewModel.setOldPassword(it) })
 
-                PasswordTextField(modifier = Modifier
+                TextFieldWithPlaceholder(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                     textValue = newPassword,
@@ -77,7 +77,7 @@ fun ChangePasswordScreenContent(
                     placeholder = stringResource(R.string.new_password),
                     onValueChange = { viewModel.setNewPassword(it) })
 
-                PasswordTextField(modifier = Modifier
+                TextFieldWithPlaceholder(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                     textValue = repeatNewPassword,

@@ -34,14 +34,13 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = koinViewModel(),
-    navigateToEditAccount: () -> Unit = {},
+    navigateToEditAccount: (UserDomain) -> Unit = {},
     navigateToLogin: () -> Unit = {},
     navigateToChangePassword: () -> Unit = {}
 ) {
     LaunchedEffect(Unit) {
         viewModel.fetchUserProfile()
     }
-
 
     val state by viewModel.profileUiState.collectAsState()
     val context = LocalContext.current
@@ -65,12 +64,11 @@ fun ProfileScreen(
                 modifier = modifier,
                 data = uiState.data,
                 navigateToEditAccount = navigateToEditAccount,
-                logOutClick = {
-                    viewModel.logOut()
-                    navigateToLogin()
-                },
                 navigateToChangePassword = navigateToChangePassword
-            )
+            ) {
+                viewModel.logOut()
+                navigateToLogin()
+            }
         }
 
         else -> {}
@@ -81,12 +79,14 @@ fun ProfileScreen(
 private fun ProfileContent(
     modifier: Modifier = Modifier,
     data: UserDomain = UserDomain.default,
-    navigateToEditAccount: () -> Unit = {},
-    logOutClick: () -> Unit = {},
-    navigateToChangePassword: () -> Unit = {}
+    navigateToEditAccount: (UserDomain) -> Unit = {},
+    navigateToChangePassword: () -> Unit = {},
+    signOutClick: () -> Unit
 ) {
-
-    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()
@@ -129,7 +129,7 @@ private fun ProfileContent(
                 .padding(horizontal = 16.dp),
             text = stringResource(R.string.edit_account)
         ) {
-            navigateToEditAccount()
+            navigateToEditAccount(data)
         }
 
         AccountOptionButton(
@@ -138,7 +138,7 @@ private fun ProfileContent(
                 .padding(horizontal = 16.dp),
             text = stringResource(R.string.sign_out)
         ) {
-            logOutClick()
+            signOutClick()
         }
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,10 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commonpresentation.components.image.ProfileImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.SecondaryTextStyle
 import com.simply.birthdayapp.main.addEvent.presentation.components.CustomCalendar
-import com.simply.birthdayapp.main.addEvent.presentation.components.ProfileImage
 import com.simply.birthdayapp.main.addEvent.presentation.components.RelativesSelection
 import org.koin.androidx.compose.koinViewModel
 
@@ -49,12 +50,12 @@ fun AddEventScreen(
     val name = viewModel.name.collectAsState()
     val relationship = viewModel.relationship.collectAsState()
     val familyRelations = viewModel.familyRelation.collectAsState()
-    val imageUrl = viewModel.imageUrl.collectAsState()
     val selectedDay = viewModel.selectedDay.collectAsState()
     val selectedMonth = viewModel.selectedMonth.collectAsState()
     val selectedYear = viewModel.selectedYear.collectAsState()
     val isAddRelation = viewModel.isAddRelation.collectAsState()
     val addNewRelation = viewModel.newRelation.collectAsState()
+    val imageSource by viewModel.imageSource.collectAsState()
     val scrollState = rememberScrollState()
     Box(modifier = modifier.fillMaxWidth()) {
         Column(
@@ -79,7 +80,10 @@ fun AddEventScreen(
                     contentDescription = null
                 )
             }
-            ProfileImage(imageUrl.value) {
+            ProfileImage(
+                modifier = Modifier.size(100.dp),
+                imageSource = imageSource,
+            ) {
                 viewModel.setImageUrl(it)
             }
             Box(
@@ -180,8 +184,7 @@ fun AddEventScreen(
                     )
                 )
             }
-            CustomCalendar(
-                selectedDay = selectedDay.value,
+            CustomCalendar(selectedDay = selectedDay.value,
                 selectedMonth = selectedMonth.value,
                 selectedYear = selectedYear.value,
                 onSelectedDay = { viewModel.setSelectedDay(it) },
@@ -198,8 +201,7 @@ fun AddEventScreen(
                 )
             ) {
                 Text(
-                    modifier = Modifier
-                        .padding(vertical = 4.dp, horizontal = 16.dp),
+                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp),
                     text = stringResource(R.string.done_button_text),
                     style = SecondaryTextStyle.copy(color = Color.White)
                 )
