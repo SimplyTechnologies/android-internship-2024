@@ -112,19 +112,22 @@ private fun ProfileContent(
         )
 
         AccountOptionButton(
-            modifier = Modifier.fillMaxWidth(), text = stringResource(R.string.change_password)
+            modifier = Modifier
+                .fillMaxWidth(), text = stringResource(R.string.change_password)
         ) {
             navigateToChangePassword()
         }
 
         AccountOptionButton(
-            modifier = Modifier.fillMaxWidth(), text = stringResource(R.string.edit_account)
+            modifier = Modifier
+                .fillMaxWidth(), text = stringResource(R.string.edit_account)
         ) {
             navigateToEditAccount(data)
         }
 
         AccountOptionButton(
-            modifier = Modifier.fillMaxWidth(), text = stringResource(R.string.sign_out)
+            modifier = Modifier
+                .fillMaxWidth(), text = stringResource(R.string.sign_out)
         ) {
             signOutClick()
         }
