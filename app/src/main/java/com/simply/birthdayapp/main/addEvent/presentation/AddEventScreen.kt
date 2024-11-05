@@ -79,7 +79,7 @@ fun AddEventScreen(
         is AddEventUiState.Success -> {
             Toast.makeText(
                 LocalContext.current,
-                "Success",
+                stringResource(R.string.success),
                 Toast.LENGTH_SHORT
             ).show()
             viewModel.resetState()

@@ -9,21 +9,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
@@ -32,14 +27,6 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.DarkPink
-import com.simply.birthdayapp.commonpresentation.theme.MistyRose
-
-sealed class ImageSource(val source: String?) {
-    data object Unknown : ImageSource(null)
-    data class Url(val url: String) : ImageSource(url)
-    data class Uri(val uri: String) : ImageSource(uri)
-}
 
 
 @Composable
@@ -53,7 +40,6 @@ fun ProfileImage(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { onAddPhotoClick(it) },
     )
-
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -62,8 +48,11 @@ fun ProfileImage(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             } else {
-                Toast.makeText(context,
-                    context.getString(R.string.permission_to_access_photos_denied), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.permission_to_access_photos_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     )
@@ -73,13 +62,12 @@ fun ProfileImage(
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
                 permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
             }
+
             else -> {
                 permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
-
-
 
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(context)
@@ -89,12 +77,11 @@ fun ProfileImage(
             ).build(),
         imageLoader = ImageLoader(context),
     )
-
     Box(
         modifier = modifier
             .clickable {
-            checkPermissionAndPickPhoto()
-        }
+                checkPermissionAndPickPhoto()
+            }
             .clip(CircleShape)
     ) {
         if (imageSource == ImageSource.Unknown || painter.state is AsyncImagePainter.State.Error) {
@@ -109,43 +96,12 @@ fun ProfileImage(
         }
     }
 }
-@Composable
-fun ProfileImageFallback(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(MistyRose)
-            .border(2.dp, DarkPink, CircleShape),
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_image_plus),
-            contentDescription = null,
-            tint = DarkPink
-        )
-    }
-}
-
 
 @Preview
 @Composable
 private fun AddProfileImageDefaultPreview() {
-    ProfileImage(modifier = Modifier.size(160.dp), imageSource = ImageSource.Unknown)
+    ProfileImage(
+        modifier = Modifier.size(160.dp),
+        imageSource = ImageSource.Unknown,
+    )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

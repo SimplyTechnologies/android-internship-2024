@@ -30,16 +30,19 @@ val commonDataModule = module {
     singleOf(::DataStoreProviderImpl) { bind<ClearTokenDataStoreProvider>() }
     singleOf(::DataStoreProviderImpl) { bind<DataStoreProvider>() }
     singleOf(::TokenProvider)
-    singleOf(::ImageEncodeDecodeHelper) {bind<ImageEncoderDecoderRepository>()}
+    singleOf(::ImageEncodeDecodeHelper) { bind<ImageEncoderDecoderRepository>() }
 
     single<ApolloClient> {
         val authInterceptor = AuthInterceptor(get())
-        ApolloClient.Builder().serverUrl(BuildConfig.API_URL)
+        ApolloClient.Builder()
+            .serverUrl(BuildConfig.API_URL)
             .okHttpClient(
-            OkHttpClient.Builder().addInterceptor(authInterceptor).build()
-        )
+                OkHttpClient.Builder()
+                    .addInterceptor(authInterceptor)
+                    .build()
+            )
             .addCustomScalarAdapter(DateTime.type, DateAdapter)
-                .build()
+            .build()
     }
 }
 

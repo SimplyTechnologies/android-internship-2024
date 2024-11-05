@@ -4,11 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.net.Uri
+import android.media.ExifInterface
 import android.util.Base64
 import com.simply.birthdayapp.commondomain.repository.ImageEncoderDecoderRepository
 import java.io.ByteArrayOutputStream
-import android.media.ExifInterface
 
 class ImageEncodeDecodeHelper : ImageEncoderDecoderRepository {
 

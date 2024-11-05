@@ -52,7 +52,8 @@ class AddEventViewModel(
     private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
     val imageSource: StateFlow<ImageSource> = _imageSource.asStateFlow()
 
-    fun imageEncode(context: Context):String? =imageSource.value.source?.let { imageEncodeUseCase.invoke(it, context) }
+    fun imageEncode(context: Context): String? =
+        imageSource.value.source?.let { imageEncodeUseCase.invoke(it, context) }
 
 
     fun setIsAddRelation(newValue: Boolean) {
@@ -114,7 +115,11 @@ class AddEventViewModel(
         }
     }
 
-    private fun createDateFromSelectedValues(selectedYear: Int, selectedMonth: Int, selectedDay: Int): Date {
+    private fun createDateFromSelectedValues(
+        selectedYear: Int,
+        selectedMonth: Int,
+        selectedDay: Int
+    ): Date {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, selectedYear)
             set(Calendar.MONTH, selectedMonth - 1)
@@ -129,10 +134,14 @@ class AddEventViewModel(
 
     fun addEvent(context: Context) {
         viewModelScope.launch {
-           val image= imageEncode(context)
+            val image = imageEncode(context)
             _addEventUiState.value = AddEventUiState.Loading
-            val selectedDate = createDateFromSelectedValues(_selectedYear.value, _selectedMonth.value, _selectedDay.value)
-            val result = createBirthdayUseCase.invoke(
+            val selectedDate = createDateFromSelectedValues(
+                _selectedYear.value,
+                _selectedMonth.value,
+                _selectedDay.value
+            )
+            createBirthdayUseCase.invoke(
                 CreateBirthdayInputDomain(
                     date = selectedDate,
                     image = image,
@@ -140,17 +149,20 @@ class AddEventViewModel(
                     name = _name.value,
                     relation = _relationship.value
                 )
-            )
-            _addEventUiState.value = when (result) {
-                is Result.Success -> {
-                    AddEventUiState.Success(result.data.toString())
-                }
+            ).collect {
+                _addEventUiState.value = when (it) {
+                    is Result.Success -> {
+                        AddEventUiState.Success(it.data.toString())
+                    }
 
-                is Result.Error -> {
-                    AddEventUiState.Error(result.message)
+                    is Result.Error -> {
+                        AddEventUiState.Error(it.message)
+                    }
+
+                    is Result.Loading -> {
+                        AddEventUiState.Loading
+                    }
                 }
-                is Result.Loading -> {
-                    AddEventUiState.Loading}
             }
         }
     }

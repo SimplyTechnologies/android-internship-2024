@@ -12,7 +12,7 @@ object BirthdayMapper {
             name = apolloBirthday.name,
             date = apolloBirthday.date.toString(),
             upcomingAge = apolloBirthday.upcomingAge,
-            upcomingBirthday = null,
+            upcomingBirthday = apolloBirthday.upcomingBirthday.toString(),
             relation = apolloBirthday.relation,
             image = apolloBirthday.image,
             message = apolloBirthday.message,

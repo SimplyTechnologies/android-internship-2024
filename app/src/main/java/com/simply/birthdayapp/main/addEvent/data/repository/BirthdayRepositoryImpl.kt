@@ -12,74 +12,51 @@ import com.simply.birthdayapp.main.addEvent.domain.model.CreateBirthdayInputDoma
 import com.simply.birthdayapp.main.addEvent.domain.repository.BirthDayRepository
 import com.simply.type.CreateBirthdayInput
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class BirthdayRepositoryImpl(
     private val apolloClient: ApolloClient
 ) : BirthDayRepository {
 
-    override suspend fun createBirthday(input: CreateBirthdayInputDomain): Result<Birthday> {
-        return withContext(Dispatchers.IO) {
-            Result.Loading(Birthday(
-                "",
-                "",
-                0,
-                "",
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0
-            ))
-            val response = apolloClient.mutation(
-                CreateBirthdayMutation(
-                    CreateBirthdayInput(
-                        date = input.toCreateBirthdayInputData().date,
-                        image = Optional.presentIfNotNull(input.toCreateBirthdayInputData().image),
-                        message = Optional.presentIfNotNull(input.toCreateBirthdayInputData().message),
-                        name = input.toCreateBirthdayInputData().name,
-                        relation = input.toCreateBirthdayInputData().relation
-                    )
+    override fun createBirthday(input: CreateBirthdayInputDomain): Flow<Result<Birthday>> = flow {
+        emit(Result.Loading(Birthday()))
+        val inputModel = input.toCreateBirthdayInputData()
+        val response = apolloClient.mutation(
+            CreateBirthdayMutation(
+                CreateBirthdayInput(
+                    date = inputModel.date,
+                    image = Optional.presentIfNotNull(inputModel.image),
+                    message = Optional.presentIfNotNull(inputModel.message),
+                    name = inputModel.name,
+                    relation = inputModel.relation
                 )
-            ).execute()
+            )
+        ).execute()
 
-            val birthdayData = response.data
-            val birthday = birthdayData?.createBirthday?.let {
-                BirthdayDataModel(
-                    createdAt = it.createdAt.toString(),
-                    date = it.date.toString(),
-                    id = it.id,
-                    image = it.image,
-                    message = it.message,
-                    name = it.name,
-                    relation = it.relation,
-                    upcomingAge = it.upcomingAge,
-                    updatedAt = it.updatedAt.toString(),
-                    upcomingBirthday = it.upcomingBirthday.toString(),
-                    userId = it.userId
-                ).toBirthday()
-            }
-            if (birthday != null) {
-                Result.Success(birthday)
-            } else {
-                Result.Error(
-                    message = response.errors?.firstOrNull()?.message ?: "An unexpected error occurred", data = Birthday(
-                        "",
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        "",
-                        0,
-                        "",
-                        "",
-                        0
-                    )
-                )
-            }
+        val birthdayData = response.data?.createBirthday
+        if (birthdayData != null) {
+            val birthday = BirthdayDataModel(
+                createdAt = birthdayData.createdAt.toString(),
+                date = birthdayData.date.toString(),
+                id = birthdayData.id,
+                image = birthdayData.image,
+                message = birthdayData.message,
+                name = birthdayData.name,
+                relation = birthdayData.relation,
+                upcomingAge = birthdayData.upcomingAge,
+                updatedAt = birthdayData.updatedAt.toString(),
+                upcomingBirthday = birthdayData.upcomingBirthday.toString(),
+                userId = birthdayData.userId
+            ).toBirthday()
+
+            emit(Result.Success(birthday))
+        } else {
+            emit(Result.Error(response.errors?.firstOrNull()?.message ?: "", Birthday()))
         }
-    }
+    }.catch { e ->
+        emit(Result.Error(e.message ?: "", Birthday()))
+    }.flowOn(Dispatchers.IO)
 }

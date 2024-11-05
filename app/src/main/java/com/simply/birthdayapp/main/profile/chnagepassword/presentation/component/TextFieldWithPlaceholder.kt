@@ -22,11 +22,12 @@ import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.PrimaryTextStyle
 
 @Composable
-fun PasswordTextField(
+fun TextFieldWithPlaceholder(
     modifier: Modifier = Modifier,
     placeholder: String = "",
     textValue: String,
     error: Int? = null,
+    isPassword: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
     onValueChange: (String) -> Unit = {}
 ) {
@@ -42,7 +43,7 @@ fun PasswordTextField(
             textValue = textValue,
             error = error?.let { stringResource(it) },
             onValueChange = onValueChange,
-            isPassword = true,
+            isPassword = isPassword,
             containerColor = Color.White,
             shape = RoundedCornerShape(24.dp),
             keyboardOptions = keyboardOptions
@@ -55,7 +56,7 @@ fun PasswordTextField(
 @Composable
 private fun PasswordTextFieldPreview() {
     val password by remember { mutableStateOf("") }
-    PasswordTextField(
+    TextFieldWithPlaceholder(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),

@@ -1,7 +1,6 @@
 package com.simply.birthdayapp.commondomain.usecase
 
 import android.content.Context
-import android.net.Uri
 import com.simply.birthdayapp.commondomain.repository.ImageEncoderDecoderRepository
 
 interface ImageEncodeUseCase {

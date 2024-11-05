@@ -34,7 +34,6 @@ class ProfileViewModel(
             _profileUiState.value = ProfileUiState.Error(
                 it.message ?: ErrorMessages.GENERAL_ERROR
             )
-
         }.launchIn(viewModelScope)
     }
 
