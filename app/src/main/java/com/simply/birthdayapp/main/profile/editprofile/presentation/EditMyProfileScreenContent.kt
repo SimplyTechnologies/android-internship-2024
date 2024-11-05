@@ -34,13 +34,12 @@ fun EditMyProfileScreenContent(
 
     val name by viewModel.name.collectAsState()
     val surname by viewModel.surname.collectAsState()
+    val imageSource by viewModel.imageSource.collectAsState()
 
     val nameError by viewModel.nameError.collectAsState()
     val surnameError by viewModel.surnameError.collectAsState()
 
     val doneButtonEnableState by viewModel.doneButtonEnableState.collectAsState()
-
-    val imageSource by viewModel.imageSource.collectAsState()
 
     Column(
         modifier = modifier.fillMaxSize(),

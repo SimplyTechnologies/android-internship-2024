@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-private const val TAG = "EditUserProfileRepository"
-
 class EditUserProfileRepositoryImpl(
     private val apolloClient: ApolloClient,
 ) : EditUserProfileRepository {

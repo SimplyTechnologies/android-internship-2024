@@ -24,7 +24,6 @@ fun EditMyProfileScreen(
     navigateBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
-
     val screenUiState by viewModel.screenUiState.collectAsState()
 
     when (val state = screenUiState) {

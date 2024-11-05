@@ -98,23 +98,19 @@ class EditMyProfileViewModel(
             )
         ).onEach {
             when (it) {
-                is Result.Error -> _screenUiState.emit(
-                    EditProfileUiState.Error(it.message)
-                )
+                is Result.Error -> _screenUiState.value = EditProfileUiState.Error(it.message)
 
                 is Result.Loading -> {
-                    _screenUiState.emit(EditProfileUiState.Loading)
+                    _screenUiState.value = EditProfileUiState.Loading
                 }
 
                 is Result.Success -> {
-                    _screenUiState.emit(EditProfileUiState.Success)
+                    _screenUiState.value = EditProfileUiState.Success
                 }
             }
         }.catch {
-            _screenUiState.emit(
-                EditProfileUiState.Error(
-                    it.message ?: ErrorMessages.GENERAL_ERROR
-                )
+            _screenUiState.value = EditProfileUiState.Error(
+                it.message ?: ErrorMessages.GENERAL_ERROR
             )
         }.launchIn(viewModelScope)
     }
