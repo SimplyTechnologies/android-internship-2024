@@ -39,16 +39,12 @@ fun ShopScreen(
     val searchText by viewModel.searchText.collectAsState()
 
     Column(
-        modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LogoActionBar(modifier = Modifier.fillMaxWidth())
-        SearchBar(
-            text = searchText,
+        SearchBar(text = searchText,
             onClearClick = { viewModel.onClearSearch() },
-            onSearchClick = { viewModel.onSearchText(it) }
-        )
+            onSearchClick = { viewModel.onSearchText(it) })
         when (val uiState = shopsState) {
             is ShopListUiState.Success -> {
                 if (uiState.data.isEmpty()) {
@@ -61,12 +57,16 @@ fun ShopScreen(
                     LazyColumn(
                         Modifier
                             .fillMaxSize()
-                            .padding(start = 24.dp, end = 24.dp, top = 18.dp),
+                            .padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 18.dp,
+                                bottom = 52.dp,
+                            ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         items(uiState.data) { shop ->
-                            ShopListItem(
-                                shopName = shop.name,
+                            ShopListItem(shopName = shop.name,
                                 avatarUrl = shop.avatarUrl,
                                 onItemClick = { navigateToShopDetailsScreen(shop) })
                         }
@@ -76,21 +76,17 @@ fun ShopScreen(
 
             ShopListUiState.Loading -> {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
-                        strokeWidth = 4.dp,
-                        color = DarkPink
+                        strokeWidth = 4.dp, color = DarkPink
                     )
                 }
             }
 
             is ShopListUiState.Error -> {
                 Toast.makeText(
-                    LocalContext.current,
-                    stringResource(R.string.general_error),
-                    Toast.LENGTH_SHORT
+                    LocalContext.current, stringResource(R.string.general_error), Toast.LENGTH_SHORT
                 ).show()
             }
         }

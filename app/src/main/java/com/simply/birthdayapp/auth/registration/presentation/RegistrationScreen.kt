@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -56,7 +57,6 @@ fun RegistrationScreen(
 
     when (uiState) {
         is SignUpUiState.Success -> {
-
             Toast.makeText(
                 LocalContext.current,
                 stringResource(R.string.user_registered_successfully),
@@ -87,8 +87,6 @@ fun RegistrationScreen(
                         }
                     })
             }
-
-
         }
 
 
@@ -101,20 +99,17 @@ fun RegistrationScreen(
                     modifier = Modifier.size(48.dp), color = DarkPink
                 )
             }
-
         }
 
-        else -> {
-
-        }
-
+        else -> {}
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(verticalScrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(top = 60.dp)
+            .verticalScroll(verticalScrollState)
+            .imePadding(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(56.dp))
 
@@ -136,17 +131,15 @@ fun RegistrationScreen(
                     text = stringResource(R.string.register), style = AuthTitleTextStyle
                 )
 
-                // Name Field
-                InputTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                // Input Fields
+                InputTextField(modifier = Modifier.fillMaxWidth(),
                     textValue = name,
                     error = nameError,
                     placeholder = stringResource(R.string.name),
                     onValueChange = {
                         viewModel.setName(it)
                         viewModel.validateName()
-                    },
-                )
+                    })
 
                 // Surname Field
                 InputTextField(modifier = Modifier.fillMaxWidth(),
@@ -205,5 +198,3 @@ fun RegistrationScreen(
         }
     }
 }
-
-

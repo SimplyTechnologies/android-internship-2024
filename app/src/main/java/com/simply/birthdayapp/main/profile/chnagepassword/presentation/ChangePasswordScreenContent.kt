@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -42,6 +45,8 @@ fun ChangePasswordScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .imePadding()
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
@@ -55,16 +60,18 @@ fun ChangePasswordScreenContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 TextFieldWithPlaceholder(modifier = Modifier.fillMaxWidth(),
                     textValue = oldPassword,
+                    isPassword = true,
                     placeholder = stringResource(R.string.old_password),
                     onValueChange = { viewModel.setOldPassword(it) })
 
                 TextFieldWithPlaceholder(modifier = Modifier.fillMaxWidth(),
                     textValue = newPassword,
+                    isPassword = true,
                     error = newPasswordError,
                     placeholder = stringResource(R.string.new_password),
                     onValueChange = { viewModel.setNewPassword(it) })
@@ -72,6 +79,7 @@ fun ChangePasswordScreenContent(
                 TextFieldWithPlaceholder(modifier = Modifier.fillMaxWidth(),
                     textValue = repeatNewPassword,
                     error = repeatNewPasswordError,
+                    isPassword = true,
                     placeholder = stringResource(R.string.repeat_new_password),
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     onValueChange = { viewModel.setRepeatNewPassword(it) })

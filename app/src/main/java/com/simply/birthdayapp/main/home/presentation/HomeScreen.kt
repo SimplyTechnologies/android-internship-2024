@@ -26,7 +26,11 @@ fun HomeScreen(
     val birthdayList by viewModel.birthdays.collectAsState(emptyList())
     Column(modifier = modifier) {
         TopAppBarWithBackButton(Modifier.fillMaxWidth(), showInCenter = true, showTopBar = true)
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 52.dp)
+        ) {
             items(birthdayList, key = { item -> item.id }) {
                 BirthdayItem(
                     Modifier
