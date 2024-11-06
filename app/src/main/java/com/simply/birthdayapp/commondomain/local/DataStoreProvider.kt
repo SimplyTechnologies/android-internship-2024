@@ -7,7 +7,6 @@ interface DataStoreProvider {
     suspend fun setSignedIn(isSignedIn: Boolean)
     suspend fun saveAccessToken(token: String)
     fun getToken(): Flow<String>
-
 }
 
 interface ClearTokenDataStoreProvider {

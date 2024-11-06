@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.main
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -17,6 +18,7 @@ import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
 import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -29,7 +31,7 @@ fun MainScreen(
         .fillMaxSize()
         .background(AppBackgroundColor), bottomBar = {
         BottomNavigationBar(navController)
-    }) { innerPadding ->
+    }) {
         NavHost(
             modifier = modifier
                 .fillMaxSize()

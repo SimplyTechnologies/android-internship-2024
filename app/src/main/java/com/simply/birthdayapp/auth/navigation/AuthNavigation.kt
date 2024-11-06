@@ -25,22 +25,9 @@ fun AuthNavigation(
 
         composable<Destination.LandingDestination> {
             LandingScreen(modifier = modifier, onSignInClick = {
-                navController.navigate(Destination.SignInDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                    launchSingleTop = true
-                }
+                navController.navigate(Destination.SignInDestination)
             }, onRegisterClick = {
-                navController.navigate(Destination.RegistrationDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                    launchSingleTop = true
-                }
-
+                navController.navigate(Destination.RegistrationDestination)
             })
         }
 

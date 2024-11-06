@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.auth.navigation.AuthNavigation
@@ -19,6 +19,7 @@ import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAp
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import org.koin.androidx.compose.koinViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AuthScreen(
     modifier: Modifier = Modifier,
@@ -39,17 +40,12 @@ fun AuthScreen(
             .background(AppBackgroundColor), topBar = {
             TopAppBarWithBackButton(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp),
+                    .padding(horizontal = 24.dp)
+                    .background(AppBackgroundColor),
                 showTopBar = isNotLandingScreen,
                 showBackButton = true
             ) {
-                navController.navigate(Destination.LandingDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                    launchSingleTop = true
-                }
+                navController.navigate(Destination.LandingDestination)
             }
         }) { innerPadding ->
             AuthNavigation(
