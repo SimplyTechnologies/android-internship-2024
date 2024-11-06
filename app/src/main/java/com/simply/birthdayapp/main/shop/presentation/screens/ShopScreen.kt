@@ -39,8 +39,7 @@ fun ShopScreen(
     val searchText by viewModel.searchText.collectAsState()
 
     Column(
-        modifier = modifier
-            .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LogoActionBar(modifier = Modifier.fillMaxWidth())
         SearchBar(text = searchText,
