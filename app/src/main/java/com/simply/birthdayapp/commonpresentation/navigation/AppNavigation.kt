@@ -1,5 +1,6 @@
 package com.simply.birthdayapp.commonpresentation.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -14,6 +15,7 @@ import com.simply.birthdayapp.auth.authnavigation.presentation.auth.AuthScreen
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.MainScreen
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
@@ -24,7 +26,7 @@ fun AppNavigation(
         Modifier
             .fillMaxSize()
             .background(AppBackgroundColor)
-    ) { innerPadding ->
+    ) {
         NavHost(
             modifier = Modifier
                 .background(AppBackgroundColor)
