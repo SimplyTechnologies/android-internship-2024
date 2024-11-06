@@ -73,5 +73,12 @@
     <string name="zodiac_sagittarius">Sagittarius</string>
 
     <string name="send_message">Share via</string>
+    <string name="gen_message">Generate message</string>
+    <string name="birthday_relationship">Relationship:\u00A0</string>
+    <string name="zodiac_sign">Zodiac Sign:\u00A0</string>
+    <string name="send_button">Send</string>
+    <string name="generated_message">There are many variations of passages of Lorem Ipsum available,
+        but the majority have suffered alteration in some form, by injected humour,
+        or randomised words which don\'t look even slightly believable.</string>
 
 </resources>

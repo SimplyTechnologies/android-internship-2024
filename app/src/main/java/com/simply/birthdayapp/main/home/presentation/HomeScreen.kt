@@ -13,19 +13,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
+import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
-import com.simply.birthdayapp.main.home.presentation.component.item.BirthdayItem
-import com.simply.birthdayapp.main.components.actionbar.LogoActionBar
-import com.simply.birthdayapp.main.home.presentation.HomeViewModel
 import com.simply.birthdayapp.main.home.presentation.components.BirthdayItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = koinViewModel(),
+    viewModel: HomeViewModel  = koinViewModel(),
+    navigateToBirthdayDetailsScreen: (Birthday) -> Unit = {}
 ) {
     val birthdayList by viewModel.birthdays.collectAsState(emptyList())
     Column(modifier = modifier) {
@@ -40,7 +38,9 @@ fun HomeScreen(
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp, vertical = 8.dp),
-                    item = it
+                    item = it,
+                    onItemClick = { navigateToBirthdayDetailsScreen(it) }
+
                 )
             }
         }

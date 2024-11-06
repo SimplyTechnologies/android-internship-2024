@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commondomain.model.Birthday
-import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.AuthActionBar
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkGray
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
@@ -71,7 +71,7 @@ fun BirthdayDetailsScreen(
         modifier = Modifier.fillMaxSize(),
     ) {
         Spacer(modifier = Modifier.height(8.dp))
-        AuthActionBar(
+        TopAppBarWithBackButton(
             onBackPress = { navigateToHomeScreen() }
         )
 
@@ -85,7 +85,6 @@ fun BirthdayDetailsScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = "Edit",
-                    tint = Color.Black,
                 )
             }
         }

@@ -13,7 +13,7 @@ import java.util.Locale
 
 class BirthdayDetailsViewModel(
     birthday: Birthday,
-    private val context: Context
+    private val context: Context,
 ) : ViewModel() {
     private val _birthday = MutableStateFlow(birthday)
     val birthday = _birthday.asStateFlow()
