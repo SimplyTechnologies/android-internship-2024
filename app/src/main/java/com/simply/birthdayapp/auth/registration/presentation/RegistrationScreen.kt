@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -36,8 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegistrationScreen(
-    viewModel: RegistrationViewModel = koinViewModel(),
-    navigateToLanding: () -> Unit
+    viewModel: RegistrationViewModel = koinViewModel(), navigateToLanding: () -> Unit
 ) {
     val verticalScrollState = rememberScrollState()
     val name by viewModel.name.collectAsState()
@@ -69,17 +69,14 @@ fun RegistrationScreen(
         is SignUpUiState.Error -> {
             if ((uiState as SignUpUiState.Error).message == stringResource(R.string.try_another_email)) {
                 Toast.makeText(
-                    LocalContext.current,
-                    stringResource(R.string.user_exists),
-                    Toast.LENGTH_SHORT
+                    LocalContext.current, stringResource(R.string.user_exists), Toast.LENGTH_SHORT
                 ).show()
                 viewModel.resetState()
                 navigateToLanding.invoke()
             } else {
-                AlertDialog(
-                    onDismissRequest = {
-                        viewModel.resetState()
-                    },
+                AlertDialog(onDismissRequest = {
+                    viewModel.resetState()
+                },
                     title = { Text(text = stringResource(R.string.registration_error)) },
                     text = { Text(text = stringResource(R.string.registration_error_message)) },
                     confirmButton = {
@@ -88,8 +85,7 @@ fun RegistrationScreen(
                         }) {
                             Text(text = "Ok")
                         }
-                    }
-                )
+                    })
             }
 
 
@@ -102,8 +98,7 @@ fun RegistrationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = DarkPink
+                    modifier = Modifier.size(48.dp), color = DarkPink
                 )
             }
 
@@ -126,7 +121,9 @@ fun RegistrationScreen(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp), shape = RoundedCornerShape(32.dp)
+                .padding(24.dp),
+            shape = RoundedCornerShape(32.dp),
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier

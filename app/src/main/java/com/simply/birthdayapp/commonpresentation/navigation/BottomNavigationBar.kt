@@ -14,6 +14,7 @@ import com.simply.birthdayapp.commondomain.model.BottomNavItem
 import com.simply.birthdayapp.commonpresentation.theme.BottomNavBarColor
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
+import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -25,6 +26,7 @@ fun BottomNavigationBar(navController: NavController) {
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
     BottomNavigation(
         modifier = Modifier.navigationBarsPadding(),
         backgroundColor = BottomNavBarColor,
@@ -38,7 +40,13 @@ fun BottomNavigationBar(navController: NavController) {
                     tint = if (isSelected) DarkPink else LightPinkBackground
                 )
             }, selected = isSelected, onClick = {
-                navController.navigate(item.route)
+                if (item.route == BottomNavBarDestination.HomeDestination) {
+                    navController.navigateUp()
+                } else {
+                    navController.navigate(item.route) {
+                        popUpTo(BottomNavBarDestination.HomeDestination)
+                    }
+                }
             })
         }
     }
