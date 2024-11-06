@@ -37,10 +37,11 @@ class ProfileViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun logOut() {
+    fun logOut(onTokenCleared: () -> Unit) {
         viewModelScope.launch {
             setAuthInitialScreenStateUseCase.invoke(false)
             clearAccessTokenUseCase.invoke()
+            onTokenCleared()
         }
     }
 }

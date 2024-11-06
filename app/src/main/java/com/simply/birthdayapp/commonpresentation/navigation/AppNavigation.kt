@@ -2,7 +2,8 @@ package com.simply.birthdayapp.commonpresentation.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +28,8 @@ fun AppNavigation(
         NavHost(
             modifier = Modifier
                 .background(AppBackgroundColor)
-                .padding(innerPadding),
+                .systemBarsPadding()
+                .navigationBarsPadding(),
             navController = navController,
             startDestination = startDestination,
         ) {
@@ -38,11 +40,16 @@ fun AppNavigation(
             }
 
             composable<AppDestination.MainDestination> {
-                MainScreen(navigateToLogin = {
-                    navController.navigate(AppDestination.AuthDestination)
-                }, navigateToMain = {
-                    navController.navigate(AppDestination.MainDestination)
-                })
+                MainScreen(
+                    navigateToLogin = {
+                        if (!navController.popBackStack()) {
+                            navController.navigate(AppDestination.AuthDestination)
+                        }
+                    },
+                    navigateToMain = {
+                        navController.navigate(AppDestination.MainDestination)
+                    }
+                )
             }
         }
     }

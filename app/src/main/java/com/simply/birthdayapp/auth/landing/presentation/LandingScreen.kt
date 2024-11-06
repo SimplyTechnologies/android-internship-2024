@@ -34,7 +34,6 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-
     ) {
         Image(
             modifier = Modifier.height(96.dp),
@@ -52,7 +51,10 @@ fun LandingScreen(modifier: Modifier, onSignInClick: () -> Unit, onRegisterClick
             onClick = onSignInClick,
             colors = ButtonDefaults.buttonColors(containerColor = LightPink),
             shape = RoundedCornerShape(
-                topStart = 40.dp, bottomStart = 0.dp, topEnd = 40.dp, bottomEnd = 40.dp
+                topStart = 40.dp,
+                bottomStart = 0.dp,
+                topEnd = 40.dp,
+                bottomEnd = 40.dp,
             )
         ) {
             Text(

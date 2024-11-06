@@ -2,6 +2,7 @@ package com.simply.birthdayapp.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ fun MainScreen(
         NavHost(
             modifier = modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
                 .background(AppBackgroundColor),
             navController = navController,
             startDestination = BottomNavBarDestination.HomeDestination

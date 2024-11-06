@@ -46,23 +46,21 @@ fun AuthNavigation(
 
         composable<Destination.SignInDestination> {
             SignInScreen(modifier = modifier, navigateToMain = navigateToMain, navigateToLanding = {
-                navController.navigate(Destination.LandingDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                if (!navController.popBackStack()) {
+                    navController.navigate(Destination.LandingDestination) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
                     }
-                    restoreState = true
                 }
             })
         }
 
         composable<Destination.RegistrationDestination> {
             RegistrationScreen(navigateToLanding = {
-                navController.navigate(Destination.LandingDestination) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                }
+                navController.navigateUp()
             })
         }
 
