@@ -15,14 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,19 +36,24 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
+import com.simply.birthdayapp.commonpresentation.components.button.DoneButton
 import com.simply.birthdayapp.commonpresentation.components.image.ProfileImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.SecondaryTextStyle
 import com.simply.birthdayapp.main.addEvent.presentation.components.CustomCalendar
 import com.simply.birthdayapp.main.addEvent.presentation.components.RelativesSelection
-import org.koin.androidx.compose.koinViewModel
+import com.simply.birthdayapp.main.navigation.BirthdayMode
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 
 @Composable
 fun AddEventScreen(
+    birthdayMode: BirthdayMode = BirthdayMode.Add(Birthday()),
     modifier: Modifier = Modifier,
-    viewModel: AddEventViewModel = koinViewModel(),
+    viewModel: AddEventViewModel = getViewModel { parametersOf(birthdayMode) },
     navigateToMain: () -> Unit = {}
 ) {
     val name = viewModel.name.collectAsState()
@@ -97,21 +101,32 @@ fun AddEventScreen(
 
         else -> {}
     }
-    Box(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier
+        .fillMaxWidth(),
+        horizontalAlignment = Alignment.End) {
+        TopAppBarWithBackButton(
+            modifier = Modifier
+                .padding(bottom = 8.dp, start = 24.dp, end = 24.dp)
+                .fillMaxWidth(),
+            showTopBar = true,
+            showBackButton = birthdayMode is BirthdayMode.Edit
+        )
+        if (birthdayMode is BirthdayMode.Edit) {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 28.dp)
+                    .clickable {  },
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = null
+            )
+        }
         Column(
             modifier = Modifier
-                .align(Alignment.TopCenter)
                 .padding(horizontal = 24.dp)
                 .verticalScroll(state = scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TopAppBarWithBackButton(
-                modifier = Modifier.fillMaxWidth(),
-                showTopBar = true,
-                showBackButton = false
-            )
-
             ProfileImage(imageSource = imageSource) {
                 viewModel.setImageUri(it)
                 viewModel.imageEncode(context)
@@ -138,13 +153,17 @@ fun AddEventScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(66.dp),
                 textStyle = SecondaryTextStyle.copy(color = Color.Black),
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = DarkPink,
-                    backgroundColor = Color.White,
-                    cursorColor = Color.Black,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = DarkPink,
+                    unfocusedTextColor = DarkPink,
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                )
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
+                ),
+
+
+                singleLine = true
             )
             Box(
                 modifier = Modifier
@@ -170,7 +189,7 @@ fun AddEventScreen(
                 onClick = {
                     viewModel.setIsAddRelation(!isAddRelation.value)
                 },
-                backgroundColor = DarkPink,
+                containerColor = DarkPink,
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             ) {
                 Icon(
@@ -205,13 +224,15 @@ fun AddEventScreen(
                         )
                     },
                     textStyle = SecondaryTextStyle.copy(color = Color.Black),
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = DarkPink,
-                        backgroundColor = Color.White,
-                        cursorColor = Color.Black,
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = DarkPink,
+                        unfocusedTextColor = DarkPink,
                         focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    )
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
+                    ),
+                    singleLine = true
                 )
             }
             CustomCalendar(
@@ -221,32 +242,14 @@ fun AddEventScreen(
                 onSelectedDay = { viewModel.setSelectedDay(it) },
                 onSelectedMonth = { viewModel.setSelectedMonth(it) },
                 onSelectedYear = { viewModel.setSelectedYear(it) })
-            Button(
-                modifier = Modifier
-                    .padding(30.dp)
-                    .background(color = Color.Transparent),
-                shape = RoundedCornerShape(16.dp),
+            DoneButton(
+                modifier = Modifier.padding(top = 48.dp, bottom = 60.dp),
+                text = stringResource( R.string.done_button_text),
+                isEnabled = name.value.isNotEmpty() && relationship.value.isNotEmpty(),
                 onClick = {
                     viewModel.addEvent(context)
-                },
-                colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                    backgroundColor = DarkPink
-                )
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(vertical = 4.dp, horizontal = 16.dp),
-                    text = stringResource(R.string.done_button_text),
-                    style = SecondaryTextStyle.copy(color = Color.White)
-                )
-            }
+                }
+            )
         }
     }
 }
-
-
-
-
-
-
-

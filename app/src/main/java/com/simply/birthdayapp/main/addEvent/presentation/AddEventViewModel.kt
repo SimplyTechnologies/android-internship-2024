@@ -10,6 +10,9 @@ import com.simply.birthdayapp.core.result.Result
 import com.simply.birthdayapp.main.addEvent.domain.FamilyRelation
 import com.simply.birthdayapp.main.addEvent.domain.model.CreateBirthdayInputDomain
 import com.simply.birthdayapp.main.addEvent.domain.usecase.CreateBirthdayUseCase
+import com.simply.birthdayapp.main.addEvent.domain.usecase.DeleteBirthdayUseCase
+import com.simply.birthdayapp.main.addEvent.domain.usecase.UpdateBirthdayUseCase
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,26 +21,58 @@ import java.util.Calendar
 import java.util.Date
 
 class AddEventViewModel(
+    private val birthdayMode: BirthdayMode,
     private val createBirthdayUseCase: CreateBirthdayUseCase,
     private val imageEncodeUseCase: ImageEncodeUseCase,
+    private val updateBirthdayUseCase: UpdateBirthdayUseCase,
+    private val deleteBirthdayUseCase: DeleteBirthdayUseCase
 ) : ViewModel() {
 
-    private val _name = MutableStateFlow("")
+
+    private val _name = MutableStateFlow(birthdayMode.birthday.name)
     val name: StateFlow<String> = _name.asStateFlow()
 
-    private val _relationship = MutableStateFlow("")
+    private val _relationship = MutableStateFlow(birthdayMode.birthday.relation)
     val relationship: StateFlow<String> = _relationship.asStateFlow()
 
-    private val _familyRelation = MutableStateFlow(FamilyRelation.getDisplayNames())
+    private val _familyRelation = MutableStateFlow(
+        if (birthdayMode.birthday.relation.isNotEmpty() && !FamilyRelation.getDisplayNames()
+                .contains(birthdayMode.birthday.relation)
+        ) {
+            val newList = FamilyRelation.getDisplayNames()
+            newList.add(birthdayMode.birthday.relation)
+            newList
+        } else {
+            FamilyRelation.getDisplayNames()
+        }
+    )
     val familyRelation: StateFlow<List<String>> = _familyRelation.asStateFlow()
 
-    private val _selectedDay = MutableStateFlow(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+    private val _selectedDay = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        } else {
+            birthdayMode.birthday.date.split("-")[2].toInt()
+        }
+    )
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
-    private val _selectedMonth = MutableStateFlow(Calendar.getInstance().get(Calendar.MONTH) + 1)
+    private val _selectedMonth = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.MONTH) + 1
+        } else {
+            birthdayMode.birthday.date.split("-")[1].toInt()
+        }
+    )
     val selectedMonth: StateFlow<Int> = _selectedMonth.asStateFlow()
 
-    private val _selectedYear = MutableStateFlow(Calendar.getInstance().get(Calendar.YEAR))
+    private val _selectedYear = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.YEAR)
+        } else {
+            birthdayMode.birthday.date.split("-")[0].toInt()
+        }
+    )
     val selectedYear: StateFlow<Int> = _selectedYear.asStateFlow()
 
     private val _isAddRelation = MutableStateFlow(false)
@@ -49,7 +84,13 @@ class AddEventViewModel(
     private val _addEventUiState = MutableStateFlow<AddEventUiState?>(null)
     val addEventUiState: StateFlow<AddEventUiState?> = _addEventUiState.asStateFlow()
 
-    private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
+    private val _imageSource = MutableStateFlow<ImageSource>(
+        if (birthdayMode.birthday.image != null) {
+            ImageSource.Url(birthdayMode.birthday.image)
+        } else {
+            ImageSource.Unknown
+        }
+    )
     val imageSource: StateFlow<ImageSource> = _imageSource.asStateFlow()
 
     fun imageEncode(context: Context): String? =
@@ -134,7 +175,7 @@ class AddEventViewModel(
 
     fun addEvent(context: Context) {
         viewModelScope.launch {
-            val image = imageEncode(context)
+            val image = birthdayMode.birthday.image ?: imageEncode(context)
             _addEventUiState.value = AddEventUiState.Loading
             val selectedDate = createDateFromSelectedValues(
                 _selectedYear.value,
@@ -150,6 +191,62 @@ class AddEventViewModel(
                     relation = _relationship.value
                 )
             ).collect {
+                _addEventUiState.value = when (it) {
+                    is Result.Success -> {
+                        AddEventUiState.Success(it.data.toString())
+                    }
+
+                    is Result.Error -> {
+                        AddEventUiState.Error(it.message)
+                    }
+
+                    is Result.Loading -> {
+                        AddEventUiState.Loading
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateEvent(context: Context) {
+        viewModelScope.launch {
+            val image = birthdayMode.birthday.image ?: imageEncode(context)
+            _addEventUiState.value = AddEventUiState.Loading
+            val selectedDate = createDateFromSelectedValues(
+                _selectedYear.value,
+                _selectedMonth.value,
+                _selectedDay.value
+            )
+            updateBirthdayUseCase.invoke(
+                birthdayMode.birthday.id,
+                CreateBirthdayInputDomain(
+                    date = selectedDate,
+                    image = image,
+                    message = birthdayMode.birthday.message,
+                    name = _name.value,
+                    relation = _relationship.value
+                )
+            ).collect {
+                _addEventUiState.value = when (it) {
+                    is Result.Success -> {
+                        AddEventUiState.Success(it.data.toString())
+                    }
+
+                    is Result.Error -> {
+                        AddEventUiState.Error(it.message)
+                    }
+
+                    is Result.Loading -> {
+                        AddEventUiState.Loading
+                    }
+                }
+            }
+        }
+
+    }
+    fun deleteEvent() {
+        viewModelScope.launch {
+            deleteBirthdayUseCase.invoke(birthdayMode.birthday.id).collect {
                 _addEventUiState.value = when (it) {
                     is Result.Success -> {
                         AddEventUiState.Success(it.data.toString())

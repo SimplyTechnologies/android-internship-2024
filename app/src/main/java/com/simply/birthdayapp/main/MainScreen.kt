@@ -9,10 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.navigation.BottomNavigationBar
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
 import com.simply.birthdayapp.main.home.presentation.HomeScreen
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
 import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
@@ -44,8 +46,12 @@ fun MainScreen(
             composable<BottomNavBarDestination.ShopDestination> {
                 ShopMainScreen()
             }
-            composable<BottomNavBarDestination.AddEventDestination> {
-                AddEventScreen(navigateToMain = navigateToMain)
+            composable<BottomNavBarDestination.AddEventDestination>() {
+//                val eventMode = it.toRoute<BottomNavBarDestination.AddEventDestination>()
+//                println("navigation:: $eventMode.")
+
+                val temperuryEventMode = BirthdayMode.Add(Birthday.default)
+                AddEventScreen(navigateToMain = navigateToMain, birthdayMode = temperuryEventMode)
             }
             composable<BottomNavBarDestination.ProfileDestination> {
                 ProfileMainScreen(navigateToLogin)

@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface BirthDayRepository {
     fun createBirthday(input: CreateBirthdayInputDomain): Flow<Result<Birthday>>
+    fun updateBirthday(id: Int, input: CreateBirthdayInputDomain): Flow<Result<Birthday>>
+    fun deleteBirthday(id: Int) : Flow<Result<Birthday>>
 }

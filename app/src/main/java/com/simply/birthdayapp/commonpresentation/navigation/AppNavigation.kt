@@ -35,7 +35,12 @@ fun AppNavigation(
         ) {
             composable<AppDestination.AuthDestination> {
                 AuthScreen(modifier = modifier.background(AppBackgroundColor), navigateToMain = {
-                    navController.navigate(AppDestination.MainDestination)
+                    navController.navigate(AppDestination.MainDestination) {
+                        popUpTo(AppDestination.MainDestination) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 })
             }
 

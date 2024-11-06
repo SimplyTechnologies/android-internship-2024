@@ -38,7 +38,11 @@ fun ProfileImage(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { onAddPhotoClick(it) },
+        onResult = {
+            if (it != null) {
+                onAddPhotoClick(it)
+            }
+        }
     )
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),

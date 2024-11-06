@@ -1,5 +1,8 @@
 package com.simply.birthdayapp.commondomain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Birthday(
     val createdAt: String = "",
     val date: String = "",
@@ -12,4 +15,8 @@ data class Birthday(
     val upcomingBirthday: String? = null,
     val updatedAt: String = "",
     val userId: Int = 0
-)
+) {
+    companion object {
+        val default = Birthday()
+    }
+}

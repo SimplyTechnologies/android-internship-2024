@@ -1,0 +1,15 @@
+mutation DeleteBirthday($id: Int!) {
+    deleteBirthday(id: $id) {
+        createdAt
+        date
+        id
+        image
+        message
+        name
+        relation
+        upcomingAge
+        upcomingBirthday
+        updatedAt
+        userId
+    }
+}
