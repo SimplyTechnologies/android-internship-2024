@@ -14,11 +14,16 @@ class SignInRepositoryImpl(
     private val dataStoreProvider: DataStoreProvider, private val apolloClient: ApolloClient
 ) : SignInRepository {
 
-    override suspend fun setSignedIn(isSignedIn: Boolean) =
-        dataStoreProvider.setSignedIn(isSignedIn)
+    override suspend fun setSignedIn(isSignedIn: Boolean) {
+        withContext(Dispatchers.IO) {
+            dataStoreProvider.setSignedIn(isSignedIn)
+        }
+    }
 
     override suspend fun saveAccessToken(token: String) {
-        dataStoreProvider.saveAccessToken(token)
+        withContext(Dispatchers.IO) {
+            dataStoreProvider.saveAccessToken(token)
+        }
     }
 
     override suspend fun login(loginInput: LoginInputDomain): Result<String> {
