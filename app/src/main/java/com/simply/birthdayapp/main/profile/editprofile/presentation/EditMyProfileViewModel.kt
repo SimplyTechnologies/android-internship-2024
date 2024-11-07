@@ -45,7 +45,11 @@ class EditMyProfileViewModel(
     private val _doneButtonEnableState = MutableStateFlow(false)
     val doneButtonEnableState = _doneButtonEnableState.asStateFlow()
 
-    private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
+    private val _imageSource = MutableStateFlow(
+        if (user.image.isNullOrEmpty())
+            ImageSource.Unknown
+        else ImageSource.Url(user.image)
+    )
     val imageSource = _imageSource.asStateFlow()
 
     private val _updatedUser = MutableStateFlow(
@@ -73,13 +77,11 @@ class EditMyProfileViewModel(
 
 
     fun uploadImage(newUri: Uri?) {
-        viewModelScope.launch {
-            _imageSource.value = if (newUri != null) {
-                ImageSource.Uri(newUri.toString())
-            } else {
-                ImageSource.Unknown
+        if (newUri != null) {
+            viewModelScope.launch {
+                _imageSource.value = ImageSource.Uri(newUri.toString())
+                _doneButtonEnableState.value = true
             }
-            _doneButtonEnableState.value = true
         }
     }
 
@@ -99,14 +101,8 @@ class EditMyProfileViewModel(
         ).onEach {
             when (it) {
                 is Result.Error -> _screenUiState.value = EditProfileUiState.Error(it.message)
-
-                is Result.Loading -> {
-                    _screenUiState.value = EditProfileUiState.Loading
-                }
-
-                is Result.Success -> {
-                    _screenUiState.value = EditProfileUiState.Success
-                }
+                is Result.Loading -> _screenUiState.value = EditProfileUiState.Loading
+                is Result.Success -> _screenUiState.value = EditProfileUiState.Success
             }
         }.catch {
             _screenUiState.value = EditProfileUiState.Error(
@@ -114,5 +110,4 @@ class EditMyProfileViewModel(
             )
         }.launchIn(viewModelScope)
     }
-
 }

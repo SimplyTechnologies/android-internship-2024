@@ -6,9 +6,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val addEventPresentationModule = module {
-    viewModel { (model: BirthdayMode) ->
+    viewModel { (birthdayMode: BirthdayMode) ->
         AddEventViewModel(
-            birthdayMode = model,
+            birthdayMode = birthdayMode,
             createBirthdayUseCase = get(),
             imageEncodeUseCase = get(),
             updateBirthdayUseCase = get(),

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,7 +44,7 @@ fun SignInScreen(
     navigateToLanding: () -> Unit,
 ) {
     SignInComposable(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         navigateToMain = navigateToMain,
         viewModel = viewModel,
         navigateToLanding = navigateToLanding,
@@ -68,9 +67,11 @@ fun SignInComposable(
     val passwordText = viewModel.passwordText.collectAsState()
 
     val emailError = viewModel.emailError.collectAsState()
-    val passwordError = viewModel.emailError.collectAsState()
+    val passwordError = viewModel.passwordError.collectAsState()
 
     val uiState by viewModel.uiState.collectAsState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(uiState) {
         if (uiState is SignInUiState.Success) {
@@ -78,52 +79,15 @@ fun SignInComposable(
         }
     }
 
-    when (uiState) {
-        is SignInUiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = DarkPink,
-                )
-            }
-        }
-
-        is SignInUiState.Success -> {
-            saveLoggedInState(true)
-        }
-
-        is SignInUiState.Error -> {
-            if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
-                Toast.makeText(
-                    LocalContext.current,
-                    stringResource(R.string.error_unauthorized_user),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    LocalContext.current,
-                    "Error: ${(uiState as SignInUiState.Error).message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            viewModel.resetState()
-        }
-
-        else -> {}
-    }
-
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .imePadding()
+        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
+
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
+                .verticalScroll(rememberScrollState())
+                .imePadding()
                 .padding(38.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(Color.White)
@@ -163,6 +127,41 @@ fun SignInComposable(
             ) {
                 viewModel.signIn()
             }
+        }
+
+
+        when (val state = uiState) {
+            is SignInUiState.Error -> {
+                val errorMessage = if (state.message == stringResource(R.string.unauthorized))
+                    stringResource(R.string.error_unauthorized_user)
+                else
+                    state.message
+
+
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
+
+            }
+
+            SignInUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        strokeWidth = 3.dp, color = DarkPink
+                    )
+                }
+
+            }
+
+            is SignInUiState.Success -> {
+                saveLoggedInState(true)
+            }
+
+            null -> {}
         }
     }
 }

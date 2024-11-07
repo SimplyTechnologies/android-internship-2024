@@ -41,7 +41,7 @@ fun RelativesSelection(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .heightIn(min = 0.dp, max = 500.dp)
+                .heightIn(max = 500.dp)
         ) {
             items(relatives.size) { index ->
                 val relative = relatives[index]

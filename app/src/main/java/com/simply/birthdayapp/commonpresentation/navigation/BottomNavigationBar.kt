@@ -32,7 +32,9 @@ fun BottomNavigationBar(navController: NavController) {
         backgroundColor = MiddlePink,
     ) {
         items.forEach { item ->
-            val isSelected = item.route::class.qualifiedName == currentDestination?.route
+            val isSelected = item.route::class.qualifiedName?.let {
+                currentDestination?.route?.contains(it)
+            } ?: false
             BottomNavigationItem(icon = {
                 Icon(
                     painter = painterResource(item.iconId),

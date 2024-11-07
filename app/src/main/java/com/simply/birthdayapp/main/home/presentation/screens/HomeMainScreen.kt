@@ -37,7 +37,7 @@ fun HomeMainScreen(
             typeMap = mapOf(typeOf<Birthday>() to HomeNavType.HomeDomainType)
         ) {
             val birthday = it.toRoute<HomeDestination.BirthdayDetailsDestination>().birthday
-            BirthdayDetailsScreen(_birthday = birthday, navigateToHomeScreen = {
+            BirthdayDetailsScreen(birthday = birthday, navigateToHomeScreen = {
                 homeNavController.navigateUp()
             }, navigateToEditScreen = { mode ->
                 navigateToEditBirthdayScreen(mode)

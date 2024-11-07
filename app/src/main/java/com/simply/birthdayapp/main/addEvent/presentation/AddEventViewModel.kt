@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commondomain.usecase.ImageEncodeUseCase
 import com.simply.birthdayapp.commonpresentation.components.image.ImageSource
 import com.simply.birthdayapp.core.result.Result
@@ -55,7 +56,11 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         } else {
-            formatDate(birthdayMode.birthday.date).split(".")[0].toInt()
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[0].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            }
         }
     )
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
@@ -64,7 +69,12 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.MONTH) + 1
         } else {
-            formatDate(birthdayMode.birthday.date).split(".")[1].toInt()
+
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[1].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.MONTH) + 1
+            }
         }
     )
     val selectedMonth: StateFlow<Int> = _selectedMonth.asStateFlow()
@@ -73,7 +83,12 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.YEAR)
         } else {
-            formatDate(birthdayMode.birthday.date).split(".")[2].toInt()
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[2].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.YEAR)
+            }
+
         }
     )
     val selectedYear: StateFlow<Int> = _selectedYear.asStateFlow()
@@ -201,7 +216,7 @@ class AddEventViewModel(
             ).collect {
                 _addEventUiState.value = when (it) {
                     is Result.Success -> {
-                        AddEventUiState.Success(it.data.toString())
+                        AddEventUiState.Success(context.getString(R.string.success))
                     }
 
                     is Result.Error -> {
@@ -218,7 +233,11 @@ class AddEventViewModel(
 
     fun updateEvent(context: Context) {
         viewModelScope.launch {
-            val image = birthdayMode.birthday.image ?: imageEncode(context)
+            val image = if (_imageSource.value is ImageSource.Uri) {
+                imageEncode(context)
+            } else {
+                _imageSource.value.source
+            }
             _addEventUiState.value = AddEventUiState.Loading
             val selectedDate = createDateFromSelectedValues(
                 _selectedYear.value,
@@ -237,7 +256,7 @@ class AddEventViewModel(
             ).collect {
                 _addEventUiState.value = when (it) {
                     is Result.Success -> {
-                        AddEventUiState.Success(it.data.toString())
+                        AddEventUiState.Success(context.getString(R.string.the_birthday_was_successfully_updated))
                     }
 
                     is Result.Error -> {
@@ -253,12 +272,12 @@ class AddEventViewModel(
 
     }
 
-    fun deleteEvent() {
+    fun deleteEvent(context: Context) {
         viewModelScope.launch {
             deleteBirthdayUseCase.invoke(birthdayMode.birthday.id).collect {
                 _addEventUiState.value = when (it) {
                     is Result.Success -> {
-                        AddEventUiState.Success(it.data.toString())
+                        AddEventUiState.Success(context.getString(R.string.the_birthday_was_deleted))
                     }
 
                     is Result.Error -> {

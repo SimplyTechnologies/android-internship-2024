@@ -58,8 +58,8 @@ fun MainScreen(
                     typeOf<BirthdayMode>() to BirthdayModeNavType.BirthdayModeType
                 )
             ) {
-                val eventMode = it.toRoute<BottomNavBarDestination.AddEventDestination>().eventMode
-                AddEventScreen(navigateToMain = navigateToMain, birthdayMode = eventMode, navigateToDetails = {
+                val argBirthdayMode = it.toRoute<BottomNavBarDestination.AddEventDestination>().argBirthdayMode
+                AddEventScreen(navigateToMain = navigateToMain, birthdayMode = argBirthdayMode, navigateToDetails = {
                     navController.navigateUp()
                 })
             }

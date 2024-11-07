@@ -14,14 +14,14 @@ import kotlinx.coroutines.flow.flow
 
 class UserProfileRepositoryImpl(private val apolloClient: ApolloClient) : UserProfileRepository {
     override fun getUserProfile(): Flow<Result<UserDomain>> = flow {
-        emit(Result.Loading(data = UserDomain.default))
+        emit(Result.Loading(data = UserDomain()))
         try {
             val response = apolloClient.query(GetUserProfileQuery()).execute()
 
             if (response.hasErrors()) {
                 val errorMessage = response.errors?.firstOrNull()?.message ?: GENERAL_ERROR
                 emit(
-                    Result.Error(errorMessage, data = UserDomain.default)
+                    Result.Error(errorMessage, data = UserDomain())
                 )
             } else {
                 val profileData = response.data?.profile
@@ -40,13 +40,13 @@ class UserProfileRepositoryImpl(private val apolloClient: ApolloClient) : UserPr
                         )
                     )
                 } else {
-                    emit(Result.Error(WRONG_CREDENTIALS, data = UserDomain.default))
+                    emit(Result.Error(WRONG_CREDENTIALS, data = UserDomain()))
                 }
             }
         } catch (e: Exception) {
             emit(
                 Result.Error(
-                    e.localizedMessage ?: GENERAL_ERROR, data = UserDomain.default
+                    e.localizedMessage ?: GENERAL_ERROR, data = UserDomain()
                 )
             )
         }

@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,9 +25,7 @@ import com.simply.birthdayapp.main.home.data.getMockBirthdays
 
 @Composable
 fun BirthdayItem(
-    modifier: Modifier = Modifier,
-    item: Birthday,
-    onItemClick: () -> Unit
+    modifier: Modifier = Modifier, item: Birthday, onItemClick: () -> Unit
 ) {
     Card(
         modifier = modifier.clickable { onItemClick() },
@@ -50,12 +49,15 @@ fun BirthdayItem(
                 Text(
                     text = item.name,
                     modifier = Modifier.padding(top = 4.dp),
-                    style = PrimaryTextStyle
-                )
-                Text(
-                    text = formatDate(item.date),
                     style = PrimaryTextStyle,
-                    fontSize = 18.sp)
+                    fontSize = 20.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = formatDate(item.date), style = PrimaryTextStyle, fontSize = 18.sp
+                )
             }
         }
     }
@@ -70,6 +72,5 @@ private fun BirthdayItemPreview() {
             .background(AppBackgroundColor)
             .padding(16.dp),
         item = getMockBirthdays().first(),
-        onItemClick = {}
-    )
+        onItemClick = {})
 }

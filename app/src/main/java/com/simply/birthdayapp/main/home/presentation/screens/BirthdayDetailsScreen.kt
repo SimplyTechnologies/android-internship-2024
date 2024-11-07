@@ -7,21 +7,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,9 +58,9 @@ import org.koin.core.parameter.parameterSetOf
 
 @Composable
 fun BirthdayDetailsScreen(
-    _birthday: Birthday,
+    birthday: Birthday,
     viewModel: BirthdayDetailsViewModel = koinViewModel() {
-        parameterSetOf(_birthday)
+        parameterSetOf(birthday)
     },
     navigateToHomeScreen: () -> Unit,
     navigateToEditScreen: (BirthdayMode) -> Unit
@@ -72,23 +72,25 @@ fun BirthdayDetailsScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
         TopAppBarWithBackButton(
-            onBackPress = { navigateToHomeScreen() }
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         )
+        { navigateToHomeScreen() }
+
 
         Box(
-            Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.TopEnd
+            Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
         ) {
             IconButton(
                 onClick = {
-                    navigateToEditScreen(BirthdayMode.Edit(_birthday))
+                    navigateToEditScreen(BirthdayMode.Edit(birthday))
                 }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "Edit",
+                    contentDescription = null,
                 )
             }
         }
@@ -109,7 +111,12 @@ fun BirthdayDetailsScreen(
                 text = birthday.name,
                 style = PrimaryTextStyle,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(top = 18.dp)
+                modifier = Modifier
+                    .padding(top = 18.dp, start = 36.dp, end = 36.dp)
+                    .fillMaxWidth(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
 
             Text(
@@ -153,7 +160,7 @@ fun BirthdayDetailsScreen(
             ) {
                 Text(
                     text = stringResource(R.string.gen_message),
-                    color = DarkPink
+                    color = DarkPink,
                 )
             }
         }
@@ -224,6 +231,7 @@ fun shareMessage(message: String, context: Context) {
     val share = R.string.send_message
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
         putExtra(Intent.EXTRA_TEXT, message)
+        type = "text/plain"
     }
     context.startActivity(Intent.createChooser(shareIntent, "$share"))
 }

@@ -87,7 +87,7 @@ fun AddEventScreen(
         is AddEventUiState.Success -> {
             Toast.makeText(
                 LocalContext.current,
-                stringResource(R.string.success),
+                (uiState as AddEventUiState.Success).message,
                 Toast.LENGTH_SHORT
             ).show()
             viewModel.resetState()
@@ -139,7 +139,7 @@ fun AddEventScreen(
                 text = { Text(text = stringResource(R.string.delete_birthday_text)) },
                 confirmButton = {
                     TextButton(onClick = {
-                        viewModel.deleteEvent()
+                        viewModel.deleteEvent(context)
                         navigateToMain.invoke()
                     }) {
                         Text(text = "Yes")
@@ -276,14 +276,14 @@ fun AddEventScreen(
                 onSelectedMonth = { viewModel.setSelectedMonth(it) },
                 onSelectedYear = { viewModel.setSelectedYear(it) })
             DoneButton(
-                modifier = Modifier.padding(top = 48.dp, bottom = 60.dp),
+                modifier = Modifier.padding(top = 48.dp, bottom = 100.dp),
                 text = stringResource(R.string.done_button_text),
                 isEnabled = name.value.isNotEmpty() && relationship.value.isNotEmpty(),
                 onClick = {
-                    if (birthdayMode is BirthdayMode.Add) {
-                        viewModel.addEvent(context)
-                    } else {
+                    if (birthdayMode is BirthdayMode.Edit) {
                         viewModel.updateEvent(context)
+                    } else {
+                        viewModel.addEvent(context)
                     }
                 }
             )

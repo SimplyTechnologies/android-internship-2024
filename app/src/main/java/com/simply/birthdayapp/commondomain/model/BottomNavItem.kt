@@ -20,7 +20,7 @@ sealed class BottomNavItem(val iconId: Int, val route: BottomNavBarDestination) 
     data object AddEventScreen :
         BottomNavItem(
             iconId = R.drawable.add_icon,
-            route = BottomNavBarDestination.AddEventDestination(BirthdayMode.Add(Birthday.default))
+            route = BottomNavBarDestination.AddEventDestination(BirthdayMode.Add(Birthday()))
         )
 
     data object ProfileScreen :

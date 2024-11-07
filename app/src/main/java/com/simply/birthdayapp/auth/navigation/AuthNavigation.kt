@@ -32,7 +32,7 @@ fun AuthNavigation(
         }
 
         composable<Destination.SignInDestination> {
-            SignInScreen(modifier = modifier, navigateToMain = navigateToMain, navigateToLanding = {
+            SignInScreen(navigateToMain = navigateToMain, navigateToLanding = {
                 if (!navController.popBackStack()) {
                     navController.navigate(Destination.LandingDestination) {
                         popUpTo(navController.graph.findStartDestination().id) {
