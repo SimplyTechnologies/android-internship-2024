@@ -71,6 +71,8 @@ fun SignInComposable(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(uiState) {
         if (uiState is SignInUiState.Success) {
             navigateToMain()
@@ -81,7 +83,6 @@ fun SignInComposable(
         modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
 
-        // Main content
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -128,37 +129,39 @@ fun SignInComposable(
             }
         }
 
-        if (uiState is SignInUiState.Error) {
-            val errorMessage =
-                if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
+
+        when (val state = uiState) {
+            is SignInUiState.Error -> {
+                val errorMessage = if (state.message == stringResource(R.string.unauthorized))
                     stringResource(R.string.error_unauthorized_user)
-                } else {
-                    "Error: ${(uiState as SignInUiState.Error).message}"
+                else
+                    state.message
+
+
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
+
+            }
+
+            SignInUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        strokeWidth = 3.dp, color = DarkPink
+                    )
                 }
 
-            Toast.makeText(
-                LocalContext.current, errorMessage, Toast.LENGTH_SHORT
-            ).show()
-
-            viewModel.resetState()
-        }
-
-        if (uiState is SignInUiState.Success) {
-            saveLoggedInState(true)
-        }
-
-        // Loading overlay
-        if (uiState is SignInUiState.Loading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.3f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    strokeWidth = 3.dp, color = DarkPink
-                )
             }
+
+            is SignInUiState.Success -> {
+                saveLoggedInState(true)
+            }
+
+            null -> {}
         }
     }
 }

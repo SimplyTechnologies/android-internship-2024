@@ -76,6 +76,7 @@
     <string name="birthday_relationship">Relationship:\u00A0</string>
     <string name="zodiac_sign">Zodiac Sign:\u00A0</string>
     <string name="send_button">Send</string>
-    <string name="generated_message">Happy Birthday! 🎉 Wishing you a fantastic year filled with joy, success, and all the things you love. Here\'s to making wonderful memories and celebrating many more amazing moments. Enjoy your special day!</string>
+    <string name="generated_message">Happy Birthday!🎉 Wishing you a fantastic year filled with joy, success, and all the things you love. Here\'s to making wonderful memories and celebrating many more amazing moments. Enjoy your special day!</string>
     <string name="success">The birthday was successfully created!</string>
+
 </resources>
