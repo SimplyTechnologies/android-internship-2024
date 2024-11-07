@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,7 +44,7 @@ fun SignInScreen(
     navigateToLanding: () -> Unit,
 ) {
     SignInComposable(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         navigateToMain = navigateToMain,
         viewModel = viewModel,
         navigateToLanding = navigateToLanding,
@@ -79,89 +78,86 @@ fun SignInComposable(
     }
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .imePadding(),
-        contentAlignment = Alignment.Center
+        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
-        when (uiState) {
-            is SignInUiState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = DarkPink,
-                )
-            }
 
-            is SignInUiState.Success -> {
-                saveLoggedInState(true)
-            }
+        // Main content
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .verticalScroll(rememberScrollState())
+                .imePadding()
+                .padding(38.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(Color.White)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(top = 15.dp),
+                text = stringResource(R.string.sign_in),
+                style = AuthTitleTextStyle
+            )
 
-            is SignInUiState.Error -> {
+            InputTextField(modifier = Modifier.padding(top = 15.dp, bottom = 12.dp),
+                placeholder = stringResource(R.string.email),
+                textValue = email.value,
+                error = emailError.value,
+                onValueChange = {
+                    viewModel.setEmailText(it)
+                })
+
+            InputTextField(placeholder = stringResource(R.string.password),
+                textValue = passwordText.value,
+                error = passwordError.value,
+                isPassword = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                onValueChange = {
+                    viewModel.setPasswordText(it)
+                })
+
+            AuthedButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 26.dp, end = 26.dp, top = 48.dp),
+                isEnabled = viewModel.isSignInButtonEnable.value,
+                text = stringResource(R.string.sign_in)
+            ) {
+                viewModel.signIn()
+            }
+        }
+
+        if (uiState is SignInUiState.Error) {
+            val errorMessage =
                 if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
-                    Toast.makeText(
-                        LocalContext.current,
-                        stringResource(R.string.error_unauthorized_user),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    stringResource(R.string.error_unauthorized_user)
                 } else {
-                    Toast.makeText(
-                        LocalContext.current,
-                        "Error: ${(uiState as SignInUiState.Error).message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    "Error: ${(uiState as SignInUiState.Error).message}"
                 }
-                viewModel.resetState()
-            }
 
-            else -> {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(38.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White)
-                        .padding(24.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        modifier = Modifier.padding(top = 15.dp),
-                        text = stringResource(R.string.sign_in),
-                        style = AuthTitleTextStyle
-                    )
+            Toast.makeText(
+                LocalContext.current, errorMessage, Toast.LENGTH_SHORT
+            ).show()
 
-                    InputTextField(
-                        modifier = Modifier.padding(top = 15.dp, bottom = 12.dp),
-                        placeholder = stringResource(R.string.email),
-                        textValue = email.value,
-                        error = emailError.value,
-                        onValueChange = {
-                            viewModel.setEmailText(it)
-                        }
-                    )
+            viewModel.resetState()
+        }
 
-                    InputTextField(
-                        placeholder = stringResource(R.string.password),
-                        textValue = passwordText.value,
-                        error = passwordError.value,
-                        isPassword = true,
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                        onValueChange = {
-                            viewModel.setPasswordText(it)
-                        }
-                    )
+        if (uiState is SignInUiState.Success) {
+            saveLoggedInState(true)
+        }
 
-                    AuthedButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 26.dp, end = 26.dp, top = 48.dp),
-                        isEnabled = viewModel.isSignInButtonEnable.value,
-                        text = stringResource(R.string.sign_in)
-                    ) {
-                        viewModel.signIn()
-                    }
-                }
+        // Loading overlay
+        if (uiState is SignInUiState.Loading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    strokeWidth = 3.dp, color = DarkPink
+                )
             }
         }
     }

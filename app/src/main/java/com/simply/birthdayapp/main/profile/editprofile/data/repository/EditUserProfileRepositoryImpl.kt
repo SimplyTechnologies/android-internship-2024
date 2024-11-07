@@ -20,7 +20,7 @@ class EditUserProfileRepositoryImpl(
 
     override fun updateProfile(updateProfileInput: UpdateProfileInput): Flow<Result<UserDomain>> =
         flow {
-            emit(Result.Loading(UserDomain.default))
+            emit(Result.Loading(UserDomain()))
 
             val response = apolloClient.mutation(
                 EditUserProfileMutation(
@@ -35,14 +35,14 @@ class EditUserProfileRepositoryImpl(
             if (response.hasErrors()) {
                 val errorMessage =
                     response.errors?.firstOrNull()?.message ?: ErrorMessages.GENERAL_ERROR
-                emit(Result.Error(errorMessage, UserDomain.default))
+                emit(Result.Error(errorMessage, UserDomain()))
             } else {
-                emit(Result.Success(UserDomain.default))
+                emit(Result.Success(UserDomain()))
             }
         }.catch { e ->
             emit(
                 Result.Error(
-                    "${e.message}", UserDomain.default
+                    "${e.message}", UserDomain()
                 )
             )
         }.flowOn(Dispatchers.IO)

@@ -13,7 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.simply.birthdayapp.commonpresentation.navigation.BottomNavigationBar
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
+import com.simply.birthdayapp.main.home.navigation.HomeDestination
 import com.simply.birthdayapp.main.home.presentation.HomeScreen
+import com.simply.birthdayapp.main.home.presentation.screens.HomeMainScreen
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
 import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
@@ -41,7 +43,7 @@ fun MainScreen(
             startDestination = BottomNavBarDestination.HomeDestination
         ) {
             composable<BottomNavBarDestination.HomeDestination> {
-                HomeScreen()
+                HomeMainScreen()
             }
             composable<BottomNavBarDestination.ShopDestination> {
                 ShopMainScreen()

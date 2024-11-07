@@ -2,7 +2,9 @@ package com.simply.birthdayapp.auth.authnavigation.presentation.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -38,14 +40,20 @@ fun AuthScreen(
         Scaffold(modifier = modifier
             .fillMaxSize()
             .background(AppBackgroundColor), topBar = {
-            TopAppBarWithBackButton(
+            Box(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .background(AppBackgroundColor),
-                showTopBar = isNotLandingScreen,
-                showBackButton = true
+                    .fillMaxWidth()
+                    .background(AppBackgroundColor)
             ) {
-                navController.navigate(Destination.LandingDestination)
+                TopAppBarWithBackButton(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp),
+                    showTopBar = isNotLandingScreen,
+                    showBackButton = true
+                ) {
+                    navController.navigate(Destination.LandingDestination)
+                }
+
             }
         }) { innerPadding ->
             AuthNavigation(

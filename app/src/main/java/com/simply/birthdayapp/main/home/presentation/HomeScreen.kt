@@ -18,17 +18,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.core.result.Result
-import com.simply.birthdayapp.main.home.presentation.component.item.BirthdayItem
+import com.simply.birthdayapp.main.home.presentation.components.BirthdayItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
+    navigateToBirthdayDetailsScreen: (Birthday) -> Unit = {}
 ) {
     val context = LocalContext.current
     val birthdayList by viewModel.birthdaysUiState.collectAsState()
@@ -61,12 +63,12 @@ fun HomeScreen(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp, vertical = 8.dp),
-                            item = it
+                            item = it,
+                            onItemClick = { navigateToBirthdayDetailsScreen(it) }
                         )
                     }
                 }
             }
-
         }
     }
 }
