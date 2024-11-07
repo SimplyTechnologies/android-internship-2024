@@ -38,8 +38,13 @@ fun ProfileImage(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { onAddPhotoClick(it) },
+        onResult = { uri ->
+            if (uri != null) {
+                onAddPhotoClick(uri) // Only pass a non-null URI
+            }
+        }
     )
+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -58,30 +63,26 @@ fun ProfileImage(
     )
 
     fun checkPermissionAndPickPhoto() {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
-            }
-
-            else -> {
-                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
         }
+        permissionLauncher.launch(permission)
     }
 
+    val imageLoader = ImageLoader(context)
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(context)
             .data(imageSource.source)
-            .transformations(
-                CircleCropTransformation()
-            ).build(),
-        imageLoader = ImageLoader(context),
+            .transformations(CircleCropTransformation())
+            .build(),
+        imageLoader = imageLoader,
     )
+
     Box(
         modifier = modifier
-            .clickable {
-                checkPermissionAndPickPhoto()
-            }
+            .clickable { checkPermissionAndPickPhoto() }
             .clip(CircleShape)
     ) {
         if (imageSource == ImageSource.Unknown || painter.state is AsyncImagePainter.State.Error) {
