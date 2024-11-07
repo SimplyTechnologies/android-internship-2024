@@ -77,7 +77,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     modifier: Modifier = Modifier,
-    data: UserDomain = UserDomain.default,
+    data: UserDomain = UserDomain(),
     navigateToEditAccount: (UserDomain) -> Unit = {},
     navigateToChangePassword: () -> Unit = {},
     signOutClick: () -> Unit

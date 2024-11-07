@@ -47,11 +47,9 @@ class SignUpRepositoryImpl(
             } else {
                 Result.Error(
                     message = response.errors?.first()?.message ?: "",
-                    data = UserDomainModel(0, "", "", "", "")
+                    data = UserDomainModel()
                 )
             }
-
-
         }
     }
 }

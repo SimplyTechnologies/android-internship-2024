@@ -5,19 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserDomain(
-    val id: Int,
-    val email: String,
-    val firstName: String,
-    val lastName: String,
-    val image: String?,
-) {
-    companion object {
-        val default = UserDomain(
-            id = 0,
-            email = "",
-            firstName = "",
-            lastName = "",
-            image = null,
-        )
-    }
-}
+    val id: Int = 0,
+    val email: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+    val image: String? = null,
+)
