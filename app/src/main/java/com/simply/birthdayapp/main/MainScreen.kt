@@ -10,22 +10,24 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.navigation.BottomNavigationBar
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventScreen
-import com.simply.birthdayapp.main.home.presentation.HomeScreen
+import com.simply.birthdayapp.main.home.navigation.BirthdayModeNavType
+import com.simply.birthdayapp.main.home.navigation.HomeNavType
+import com.simply.birthdayapp.main.home.presentation.screens.HomeMainScreen
 import com.simply.birthdayapp.main.navigation.BirthdayMode
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
 import com.simply.birthdayapp.main.profile.navigation.ProfileMainScreen
 import com.simply.birthdayapp.main.shop.presentation.screens.ShopMainScreen
+import kotlin.reflect.typeOf
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
-    navigateToLogin: () -> Unit = {},
-    navigateToMain: () -> Unit = {}
+    modifier: Modifier = Modifier, navigateToLogin: () -> Unit = {}, navigateToMain: () -> Unit = {}
 ) {
     val navController = rememberNavController()
 
@@ -43,17 +45,23 @@ fun MainScreen(
             startDestination = BottomNavBarDestination.HomeDestination
         ) {
             composable<BottomNavBarDestination.HomeDestination> {
-                HomeScreen()
+                HomeMainScreen() { mode ->
+                    navController.navigate(BottomNavBarDestination.AddEventDestination(BirthdayMode.Edit(mode.birthday)))
+                }
             }
             composable<BottomNavBarDestination.ShopDestination> {
                 ShopMainScreen()
             }
-            composable<BottomNavBarDestination.AddEventDestination>() {
-//                val eventMode = it.toRoute<BottomNavBarDestination.AddEventDestination>()
-//                println("navigation:: $eventMode.")
-
-                val temperuryEventMode = BirthdayMode.Add(Birthday.default)
-                AddEventScreen(navigateToMain = navigateToMain, birthdayMode = temperuryEventMode)
+            composable<BottomNavBarDestination.AddEventDestination>(
+                typeMap = mapOf(
+                    typeOf<Birthday>() to HomeNavType.HomeDomainType,
+                    typeOf<BirthdayMode>() to BirthdayModeNavType.BirthdayModeType
+                )
+            ) {
+                val eventMode = it.toRoute<BottomNavBarDestination.AddEventDestination>().eventMode
+                AddEventScreen(navigateToMain = navigateToMain, birthdayMode = eventMode, navigateToDetails = {
+                    navController.navigateUp()
+                })
             }
             composable<BottomNavBarDestination.ProfileDestination> {
                 ProfileMainScreen(navigateToLogin)

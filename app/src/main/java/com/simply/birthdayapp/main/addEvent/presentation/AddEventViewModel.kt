@@ -12,6 +12,7 @@ import com.simply.birthdayapp.main.addEvent.domain.model.CreateBirthdayInputDoma
 import com.simply.birthdayapp.main.addEvent.domain.usecase.CreateBirthdayUseCase
 import com.simply.birthdayapp.main.addEvent.domain.usecase.DeleteBirthdayUseCase
 import com.simply.birthdayapp.main.addEvent.domain.usecase.UpdateBirthdayUseCase
+import com.simply.birthdayapp.main.home.presentation.components.formatDate
 import com.simply.birthdayapp.main.navigation.BirthdayMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,13 +22,15 @@ import java.util.Calendar
 import java.util.Date
 
 class AddEventViewModel(
-    private val birthdayMode: BirthdayMode,
+    val birthdayMode: BirthdayMode,
     private val createBirthdayUseCase: CreateBirthdayUseCase,
     private val imageEncodeUseCase: ImageEncodeUseCase,
     private val updateBirthdayUseCase: UpdateBirthdayUseCase,
     private val deleteBirthdayUseCase: DeleteBirthdayUseCase
 ) : ViewModel() {
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
 
     private val _name = MutableStateFlow(birthdayMode.birthday.name)
     val name: StateFlow<String> = _name.asStateFlow()
@@ -52,7 +55,7 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         } else {
-            birthdayMode.birthday.date.split("-")[2].toInt()
+            formatDate(birthdayMode.birthday.date).split(".")[0].toInt()
         }
     )
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
@@ -61,7 +64,7 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.MONTH) + 1
         } else {
-            birthdayMode.birthday.date.split("-")[1].toInt()
+            formatDate(birthdayMode.birthday.date).split(".")[1].toInt()
         }
     )
     val selectedMonth: StateFlow<Int> = _selectedMonth.asStateFlow()
@@ -70,7 +73,7 @@ class AddEventViewModel(
         if (birthdayMode.birthday.date.isEmpty()) {
             Calendar.getInstance().get(Calendar.YEAR)
         } else {
-            birthdayMode.birthday.date.split("-")[0].toInt()
+            formatDate(birthdayMode.birthday.date).split(".")[2].toInt()
         }
     )
     val selectedYear: StateFlow<Int> = _selectedYear.asStateFlow()
@@ -93,9 +96,14 @@ class AddEventViewModel(
     )
     val imageSource: StateFlow<ImageSource> = _imageSource.asStateFlow()
 
+    fun setShowDialog(newValue: Boolean) {
+        viewModelScope.launch {
+            _showDialog.emit(newValue)
+        }
+    }
+
     fun imageEncode(context: Context): String? =
         imageSource.value.source?.let { imageEncodeUseCase.invoke(it, context) }
-
 
     fun setIsAddRelation(newValue: Boolean) {
         viewModelScope.launch {
@@ -244,6 +252,7 @@ class AddEventViewModel(
         }
 
     }
+
     fun deleteEvent() {
         viewModelScope.launch {
             deleteBirthdayUseCase.invoke(birthdayMode.birthday.id).collect {

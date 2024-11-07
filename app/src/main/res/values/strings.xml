@@ -58,4 +58,28 @@
     <string name="shop_address">Address:\u00A0</string>
     <string name="shop_phone_number">Phone:\u00A0</string>
     <string name="success">Success</string>
+
+    <string name="zodiac_capricorn">Capricorn</string>
+    <string name="zodiac_aquarius">Aquarius</string>
+    <string name="zodiac_pisces">Pisces</string>
+    <string name="zodiac_aries">Aries</string>
+    <string name="zodiac_taurus">Taurus</string>
+    <string name="zodiac_gemini">Gemini</string>
+    <string name="zodiac_cancer">Cancer</string>
+    <string name="zodiac_leo">Leo</string>
+    <string name="zodiac_virgo">Virgo</string>
+    <string name="zodiac_libra">Libra</string>
+    <string name="zodiac_scorpio">Scorpio</string>
+    <string name="zodiac_sagittarius">Sagittarius</string>
+
+    <string name="send_message">Share via</string>
+    <string name="gen_message">Generate message</string>
+    <string name="birthday_relationship">Relationship:\u00A0</string>
+    <string name="zodiac_sign">Zodiac Sign:\u00A0</string>
+    <string name="send_button">Send</string>
+    <string name="generated_message">There are many variations of passages of Lorem Ipsum available,
+        but the majority have suffered alteration in some form, by injected humour,
+        or randomised words which don\'t look even slightly believable.</string>
+    <string name="delete_birthday_text">Are you sure you want to delete this birthday information?</string>
+
 </resources>

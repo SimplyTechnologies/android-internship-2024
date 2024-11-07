@@ -15,11 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -54,7 +56,8 @@ fun AddEventScreen(
     birthdayMode: BirthdayMode = BirthdayMode.Add(Birthday()),
     modifier: Modifier = Modifier,
     viewModel: AddEventViewModel = getViewModel { parametersOf(birthdayMode) },
-    navigateToMain: () -> Unit = {}
+    navigateToMain: () -> Unit = {},
+    navigateToDetails: () -> Unit
 ) {
     val name = viewModel.name.collectAsState()
     val relationship = viewModel.relationship.collectAsState()
@@ -67,6 +70,7 @@ fun AddEventScreen(
     val scrollState = rememberScrollState()
     val uiState by viewModel.addEventUiState.collectAsState()
     val imageSource by viewModel.imageSource.collectAsState()
+    val showDialog by viewModel.showDialog.collectAsState()
     val context = LocalContext.current
     when (uiState) {
         is AddEventUiState.Loading -> {
@@ -101,24 +105,53 @@ fun AddEventScreen(
 
         else -> {}
     }
-    Column(modifier = modifier
-        .fillMaxWidth(),
-        horizontalAlignment = Alignment.End) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
         TopAppBarWithBackButton(
             modifier = Modifier
                 .padding(bottom = 8.dp, start = 24.dp, end = 24.dp)
                 .fillMaxWidth(),
             showTopBar = true,
-            showBackButton = birthdayMode is BirthdayMode.Edit
+            showBackButton = birthdayMode is BirthdayMode.Edit,
+            onBackPress = {
+                navigateToDetails.invoke()
+            }
         )
         if (birthdayMode is BirthdayMode.Edit) {
             Icon(
                 modifier = Modifier
                     .padding(end = 28.dp)
-                    .clickable {  },
+                    .clickable {
+                        viewModel.setShowDialog(true)
+                    },
                 painter = painterResource(R.drawable.ic_trash),
                 contentDescription = null
             )
+        }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.setShowDialog(false)
+                },
+                text = { Text(text = stringResource(R.string.delete_birthday_text)) },
+                confirmButton = {
+                    TextButton(onClick = {
+                        viewModel.deleteEvent()
+                        navigateToMain.invoke()
+                    }) {
+                        Text(text = "Yes")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        viewModel.setShowDialog(false)
+                    }) {
+                        Text(text = "No")
+                    }
+                })
         }
         Column(
             modifier = Modifier
@@ -244,10 +277,14 @@ fun AddEventScreen(
                 onSelectedYear = { viewModel.setSelectedYear(it) })
             DoneButton(
                 modifier = Modifier.padding(top = 48.dp, bottom = 60.dp),
-                text = stringResource( R.string.done_button_text),
+                text = stringResource(R.string.done_button_text),
                 isEnabled = name.value.isNotEmpty() && relationship.value.isNotEmpty(),
                 onClick = {
-                    viewModel.addEvent(context)
+                    if (birthdayMode is BirthdayMode.Add) {
+                        viewModel.addEvent(context)
+                    } else {
+                        viewModel.updateEvent(context)
+                    }
                 }
             )
         }
