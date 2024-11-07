@@ -57,7 +57,6 @@
     <string name="shop_web_site">Web Site</string>
     <string name="shop_address">Address:\u00A0</string>
     <string name="shop_phone_number">Phone:\u00A0</string>
-    <string name="success">Success</string>
 
     <string name="zodiac_capricorn">Capricorn</string>
     <string name="zodiac_aquarius">Aquarius</string>
@@ -77,8 +76,7 @@
     <string name="birthday_relationship">Relationship:\u00A0</string>
     <string name="zodiac_sign">Zodiac Sign:\u00A0</string>
     <string name="send_button">Send</string>
-    <string name="generated_message">There are many variations of passages of Lorem Ipsum available,
-        but the majority have suffered alteration in some form, by injected humour,
-        or randomised words which don\'t look even slightly believable.</string>
+    <string name="generated_message">Happy Birthday!🎉 Wishing you a fantastic year filled with joy, success, and all the things you love. Here\'s to making wonderful memories and celebrating many more amazing moments. Enjoy your special day!</string>
+    <string name="success">The birthday was successfully created!</string>
 
 </resources>

@@ -33,11 +33,12 @@ fun TopAppBarWithBackButton(
             else if (showBackButton) Arrangement.SpaceBetween
             else Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
             if (showBackButton && !showInCenter) {
                 Box {
-                    IconButton(onClick = onBackPress) {
+                    IconButton(modifier = Modifier.height(40.dp), onClick = onBackPress) {
                         Icon(
                             modifier = Modifier.size(width = 16.dp, height = 24.dp),
                             painter = painterResource(id = R.drawable.ic_navigate_back),

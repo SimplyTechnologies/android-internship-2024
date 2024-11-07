@@ -7,21 +7,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -70,10 +68,13 @@ fun BirthdayDetailsScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
         TopAppBarWithBackButton(
-            onBackPress = { navigateToHomeScreen() }
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         )
+        { navigateToHomeScreen() }
+
 
         Box(
             Modifier.fillMaxWidth(),
@@ -84,7 +85,7 @@ fun BirthdayDetailsScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "Edit",
+                    contentDescription = null,
                 )
             }
         }
