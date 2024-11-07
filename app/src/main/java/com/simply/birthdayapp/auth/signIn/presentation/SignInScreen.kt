@@ -68,7 +68,7 @@ fun SignInComposable(
     val passwordText = viewModel.passwordText.collectAsState()
 
     val emailError = viewModel.emailError.collectAsState()
-    val passwordError = viewModel.emailError.collectAsState()
+    val passwordError = viewModel.passwordError.collectAsState()
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -78,90 +78,90 @@ fun SignInComposable(
         }
     }
 
-    when (uiState) {
-        is SignInUiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            ) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .imePadding(),
+        contentAlignment = Alignment.Center
+    ) {
+        when (uiState) {
+            is SignInUiState.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(48.dp),
                     color = DarkPink,
                 )
             }
-        }
 
-        is SignInUiState.Success -> {
-            saveLoggedInState(true)
-        }
-
-        is SignInUiState.Error -> {
-            if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
-                Toast.makeText(
-                    LocalContext.current,
-                    stringResource(R.string.error_unauthorized_user),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    LocalContext.current,
-                    "Error: ${(uiState as SignInUiState.Error).message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+            is SignInUiState.Success -> {
+                saveLoggedInState(true)
             }
-            viewModel.resetState()
-        }
 
-        else -> {}
-    }
+            is SignInUiState.Error -> {
+                if ((uiState as SignInUiState.Error).message == stringResource(R.string.unauthorized)) {
+                    Toast.makeText(
+                        LocalContext.current,
+                        stringResource(R.string.error_unauthorized_user),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Error: ${(uiState as SignInUiState.Error).message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                viewModel.resetState()
+            }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .imePadding()
-    ) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(38.dp)
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color.White)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier.padding(top = 15.dp),
-                text = stringResource(R.string.sign_in),
-                style = AuthTitleTextStyle
-            )
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(38.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(Color.White)
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier.padding(top = 15.dp),
+                        text = stringResource(R.string.sign_in),
+                        style = AuthTitleTextStyle
+                    )
 
-            InputTextField(modifier = Modifier.padding(top = 15.dp, bottom = 12.dp),
-                placeholder = stringResource(R.string.email),
-                textValue = email.value,
-                error = emailError.value,
-                onValueChange = {
-                    viewModel.setEmailText(it)
-                })
+                    InputTextField(
+                        modifier = Modifier.padding(top = 15.dp, bottom = 12.dp),
+                        placeholder = stringResource(R.string.email),
+                        textValue = email.value,
+                        error = emailError.value,
+                        onValueChange = {
+                            viewModel.setEmailText(it)
+                        }
+                    )
 
-            InputTextField(placeholder = stringResource(R.string.password),
-                textValue = passwordText.value,
-                error = passwordError.value,
-                isPassword = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                onValueChange = {
-                    viewModel.setPasswordText(it)
-                })
+                    InputTextField(
+                        placeholder = stringResource(R.string.password),
+                        textValue = passwordText.value,
+                        error = passwordError.value,
+                        isPassword = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                        onValueChange = {
+                            viewModel.setPasswordText(it)
+                        }
+                    )
 
-            AuthedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 26.dp, end = 26.dp, top = 48.dp),
-                isEnabled = viewModel.isSignInButtonEnable.value,
-                text = stringResource(R.string.sign_in)
-            ) {
-                viewModel.signIn()
+                    AuthedButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 26.dp, end = 26.dp, top = 48.dp),
+                        isEnabled = viewModel.isSignInButtonEnable.value,
+                        text = stringResource(R.string.sign_in)
+                    ) {
+                        viewModel.signIn()
+                    }
+                }
             }
         }
     }
