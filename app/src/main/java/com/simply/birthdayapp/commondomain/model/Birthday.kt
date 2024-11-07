@@ -1,5 +1,8 @@
 package com.simply.birthdayapp.commondomain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Birthday(
     val createdAt: String = "",
     val date: String = "",

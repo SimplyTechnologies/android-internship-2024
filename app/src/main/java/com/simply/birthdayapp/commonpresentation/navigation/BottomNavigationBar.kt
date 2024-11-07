@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.simply.birthdayapp.commondomain.model.BottomNavItem
-import com.simply.birthdayapp.commonpresentation.theme.BottomNavBarColor
+import com.simply.birthdayapp.commonpresentation.theme.MiddlePink
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
 import com.simply.birthdayapp.main.navigation.BottomNavBarDestination
@@ -29,7 +29,7 @@ fun BottomNavigationBar(navController: NavController) {
 
     BottomNavigation(
         modifier = Modifier.navigationBarsPadding(),
-        backgroundColor = BottomNavBarColor,
+        backgroundColor = MiddlePink,
     ) {
         items.forEach { item ->
             val isSelected = item.route::class.qualifiedName == currentDestination?.route

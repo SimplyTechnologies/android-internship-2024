@@ -1,6 +1,7 @@
-package com.simply.birthdayapp.main.home.presentation.component.item
+package com.simply.birthdayapp.main.home.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,9 +23,13 @@ import com.simply.birthdayapp.commonpresentation.theme.PrimaryTextStyle
 import com.simply.birthdayapp.main.home.data.getMockBirthdays
 
 @Composable
-fun BirthdayItem(modifier: Modifier = Modifier, item: Birthday) {
+fun BirthdayItem(
+    modifier: Modifier = Modifier,
+    item: Birthday,
+    onItemClick: () -> Unit
+) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onItemClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -47,7 +52,10 @@ fun BirthdayItem(modifier: Modifier = Modifier, item: Birthday) {
                     modifier = Modifier.padding(top = 4.dp),
                     style = PrimaryTextStyle
                 )
-                Text(text = item.date, style = PrimaryTextStyle, fontSize = 18.sp)
+                Text(
+                    text = formatDate(item.date),
+                    style = PrimaryTextStyle,
+                    fontSize = 18.sp)
             }
         }
     }
@@ -60,6 +68,8 @@ private fun BirthdayItemPreview() {
         Modifier
             .fillMaxWidth()
             .background(AppBackgroundColor)
-            .padding(16.dp), item = getMockBirthdays().first()
+            .padding(16.dp),
+        item = getMockBirthdays().first(),
+        onItemClick = {}
     )
 }
