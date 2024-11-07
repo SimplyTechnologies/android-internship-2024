@@ -72,8 +72,13 @@ fun BirthdayDetailsScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        TopAppBarWithBackButton(onBackPress = { navigateToHomeScreen() })
+        TopAppBarWithBackButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+        )
+        { navigateToHomeScreen() }
+
 
         Box(
             Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
@@ -81,7 +86,7 @@ fun BirthdayDetailsScreen(
             IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "Edit",
+                    contentDescription = null,
                 )
             }
         }
@@ -139,7 +144,9 @@ fun BirthdayDetailsScreen(
                     withStyle(style = SpanStyle(color = DarkPink)) {
                         this.append(viewModel.getZodiacSign())
                     }
-                }, style = PrimaryTextStyle, modifier = Modifier.padding(top = 8.dp)
+                },
+                style = PrimaryTextStyle,
+                modifier = Modifier.padding(top = 8.dp)
             )
 
             Button(
@@ -148,14 +155,16 @@ fun BirthdayDetailsScreen(
                 modifier = Modifier.padding(top = 224.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.gen_message), color = DarkPink
+                    text = stringResource(R.string.gen_message),
+                    color = DarkPink,
                 )
             }
         }
     }
 
     if (isDialogOpen) {
-        MessageToSendToJubilee(onDismiss = { isDialogOpen = false },
+        MessageToSendToJubilee(
+            onDismiss = { isDialogOpen = false },
             onSend = { message -> shareMessage(message = message, context = context) })
     }
 }
@@ -190,19 +199,23 @@ fun MessageToSendToJubilee(
                         unfocusedIndicatorColor = Color.Transparent
                     ),
                     textStyle = TextStyle(
-                        fontSize = 14.sp, color = Color.Black
+                        fontSize = 14.sp,
+                        color = Color.Black
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
 
                 Button(
-                    modifier = Modifier.padding(top = 8.dp), onClick = {
+                    modifier = Modifier.padding(top = 8.dp),
+                    onClick = {
                         onSend(messageText)
                         onDismiss()
-                    }, colors = ButtonDefaults.buttonColors(LightPinkBackground)
+                    },
+                    colors = ButtonDefaults.buttonColors(LightPinkBackground)
                 ) {
                     Text(
-                        text = stringResource(R.string.send_button), color = DarkPink
+                        text = stringResource(R.string.send_button),
+                        color = DarkPink
                     )
                 }
             }

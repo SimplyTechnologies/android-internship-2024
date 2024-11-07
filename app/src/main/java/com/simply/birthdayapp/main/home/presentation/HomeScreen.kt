@@ -22,11 +22,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel  = koinViewModel(),
+    viewModel: HomeViewModel = koinViewModel(),
     navigateToBirthdayDetailsScreen: (Birthday) -> Unit = {}
 ) {
     val birthdayList by viewModel.birthdays.collectAsState(emptyList())
-    Column(modifier = modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
         TopAppBarWithBackButton(Modifier.fillMaxWidth(), showInCenter = true, showTopBar = true)
         LazyColumn(
             modifier = Modifier

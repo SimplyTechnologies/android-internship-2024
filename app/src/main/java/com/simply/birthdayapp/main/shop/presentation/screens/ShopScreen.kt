@@ -20,8 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.simply.birthdayapp.R
+import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
-import com.simply.birthdayapp.main.components.actionbar.LogoActionBar
 import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
 import com.simply.birthdayapp.main.shop.presentation.ShopListUiState
 import com.simply.birthdayapp.main.shop.presentation.ShopViewModel
@@ -41,7 +41,7 @@ fun ShopScreen(
     Column(
         modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LogoActionBar(modifier = Modifier.fillMaxWidth())
+        TopAppBarWithBackButton(Modifier.fillMaxWidth(), showInCenter = true, showTopBar = true)
         SearchBar(text = searchText,
             onClearClick = { viewModel.onClearSearch() },
             onSearchClick = { viewModel.onSearchText(it) })
