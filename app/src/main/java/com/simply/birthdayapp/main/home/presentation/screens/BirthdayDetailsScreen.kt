@@ -15,13 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,17 +73,12 @@ fun BirthdayDetailsScreen(
         modifier = Modifier.fillMaxSize(),
     ) {
         Spacer(modifier = Modifier.height(8.dp))
-        TopAppBarWithBackButton(
-            onBackPress = { navigateToHomeScreen() }
-        )
+        TopAppBarWithBackButton(onBackPress = { navigateToHomeScreen() })
 
         Box(
-            Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.TopEnd
+            Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
         ) {
-            IconButton(
-                onClick = {}
-            ) {
+            IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = "Edit",
@@ -105,7 +102,12 @@ fun BirthdayDetailsScreen(
                 text = birthday.name,
                 style = PrimaryTextStyle,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(top = 18.dp)
+                modifier = Modifier
+                    .padding(top = 18.dp, start = 36.dp, end = 36.dp)
+                    .fillMaxWidth(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
 
             Text(
@@ -137,9 +139,7 @@ fun BirthdayDetailsScreen(
                     withStyle(style = SpanStyle(color = DarkPink)) {
                         this.append(viewModel.getZodiacSign())
                     }
-                },
-                style = PrimaryTextStyle,
-                modifier = Modifier.padding(top = 8.dp)
+                }, style = PrimaryTextStyle, modifier = Modifier.padding(top = 8.dp)
             )
 
             Button(
@@ -148,16 +148,14 @@ fun BirthdayDetailsScreen(
                 modifier = Modifier.padding(top = 224.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.gen_message),
-                    color = DarkPink
+                    text = stringResource(R.string.gen_message), color = DarkPink
                 )
             }
         }
     }
 
     if (isDialogOpen) {
-        MessageToSendToJubilee(
-            onDismiss = { isDialogOpen = false },
+        MessageToSendToJubilee(onDismiss = { isDialogOpen = false },
             onSend = { message -> shareMessage(message = message, context = context) })
     }
 }
@@ -192,23 +190,19 @@ fun MessageToSendToJubilee(
                         unfocusedIndicatorColor = Color.Transparent
                     ),
                     textStyle = TextStyle(
-                        fontSize = 14.sp,
-                        color = Color.Black
+                        fontSize = 14.sp, color = Color.Black
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
 
                 Button(
-                    modifier = Modifier.padding(top = 8.dp),
-                    onClick = {
+                    modifier = Modifier.padding(top = 8.dp), onClick = {
                         onSend(messageText)
                         onDismiss()
-                    },
-                    colors = ButtonDefaults.buttonColors(LightPinkBackground)
+                    }, colors = ButtonDefaults.buttonColors(LightPinkBackground)
                 ) {
                     Text(
-                        text = stringResource(R.string.send_button),
-                        color = DarkPink
+                        text = stringResource(R.string.send_button), color = DarkPink
                     )
                 }
             }
@@ -220,6 +214,7 @@ fun shareMessage(message: String, context: Context) {
     val share = R.string.send_message
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
         putExtra(Intent.EXTRA_TEXT, message)
+        type = "text/plain"
     }
     context.startActivity(Intent.createChooser(shareIntent, "$share"))
 }
