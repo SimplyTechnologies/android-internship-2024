@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,12 +81,9 @@ fun BirthdayDetailsScreen(
 
 
         Box(
-            Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.TopEnd
+            Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
         ) {
-            IconButton(
-                onClick = {}
-            ) {
+            IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = null,
@@ -106,7 +107,12 @@ fun BirthdayDetailsScreen(
                 text = birthday.name,
                 style = PrimaryTextStyle,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(top = 18.dp)
+                modifier = Modifier
+                    .padding(top = 18.dp, start = 36.dp, end = 36.dp)
+                    .fillMaxWidth(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
 
             Text(
@@ -150,7 +156,7 @@ fun BirthdayDetailsScreen(
             ) {
                 Text(
                     text = stringResource(R.string.gen_message),
-                    color = DarkPink
+                    color = DarkPink,
                 )
             }
         }
@@ -221,6 +227,7 @@ fun shareMessage(message: String, context: Context) {
     val share = R.string.send_message
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
         putExtra(Intent.EXTRA_TEXT, message)
+        type = "text/plain"
     }
     context.startActivity(Intent.createChooser(shareIntent, "$share"))
 }
