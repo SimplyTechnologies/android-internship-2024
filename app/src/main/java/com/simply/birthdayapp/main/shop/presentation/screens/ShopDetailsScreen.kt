@@ -6,10 +6,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -26,24 +24,23 @@ import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAp
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
 import com.simply.birthdayapp.commonpresentation.theme.DarkGray
 import com.simply.birthdayapp.main.shop.domain.model.ShopDomainModel
-import com.simply.birthdayapp.main.shop.presentation.components.clickableTextStyle
 import com.simply.birthdayapp.main.shop.presentation.components.ShopRating
+import com.simply.birthdayapp.main.shop.presentation.components.clickableTextStyle
 import com.simply.birthdayapp.main.shop.presentation.components.noneClickableTextStyle
 
 @Composable
 fun ShopDetailsScreen(
-    data: ShopDomainModel,
-    navigateToShopScreen: () -> Unit
+    data: ShopDomainModel, navigateToShopScreen: () -> Unit
 ) {
     val context = LocalContext.current
     val googleMapPackage = "com.google.android.apps.maps"
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        TopAppBarWithBackButton(
-            onBackPress = { navigateToShopScreen() }
-        )
+        TopAppBarWithBackButton(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+            onBackPress = { navigateToShopScreen() })
 
         Column(
             modifier = Modifier
@@ -78,8 +75,7 @@ fun ShopDetailsScreen(
                             text = stringResource(R.string.shop_phone_number),
                             style = noneClickableTextStyle
                         )
-                        Text(
-                            text = shop.phone ?: "",
+                        Text(text = shop.phone ?: "",
                             style = clickableTextStyle,
                             modifier = Modifier.clickable {
                                 shop.phone?.let {
@@ -88,8 +84,7 @@ fun ShopDetailsScreen(
                                     }
                                     context.startActivity(dialIntent)
                                 }
-                            }
-                        )
+                            })
                     }
 
                     Row(
@@ -99,32 +94,27 @@ fun ShopDetailsScreen(
                             text = stringResource(R.string.shop_address),
                             style = noneClickableTextStyle
                         )
-                        Text(
-                            text = shop.address,
+                        Text(text = shop.address,
                             style = clickableTextStyle,
                             modifier = Modifier.clickable {
                                 val googleMapIntentUri =
                                     Uri.parse("geo:0,0?q=${Uri.encode(shop.address)}")
                                 val mapIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    googleMapIntentUri
+                                    Intent.ACTION_VIEW, googleMapIntentUri
                                 ).setPackage(googleMapPackage)
                                 context.startActivity(mapIntent)
-                            }
-                        )
+                            })
                     }
 
                     shop.siteUrl?.let { url ->
-                        Text(
-                            text = stringResource(R.string.shop_web_site),
+                        Text(text = stringResource(R.string.shop_web_site),
                             style = clickableTextStyle,
                             modifier = Modifier
                                 .padding(top = 16.dp)
                                 .clickable {
                                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                                     context.startActivity(browserIntent)
-                                }
-                        )
+                                })
                     }
                 }
             }

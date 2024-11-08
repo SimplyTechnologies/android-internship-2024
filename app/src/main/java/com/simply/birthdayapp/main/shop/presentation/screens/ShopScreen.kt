@@ -3,15 +3,15 @@ package com.simply.birthdayapp.main.shop.presentation.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,8 +44,7 @@ fun ShopScreen(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .requiredHeightIn(min = 100.dp)
+            .fillMaxSize()
             .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -69,14 +68,18 @@ fun ShopScreen(
                                 start = 24.dp,
                                 end = 24.dp,
                                 top = 18.dp,
-                                bottom = 12.dp,
-                            ),
+                            )
+                            .heightIn(min = 0.dp, max = 1000.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         items(uiState.data) { shop ->
                             ShopListItem(shopName = shop.name,
                                 avatarUrl = shop.avatarUrl,
                                 onItemClick = { navigateToShopDetailsScreen(shop) })
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(12.dp))
                         }
                     }
                 }
