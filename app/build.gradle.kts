@@ -101,6 +101,9 @@ dependencies {
 
     // coil
     implementation(libs.coil.compose)
+
+    // lottie
+    implementation (libs.lottie.compose)
 }
 apollo {
     service("service") {

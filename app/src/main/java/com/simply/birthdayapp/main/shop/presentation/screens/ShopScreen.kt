@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,7 +41,10 @@ fun ShopScreen(
     val searchText by viewModel.searchText.collectAsState()
 
     Column(
-        modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBarWithBackButton(Modifier.fillMaxWidth(), showInCenter = true, showTopBar = true)
         SearchBar(text = searchText,
@@ -62,7 +67,8 @@ fun ShopScreen(
                                 end = 24.dp,
                                 top = 18.dp,
                                 bottom = 52.dp,
-                            ),
+                            )
+                            .heightIn(min = 0.dp, max = 1000.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         items(uiState.data) { shop ->
