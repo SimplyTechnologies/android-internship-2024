@@ -3,8 +3,10 @@ package com.simply.birthdayapp.main.shop.presentation.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -66,7 +68,6 @@ fun ShopScreen(
                                 start = 24.dp,
                                 end = 24.dp,
                                 top = 18.dp,
-                                bottom = 52.dp,
                             )
                             .heightIn(min = 0.dp, max = 1000.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -75,6 +76,10 @@ fun ShopScreen(
                             ShopListItem(shopName = shop.name,
                                 avatarUrl = shop.avatarUrl,
                                 onItemClick = { navigateToShopDetailsScreen(shop) })
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(12.dp))
                         }
                     }
                 }
