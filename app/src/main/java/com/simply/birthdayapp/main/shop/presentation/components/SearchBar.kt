@@ -20,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.simply.birthdayapp.R
-import com.simply.birthdayapp.commonpresentation.theme.SearchBarHintTextColor
+import com.simply.birthdayapp.commonpresentation.theme.LightGray
 
 @Composable
 fun SearchBar(
@@ -42,7 +42,7 @@ fun SearchBar(
         if (text.isEmpty()) {
             Text(
                 text = stringResource(R.string.search_bar_hint_text),
-                color = SearchBarHintTextColor,
+                color = LightGray,
                 style = TextStyle(fontSize = 14.sp)
             )
         }
