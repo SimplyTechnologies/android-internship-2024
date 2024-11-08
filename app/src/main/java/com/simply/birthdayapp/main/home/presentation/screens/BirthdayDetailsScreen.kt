@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,8 @@ import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.commonpresentation.components.actionbar.auth.TopAppBarWithBackButton
 import com.simply.birthdayapp.commonpresentation.components.image.NetworkImage
+import com.simply.birthdayapp.commonpresentation.components.lottie.Animation
+import com.simply.birthdayapp.commonpresentation.ext.isToday
 import com.simply.birthdayapp.commonpresentation.theme.DarkGray
 import com.simply.birthdayapp.commonpresentation.theme.DarkPink
 import com.simply.birthdayapp.commonpresentation.theme.LightPinkBackground
@@ -69,15 +72,25 @@ fun BirthdayDetailsScreen(
     val context = LocalContext.current
     val birthday by viewModel.birthday.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        TopAppBarWithBackButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-        )
-        { navigateToHomeScreen() }
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        if (birthday.date.isToday()) {
+            Animation(
+                modifier = Modifier.fillMaxSize(),
+                res = R.raw.firecracker_anim,
+                iterations = 1,
+                contentScale = ContentScale.FillHeight
+            )
+        }
+
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            TopAppBarWithBackButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+            ) { navigateToHomeScreen() }
 
 
         Box(
@@ -95,80 +108,78 @@ fun BirthdayDetailsScreen(
             }
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            NetworkImage(
-                url = birthday.image,
-                modifier = Modifier.size(100.dp),
-                border = BorderStroke(1.dp, DarkGray)
-            )
-
-            Text(
-                text = birthday.name,
-                style = PrimaryTextStyle,
-                fontSize = 20.sp,
+            Column(
                 modifier = Modifier
-                    .padding(top = 18.dp, start = 36.dp, end = 36.dp)
-                    .fillMaxWidth(),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = formatDate(birthday.date),
-                style = PrimaryTextStyle,
-                modifier = Modifier.padding(top = 18.dp)
-            )
-
-            Row(
-                modifier = Modifier.padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxSize()
+                    .padding(top = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(R.string.birthday_relationship),
-                    style = PrimaryTextStyle,
+                NetworkImage(
+                    url = birthday.image,
+                    modifier = Modifier.size(100.dp),
+                    border = BorderStroke(1.dp, DarkGray)
                 )
-                Surface(shape = RoundedCornerShape(8.dp)) {
+
+                Text(
+                    text = birthday.name,
+                    style = PrimaryTextStyle,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(top = 18.dp, start = 36.dp, end = 36.dp)
+                        .fillMaxWidth(),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+
+                Text(
+                    text = formatDate(birthday.date),
+                    style = PrimaryTextStyle,
+                    modifier = Modifier.padding(top = 18.dp)
+                )
+
+                Row(
+                    modifier = Modifier.padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = birthday.relation,
+                        text = stringResource(R.string.birthday_relationship),
                         style = PrimaryTextStyle,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                    Surface(shape = RoundedCornerShape(8.dp)) {
+                        Text(
+                            text = birthday.relation,
+                            style = PrimaryTextStyle,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+                }
+
+                Text(
+                    text = buildAnnotatedString {
+                        append(stringResource(R.string.zodiac_sign))
+                        withStyle(style = SpanStyle(color = DarkPink)) {
+                            this.append(viewModel.getZodiacSign())
+                        }
+                    }, style = PrimaryTextStyle, modifier = Modifier.padding(top = 8.dp)
+                )
+
+                Button(
+                    onClick = { isDialogOpen = true },
+                    colors = ButtonDefaults.buttonColors(MiddlePink),
+                    modifier = Modifier.padding(top = 224.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.gen_message),
+                        color = DarkPink,
                     )
                 }
-            }
-
-            Text(
-                text = buildAnnotatedString {
-                    append(stringResource(R.string.zodiac_sign))
-                    withStyle(style = SpanStyle(color = DarkPink)) {
-                        this.append(viewModel.getZodiacSign())
-                    }
-                },
-                style = PrimaryTextStyle,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-
-            Button(
-                onClick = { isDialogOpen = true },
-                colors = ButtonDefaults.buttonColors(MiddlePink),
-                modifier = Modifier.padding(top = 224.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.gen_message),
-                    color = DarkPink,
-                )
             }
         }
     }
 
     if (isDialogOpen) {
-        MessageToSendToJubilee(
-            onDismiss = { isDialogOpen = false },
+        MessageToSendToJubilee(onDismiss = { isDialogOpen = false },
             onSend = { message -> shareMessage(message = message, context = context) })
     }
 }
@@ -204,7 +215,7 @@ fun MessageToSendToJubilee(
                     ),
                     textStyle = TextStyle(
                         fontSize = 14.sp,
-                        color = Color.Black
+                        color = Color.Black,
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )

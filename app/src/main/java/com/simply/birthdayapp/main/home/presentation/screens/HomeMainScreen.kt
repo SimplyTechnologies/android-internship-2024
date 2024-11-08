@@ -1,6 +1,7 @@
 package com.simply.birthdayapp.main.home.presentation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,7 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commondomain.model.Birthday
+import com.simply.birthdayapp.commonpresentation.components.lottie.Animation
 import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.home.navigation.HomeDestination
 import com.simply.birthdayapp.main.home.navigation.HomeNavType

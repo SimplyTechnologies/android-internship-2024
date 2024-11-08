@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -13,17 +14,23 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.simply.birthdayapp.R
 
 @Composable
-fun Animation(modifier: Modifier = Modifier, res: Int) {
+fun Animation(
+    modifier: Modifier = Modifier,
+    res: Int,
+    iterations: Int = LottieConstants.IterateForever,
+    contentScale: ContentScale = ContentScale.Fit
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(res))
 
     val progress by animateLottieCompositionAsState(
         composition,
-        iterations = LottieConstants.IterateForever
+        iterations = iterations
     )
 
     LottieAnimation(
         modifier = modifier,
         composition = composition,
+        contentScale = contentScale,
         progress = { progress }
     )
 }
