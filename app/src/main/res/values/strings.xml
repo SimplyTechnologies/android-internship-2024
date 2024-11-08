@@ -78,5 +78,8 @@
     <string name="send_button">Send</string>
     <string name="generated_message">Happy Birthday!🎉 Wishing you a fantastic year filled with joy, success, and all the things you love. Here\'s to making wonderful memories and celebrating many more amazing moments. Enjoy your special day!</string>
     <string name="success">The birthday was successfully created!</string>
+    <string name="delete_birthday_text">Are you sure you want to delete this birthday information?</string>
+    <string name="the_birthday_was_deleted">The birthday was deleted</string>
+    <string name="the_birthday_was_successfully_updated">The birthday was successfully updated!</string>
 
 </resources>

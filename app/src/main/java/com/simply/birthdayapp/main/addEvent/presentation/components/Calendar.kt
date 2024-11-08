@@ -43,7 +43,13 @@ fun CustomCalendar(
     onSelectedMonth: (Int) -> Unit,
     onSelectedYear: (Int) -> Unit
 ) {
-    val calendar by remember { mutableStateOf(Calendar.getInstance()) }
+    val calendar by remember {
+        mutableStateOf(
+            Calendar.getInstance().apply {
+                set(selectedYear, selectedMonth - 1, selectedDay)
+            }
+        )
+    }
     var currentMonth by remember {
         mutableStateOf(
             calendar.getDisplayName(
@@ -55,7 +61,6 @@ fun CustomCalendar(
     }
     var currentYear by remember { mutableIntStateOf(calendar.get(Calendar.YEAR)) }
     var daysInMonth by remember { mutableIntStateOf(calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) }
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
     var firstDayOfMonth by remember { mutableIntStateOf(calendar.get(Calendar.DAY_OF_WEEK) - 1) }
 
     fun updateCalendar() {
@@ -122,7 +127,8 @@ fun CustomCalendar(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                stringArrayResource(R.array.weekdays
+                stringArrayResource(
+                    R.array.weekdays
                 ).forEach { day ->
                     Text(
                         text = day,

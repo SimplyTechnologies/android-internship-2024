@@ -4,12 +4,17 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.simply.birthdayapp.R
 import com.simply.birthdayapp.commondomain.usecase.ImageEncodeUseCase
 import com.simply.birthdayapp.commonpresentation.components.image.ImageSource
 import com.simply.birthdayapp.core.result.Result
 import com.simply.birthdayapp.main.addEvent.domain.FamilyRelation
 import com.simply.birthdayapp.main.addEvent.domain.model.CreateBirthdayInputDomain
 import com.simply.birthdayapp.main.addEvent.domain.usecase.CreateBirthdayUseCase
+import com.simply.birthdayapp.main.addEvent.domain.usecase.DeleteBirthdayUseCase
+import com.simply.birthdayapp.main.addEvent.domain.usecase.UpdateBirthdayUseCase
+import com.simply.birthdayapp.main.home.presentation.components.formatDate
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,26 +23,74 @@ import java.util.Calendar
 import java.util.Date
 
 class AddEventViewModel(
+    val birthdayMode: BirthdayMode,
     private val createBirthdayUseCase: CreateBirthdayUseCase,
     private val imageEncodeUseCase: ImageEncodeUseCase,
+    private val updateBirthdayUseCase: UpdateBirthdayUseCase,
+    private val deleteBirthdayUseCase: DeleteBirthdayUseCase
 ) : ViewModel() {
 
-    private val _name = MutableStateFlow("")
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    private val _name = MutableStateFlow(birthdayMode.birthday.name)
     val name: StateFlow<String> = _name.asStateFlow()
 
-    private val _relationship = MutableStateFlow("")
+    private val _relationship = MutableStateFlow(birthdayMode.birthday.relation)
     val relationship: StateFlow<String> = _relationship.asStateFlow()
 
-    private val _familyRelation = MutableStateFlow(FamilyRelation.getDisplayNames())
+    private val _familyRelation = MutableStateFlow(
+        if (birthdayMode.birthday.relation.isNotEmpty() && !FamilyRelation.getDisplayNames()
+                .contains(birthdayMode.birthday.relation)
+        ) {
+            val newList = FamilyRelation.getDisplayNames()
+            newList.add(birthdayMode.birthday.relation)
+            newList
+        } else {
+            FamilyRelation.getDisplayNames()
+        }
+    )
     val familyRelation: StateFlow<List<String>> = _familyRelation.asStateFlow()
 
-    private val _selectedDay = MutableStateFlow(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+    private val _selectedDay = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        } else {
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[0].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            }
+        }
+    )
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
-    private val _selectedMonth = MutableStateFlow(Calendar.getInstance().get(Calendar.MONTH) + 1)
+    private val _selectedMonth = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.MONTH) + 1
+        } else {
+
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[1].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.MONTH) + 1
+            }
+        }
+    )
     val selectedMonth: StateFlow<Int> = _selectedMonth.asStateFlow()
 
-    private val _selectedYear = MutableStateFlow(Calendar.getInstance().get(Calendar.YEAR))
+    private val _selectedYear = MutableStateFlow(
+        if (birthdayMode.birthday.date.isEmpty()) {
+            Calendar.getInstance().get(Calendar.YEAR)
+        } else {
+            try {
+                formatDate(birthdayMode.birthday.date).split(".")[2].toInt()
+            } catch (exception: Exception) {
+                Calendar.getInstance().get(Calendar.YEAR)
+            }
+
+        }
+    )
     val selectedYear: StateFlow<Int> = _selectedYear.asStateFlow()
 
     private val _isAddRelation = MutableStateFlow(false)
@@ -49,12 +102,23 @@ class AddEventViewModel(
     private val _addEventUiState = MutableStateFlow<AddEventUiState?>(null)
     val addEventUiState: StateFlow<AddEventUiState?> = _addEventUiState.asStateFlow()
 
-    private val _imageSource = MutableStateFlow<ImageSource>(ImageSource.Unknown)
+    private val _imageSource = MutableStateFlow<ImageSource>(
+        if (birthdayMode.birthday.image != null) {
+            ImageSource.Url(birthdayMode.birthday.image)
+        } else {
+            ImageSource.Unknown
+        }
+    )
     val imageSource: StateFlow<ImageSource> = _imageSource.asStateFlow()
+
+    fun setShowDialog(newValue: Boolean) {
+        viewModelScope.launch {
+            _showDialog.emit(newValue)
+        }
+    }
 
     fun imageEncode(context: Context): String? =
         imageSource.value.source?.let { imageEncodeUseCase.invoke(it, context) }
-
 
     fun setIsAddRelation(newValue: Boolean) {
         viewModelScope.launch {
@@ -134,7 +198,7 @@ class AddEventViewModel(
 
     fun addEvent(context: Context) {
         viewModelScope.launch {
-            val image = imageEncode(context)
+            val image = birthdayMode.birthday.image ?: imageEncode(context)
             _addEventUiState.value = AddEventUiState.Loading
             val selectedDate = createDateFromSelectedValues(
                 _selectedYear.value,
@@ -152,7 +216,68 @@ class AddEventViewModel(
             ).collect {
                 _addEventUiState.value = when (it) {
                     is Result.Success -> {
-                        AddEventUiState.Success(it.data.toString())
+                        AddEventUiState.Success(context.getString(R.string.success))
+                    }
+
+                    is Result.Error -> {
+                        AddEventUiState.Error(it.message)
+                    }
+
+                    is Result.Loading -> {
+                        AddEventUiState.Loading
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateEvent(context: Context) {
+        viewModelScope.launch {
+            val image = if (_imageSource.value is ImageSource.Uri) {
+                imageEncode(context)
+            } else {
+                _imageSource.value.source
+            }
+            _addEventUiState.value = AddEventUiState.Loading
+            val selectedDate = createDateFromSelectedValues(
+                _selectedYear.value,
+                _selectedMonth.value,
+                _selectedDay.value
+            )
+            updateBirthdayUseCase.invoke(
+                birthdayMode.birthday.id,
+                CreateBirthdayInputDomain(
+                    date = selectedDate,
+                    image = image,
+                    message = birthdayMode.birthday.message,
+                    name = _name.value,
+                    relation = _relationship.value
+                )
+            ).collect {
+                _addEventUiState.value = when (it) {
+                    is Result.Success -> {
+                        AddEventUiState.Success(context.getString(R.string.the_birthday_was_successfully_updated))
+                    }
+
+                    is Result.Error -> {
+                        AddEventUiState.Error(it.message)
+                    }
+
+                    is Result.Loading -> {
+                        AddEventUiState.Loading
+                    }
+                }
+            }
+        }
+
+    }
+
+    fun deleteEvent(context: Context) {
+        viewModelScope.launch {
+            deleteBirthdayUseCase.invoke(birthdayMode.birthday.id).collect {
+                _addEventUiState.value = when (it) {
+                    is Result.Success -> {
+                        AddEventUiState.Success(context.getString(R.string.the_birthday_was_deleted))
                     }
 
                     is Result.Error -> {

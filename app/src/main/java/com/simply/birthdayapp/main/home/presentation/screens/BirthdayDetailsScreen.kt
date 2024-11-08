@@ -7,10 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,6 +52,7 @@ import com.simply.birthdayapp.commonpresentation.theme.MiddlePink
 import com.simply.birthdayapp.commonpresentation.theme.PrimaryTextStyle
 import com.simply.birthdayapp.main.home.presentation.BirthdayDetailsViewModel
 import com.simply.birthdayapp.main.home.presentation.components.formatDate
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parameterSetOf
 
@@ -64,6 +63,7 @@ fun BirthdayDetailsScreen(
         parameterSetOf(birthday)
     },
     navigateToHomeScreen: () -> Unit,
+    navigateToEditScreen: (BirthdayMode) -> Unit
 ) {
     var isDialogOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -83,7 +83,11 @@ fun BirthdayDetailsScreen(
         Box(
             Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
         ) {
-            IconButton(onClick = {}) {
+            IconButton(
+                onClick = {
+                    navigateToEditScreen(BirthdayMode.Edit(birthday))
+                }
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = null,
