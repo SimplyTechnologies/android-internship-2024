@@ -38,9 +38,9 @@ fun ProfileImage(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
+        onResult = {uri ->
             if (uri != null) {
-                onAddPhotoClick(uri) // Only pass a non-null URI
+                onAddPhotoClick(uri)
             }
         }
     )

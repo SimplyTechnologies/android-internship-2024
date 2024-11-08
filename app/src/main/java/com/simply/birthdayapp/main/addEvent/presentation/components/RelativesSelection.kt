@@ -41,14 +41,13 @@ fun RelativesSelection(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .heightIn(min = 0.dp, max = 500.dp)
+                .heightIn(max = 500.dp)
         ) {
             items(relatives.size) { index ->
                 val relative = relatives[index]
                 Box(
                     modifier = Modifier
-                        .height(36.dp)
-                        .width(108.dp)
+                        .height(37.dp)
                         .clip(ColumnItemsShape)
                         .background(
                             if (selectedRelative == relative) DarkPink else Color.White,
@@ -60,9 +59,12 @@ fun RelativesSelection(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp),
                         text = relative,
                         color = if (selectedRelative == relative) Color.White else Color.Black,
-                        style = PrimaryTextStyle
+                        style = PrimaryTextStyle,
+                        maxLines = 1
                     )
 
                 }

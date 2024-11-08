@@ -1,9 +1,18 @@
 package com.simply.birthdayapp.main.addEvent.presentation.di
 
 import com.simply.birthdayapp.main.addEvent.presentation.AddEventViewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import com.simply.birthdayapp.main.navigation.BirthdayMode
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val addEventPresentationModule = module {
-    viewModelOf(::AddEventViewModel)
+    viewModel { (birthdayMode: BirthdayMode) ->
+        AddEventViewModel(
+            birthdayMode = birthdayMode,
+            createBirthdayUseCase = get(),
+            imageEncodeUseCase = get(),
+            updateBirthdayUseCase = get(),
+            deleteBirthdayUseCase = get()
+        )
+    }
 }

@@ -16,10 +16,12 @@ import com.simply.birthdayapp.commonpresentation.theme.AppBackgroundColor
 import com.simply.birthdayapp.main.home.navigation.HomeDestination
 import com.simply.birthdayapp.main.home.navigation.HomeNavType
 import com.simply.birthdayapp.main.home.presentation.HomeScreen
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import kotlin.reflect.typeOf
 
 @Composable
 fun HomeMainScreen(
+    navigateToEditBirthdayScreen: (BirthdayMode) -> Unit = {}
 ) {
     val homeNavController = rememberNavController()
     NavHost(
@@ -38,9 +40,11 @@ fun HomeMainScreen(
             typeMap = mapOf(typeOf<Birthday>() to HomeNavType.HomeDomainType)
         ) {
             val birthday = it.toRoute<HomeDestination.BirthdayDetailsDestination>().birthday
-            BirthdayDetailsScreen(birthday = birthday) {
+            BirthdayDetailsScreen(birthday = birthday, navigateToHomeScreen = {
                 homeNavController.navigateUp()
-            }
+            }, navigateToEditScreen = { mode ->
+                navigateToEditBirthdayScreen(mode)
+            })
         }
     }
 }

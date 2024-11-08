@@ -10,7 +10,7 @@ sealed interface BottomNavBarDestination {
     data object ShopDestination : BottomNavBarDestination
 
     @Serializable
-    data object AddEventDestination : BottomNavBarDestination
+    data class AddEventDestination(val argBirthdayMode: BirthdayMode) : BottomNavBarDestination
 
     @Serializable
     data object ProfileDestination : BottomNavBarDestination

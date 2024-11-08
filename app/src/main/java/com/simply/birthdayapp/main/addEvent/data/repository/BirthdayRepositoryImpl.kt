@@ -3,6 +3,8 @@ package com.simply.birthdayapp.main.addEvent.data.repository
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.simply.CreateBirthdayMutation
+import com.simply.DeleteBirthdayMutation
+import com.simply.UpdateBirthdayMutation
 import com.simply.birthdayapp.commondomain.model.Birthday
 import com.simply.birthdayapp.core.result.Result
 import com.simply.birthdayapp.main.addEvent.data.mapper.toBirthday
@@ -11,6 +13,7 @@ import com.simply.birthdayapp.main.addEvent.data.model.BirthdayDataModel
 import com.simply.birthdayapp.main.addEvent.domain.model.CreateBirthdayInputDomain
 import com.simply.birthdayapp.main.addEvent.domain.repository.BirthDayRepository
 import com.simply.type.CreateBirthdayInput
+import com.simply.type.UpdateBirthdayInput
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -37,6 +40,74 @@ class BirthdayRepositoryImpl(
         ).execute()
 
         val birthdayData = response.data?.createBirthday
+        if (birthdayData != null) {
+            val birthday = BirthdayDataModel(
+                createdAt = birthdayData.createdAt.toString(),
+                date = birthdayData.date.toString(),
+                id = birthdayData.id,
+                image = birthdayData.image,
+                message = birthdayData.message,
+                name = birthdayData.name,
+                relation = birthdayData.relation,
+                upcomingAge = birthdayData.upcomingAge,
+                updatedAt = birthdayData.updatedAt.toString(),
+                upcomingBirthday = birthdayData.upcomingBirthday.toString(),
+                userId = birthdayData.userId
+            ).toBirthday()
+
+            emit(Result.Success(birthday))
+        } else {
+            emit(Result.Error(response.errors?.firstOrNull()?.message ?: "", Birthday()))
+        }
+    }.catch { e ->
+        emit(Result.Error(e.message ?: "", Birthday()))
+    }.flowOn(Dispatchers.IO)
+
+    override fun updateBirthday(id: Int, input: CreateBirthdayInputDomain): Flow<Result<Birthday>> = flow {
+        emit(Result.Loading(Birthday()))
+        val inputModel = input.toCreateBirthdayInputData()
+        val response = apolloClient.mutation(
+            UpdateBirthdayMutation(
+                id = id,
+                UpdateBirthdayInput(
+                    date = Optional.presentIfNotNull(inputModel.date),
+                    image = Optional.presentIfNotNull(inputModel.image),
+                    message = Optional.presentIfNotNull(inputModel.message),
+                    name = Optional.presentIfNotNull(inputModel.name),
+                    relation = Optional.presentIfNotNull(inputModel.relation)
+                )
+            )
+        ).execute()
+        val birthdayData = response.data?.updateBirthday
+        if (birthdayData != null) {
+            val birthday = BirthdayDataModel(
+                createdAt = birthdayData.createdAt.toString(),
+                date = birthdayData.date.toString(),
+                id = birthdayData.id,
+                image = birthdayData.image,
+                message = birthdayData.message,
+                name = birthdayData.name,
+                relation = birthdayData.relation,
+                upcomingAge = birthdayData.upcomingAge,
+                updatedAt = birthdayData.updatedAt.toString(),
+                upcomingBirthday = birthdayData.upcomingBirthday.toString(),
+                userId = birthdayData.userId
+            ).toBirthday()
+
+            emit(Result.Success(birthday))
+        } else {
+            emit(Result.Error(response.errors?.firstOrNull()?.message ?: "", Birthday()))
+        }
+    }.catch { e ->
+        emit(Result.Error(e.message ?: "", Birthday()))
+    }.flowOn(Dispatchers.IO)
+
+    override fun deleteBirthday(id: Int): Flow<Result<Birthday>> = flow {
+        emit(Result.Loading(Birthday()))
+        val response = apolloClient.mutation(
+            DeleteBirthdayMutation(id)
+        ).execute()
+        val birthdayData = response.data?.deleteBirthday
         if (birthdayData != null) {
             val birthday = BirthdayDataModel(
                 createdAt = birthdayData.createdAt.toString(),

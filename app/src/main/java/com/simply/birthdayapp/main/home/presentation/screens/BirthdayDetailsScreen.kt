@@ -55,6 +55,7 @@ import com.simply.birthdayapp.commonpresentation.theme.MiddlePink
 import com.simply.birthdayapp.commonpresentation.theme.PrimaryTextStyle
 import com.simply.birthdayapp.main.home.presentation.BirthdayDetailsViewModel
 import com.simply.birthdayapp.main.home.presentation.components.formatDate
+import com.simply.birthdayapp.main.navigation.BirthdayMode
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parameterSetOf
 
@@ -65,6 +66,7 @@ fun BirthdayDetailsScreen(
         parameterSetOf(birthday)
     },
     navigateToHomeScreen: () -> Unit,
+    navigateToEditScreen: (BirthdayMode) -> Unit
 ) {
     var isDialogOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -91,16 +93,20 @@ fun BirthdayDetailsScreen(
             ) { navigateToHomeScreen() }
 
 
-            Box(
-                Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
-            ) {
-                IconButton(onClick = {}) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_edit),
-                        contentDescription = null,
-                    )
+        Box(
+            Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
+        ) {
+            IconButton(
+                onClick = {
+                    navigateToEditScreen(BirthdayMode.Edit(birthday))
                 }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = null,
+                )
             }
+        }
 
             Column(
                 modifier = Modifier
@@ -172,7 +178,6 @@ fun BirthdayDetailsScreen(
         }
     }
 
-
     if (isDialogOpen) {
         MessageToSendToJubilee(onDismiss = { isDialogOpen = false },
             onSend = { message -> shareMessage(message = message, context = context) })
@@ -209,19 +214,23 @@ fun MessageToSendToJubilee(
                         unfocusedIndicatorColor = Color.Transparent
                     ),
                     textStyle = TextStyle(
-                        fontSize = 14.sp, color = Color.Black
+                        fontSize = 14.sp,
+                        color = Color.Black,
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
 
                 Button(
-                    modifier = Modifier.padding(top = 8.dp), onClick = {
+                    modifier = Modifier.padding(top = 8.dp),
+                    onClick = {
                         onSend(messageText)
                         onDismiss()
-                    }, colors = ButtonDefaults.buttonColors(LightPinkBackground)
+                    },
+                    colors = ButtonDefaults.buttonColors(LightPinkBackground)
                 ) {
                     Text(
-                        text = stringResource(R.string.send_button), color = DarkPink
+                        text = stringResource(R.string.send_button),
+                        color = DarkPink
                     )
                 }
             }

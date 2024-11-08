@@ -1,0 +1,21 @@
+mutation UpdateBirthday(
+    $id: Int!,
+    $updateBirthdayInput: UpdateBirthdayInput!
+) {
+    updateBirthday(
+        id: $id,
+        updateBirthdayInput: $updateBirthdayInput
+    ) {
+        createdAt
+        date
+        id
+        image
+        message
+        name
+        relation
+        upcomingAge
+        upcomingBirthday
+        updatedAt
+        userId
+    }
+}
