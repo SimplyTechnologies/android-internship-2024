@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.unit.dp
+import com.simply.birthdayapp.commonpresentation.theme.LightGray
+import com.simply.birthdayapp.commonpresentation.theme.Orange
 
 @Composable
 fun ShopRating(
@@ -39,7 +41,7 @@ fun ShopRating(
                     modifier = Modifier.fillMaxSize(),
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
-                    tint = Color.Gray
+                    tint = LightGray
                 )
 
                 if (currentStarFill > 0f) {
@@ -49,7 +51,7 @@ fun ShopRating(
                             .clipStar(currentStarFill),
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = Color.Yellow,
+                        tint = Orange,
                     )
                 }
             }

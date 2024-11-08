@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +43,11 @@ fun ShopScreen(
     val searchText by viewModel.searchText.collectAsState()
 
     Column(
-        modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .fillMaxWidth()
+            .requiredHeightIn(min = 100.dp)
+            .imePadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBarWithBackButton(Modifier.fillMaxWidth(), showInCenter = true, showTopBar = true)
         SearchBar(text = searchText,
@@ -61,7 +69,7 @@ fun ShopScreen(
                                 start = 24.dp,
                                 end = 24.dp,
                                 top = 18.dp,
-                                bottom = 52.dp,
+                                bottom = 12.dp,
                             ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
